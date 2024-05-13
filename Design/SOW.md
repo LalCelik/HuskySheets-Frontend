@@ -1,9 +1,8 @@
-Statement of Work:
-Description of project:
-
+# Statement of Work:
+## Description of project:
 The team aims to create a version of Google Spreadsheets called HuskSheets using Java for both backend and frontend operations 
 
-MVP:
+## MVP:
 Creation:
 Users can make a new sheet
 The sheet is a set of cells that have numeric or character values
@@ -16,24 +15,24 @@ Users should be able to edit the sheet and have the new data persisted in saved 
 Collaboration:
 Users should be able to see changes other users make
 
-Desirable Features
+## Desirable Features
 The users should be able to type in functions to perform simple calculations on the sheet
 The users should be able to sort their data according to certain criteria (like alphabetical, time, etc)
 Being able to add more columns or rows to the initial sheet
 Cells Selection - Copy, Paste, Delete
 
-Additional Features (Bonus)
+## Additional Features (Bonus)
 Being able to color cells and change fonts
 Being able to create a graph from selecting two columns/rows
 Freezing a column
 Format as currency button
 Rounding decimal numbers (rounding up to a certain digit)
 
-Hidden bonus:
+### Hidden bonus:
 Predictive text
 
-User stories and use cases:
-Name: Create user account
+# User stories and use cases:
+## Name: Create user account
 Actor: User
 Stakeholders and Interests:
 User: Wants to register an account with HuskSheets
@@ -54,7 +53,7 @@ The system should not allow duplicate user accounts.
 Open Issues:
 What is the identifier for a user account that associates a user to their sheets? 
 
-Name: Plot graphs
+## Name: Plot graphs
 Actor: User
 Stakeholders and Interests:
 User: Wants to plot graphs given cell information
@@ -74,7 +73,7 @@ The system allows graphing functionality.
 Open Issues:
 Will a user be able to plot multiple kinds of graphs or just a simple plot?
 
-Name: Sort sheet
+## Name: Sort sheet
 Actor: User
 Stakeholders and Interests:
 User: Wants to easily sort columns or rows based on a certain criteria 
@@ -95,7 +94,7 @@ Sort operations should not significantly impact application performance.
 Open Issues:
 What if we cannot provide a certain sorting algorithm?
 
-Name: Functions for Simple Calculations
+## Name: Functions for Simple Calculations
 Actor: User
 Stakeholders and Interests:
 User: Wants to do simple calculations through the use of pre-defined functions
@@ -117,7 +116,7 @@ What if the user tries to use a function that doesn’t exist?
 What if there are undefined math behaviors?
 What if the syntax of the function is wrong?
 
-Name: Customizing cells
+## Name: Customizing cells
 Actor: User
 Stakeholders and Interests:
 User: Wants to easily change the font style and/or font size of the text within the cells
@@ -135,12 +134,11 @@ Can change the font styles of multiple cells at the same time
 Open Issues:
 How many options will be available to users to choose from?
 
-Name: View Sheet Changes
+## Name: View Sheet Changes
 Actor: User
 Stakeholders and Interests:
 User: Wants to be able to see changes made by other users to a shared sheet.
 System: Must ensure collaboration and provide updates on the sheets when one of the users decides to save their changes. The changes won’t be viewed in real-time, but updated consistently.
-
 Preconditions: The user is logged into the application and has opened a shared sheet.
 Postconditions: The user can view the latest changes made by other users to the sheet.
 Basic Flow:
@@ -156,7 +154,7 @@ Changes should be synced across all devices in real-time.
 Open Issues:
 How to handle conflicts when multiple users attempt to edit the same cell simultaneously?
 
-Name: Save sheet
+## Name: Save sheet
 Actor: User
 Stakeholders and Interests:
 User: Wants to easily save changes to a sheet
