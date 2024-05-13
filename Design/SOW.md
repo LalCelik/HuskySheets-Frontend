@@ -33,7 +33,6 @@ Hidden bonus:
 Predictive text
 
 User stories and use cases:
-A use case example
 Name: Create user account
 Actor: User
 Stakeholders and Interests:
@@ -54,7 +53,7 @@ Special Requirements:
 The system should not allow duplicate user accounts. 
 Open Issues:
 What is the identifier for a user account that associates a user to their sheets? 
-A use case example
+
 Name: Plot graphs
 Actor: User
 Stakeholders and Interests:
@@ -74,6 +73,7 @@ Special Requirements:
 The system allows graphing functionality. 
 Open Issues:
 Will a user be able to plot multiple kinds of graphs or just a simple plot?
+
 Name: Sort sheet
 Actor: User
 Stakeholders and Interests:
@@ -94,7 +94,6 @@ The application should handle large sheets.
 Sort operations should not significantly impact application performance.
 Open Issues:
 What if we cannot provide a certain sorting algorithm?
-
 
 Name: Functions for Simple Calculations
 Actor: User
@@ -117,6 +116,7 @@ Open Issues:
 What if the user tries to use a function that doesn’t exist?
 What if there are undefined math behaviors?
 What if the syntax of the function is wrong?
+
 Name: Customizing cells
 Actor: User
 Stakeholders and Interests:
@@ -134,6 +134,7 @@ Special Requirements:
 Can change the font styles of multiple cells at the same time
 Open Issues:
 How many options will be available to users to choose from?
+
 Name: View Sheet Changes
 Actor: User
 Stakeholders and Interests:
@@ -154,7 +155,7 @@ The application should support concurrent editing by multiple users without conf
 Changes should be synced across all devices in real-time.
 Open Issues:
 How to handle conflicts when multiple users attempt to edit the same cell simultaneously?
-A use case example
+
 Name: Save sheet
 Actor: User
 Stakeholders and Interests:
