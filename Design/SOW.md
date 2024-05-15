@@ -15,15 +15,16 @@ The team aims to create a version of Google Spreadsheets called HuskSheets using
     d. Logging into the system with their information will display a list of their corresponding sheets by calling a query that pulls          the user’s sheets from the database (front end interaction from user that calls click listener in the back end, also database           management)
     e. Should a user provide incorrect information while logging in that does not correspond to a valid user account, an error message         should be displayed warning the user its account could not be found (user query to cross-reference possible account combinations        and whether the user’s information exists: front end - UI, also database management).
 
-  5. Users can make a new sheet
-    a. User can click a button that opens a new panel to represent the new sheet they wish to make (front end interaction from the user        that calls click listener in the back end). 
-    b. The new panel should instantiate with a large grid of cells which can contain numeric or character values the user has provided.     c. The panel should also contain a button to save the sheet, set its title, along with the option to share a sheet with other users        in the system. (front end UI)
-    d. Once the user presses the exit button to close the panel, the previous list of sheets should be displayed. (the backend will            store each cell’s input locally and then a call to the database inserts this sheet to the user’s specific account of sheets. 
+  6. Users can make a new sheet
+    a. User can click a button that opens a new panel to represent the new sheet they wish to make (front end interaction from the user        that calls click listener in the back end).
+    b. The new panel should instantiate with a large grid of cells which can contain numeric or character values the user has provided.
+    c. The panel should also contain a button to save the sheet, set its title, along with the option to share a sheet with other users        in the system. (front end UI)
+    d. Once the user presses the exit button to close the panel, the previous list of sheets should be displayed. (the backend will            store each cell’s input locally and then a call to the database inserts this sheet to the user’s specific account of sheets.
     e. If the user selects to open an existing sheet, the sheet with its grid of cells and corresponding input will be displayed.              (front end managed by database call to that sheet’s specific contents).
-  6. Users can share sheets with other users
+  8. Users can share sheets with other users
     a. On the sheet panel, if the user selects to share the system, whoever they decide to share the panel with should be added as             collaborators to the sheet. (front end UI, database call to insert the sheet to the collaborator’s repertoire of sheets). 
     b. Users should be able to see and open the sheets created by other users. Users should be able to see changes other users make.           Updates made to the sheet by any user that it has been shared with should be seen by all other collaborators. (editing the cells        will require constant updating of the original cell’s information in the database, which then updates the sheet’s information as        a foreign key for each collaborator).
-  7. Should be able safely to delete a sheet
+  9. Should be able safely to delete a sheet
     a. In the panel containing the list of sheets accessible to the user, the user should be able to select at least one sheet, at             which point a delete button will appear to provide the user with the option to delete the sheets. (front end managed by click           listener in the backend).
     b. Should the user select to delete the selected sheets, the sheets will be removed from the user’s account. Should the owner              delete the sheet, the sheet will be delete from all user’s accounts. Should the sheets be deleted by a collaborator and be              accessible to other collaborators as well, the sheet will still be accessible to these collaborators who have not deleted the           sheets. (database management, delete from the user’s table in the database, but not the overall database).
 
