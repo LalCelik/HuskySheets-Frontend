@@ -27,10 +27,10 @@ The team aims to create a version of Google Spreadsheets called HuskSheets using
 
 \# | Bonus Features | 
 --- | -----------
-15 | On the HuskSheets GUI users should be able to change the color of the cells and text
-16 | On the HuskSheets GUI users should be able to create graphs by selecting columns and rows. They should select the type of chart they prefer (line charts, bar charts, pie charts, or scatter plots) and the data they’re going to be displaying on the chart. In the backend this will be translated into JSON and sent to the frontend to be displayed using a library such as Chart.js.
-17 | The user should be able to format a number input on the sheet as a currency. By setting a cell as a certain currency such as the US dollars, pounds, euros, etc. there will be that currencies symbol next to the decimal and it would be rounded up to correct value. 
-18 | The user can choose the option to round a numerical value in a cell up to a certain decimal point.
+16 | On the HuskSheets GUI users should be able to change the color of the cells and text
+17 | On the HuskSheets GUI users should be able to create graphs by selecting columns and rows. They should select the type of chart they prefer (line charts, bar charts, pie charts, or scatter plots) and the data they’re going to be displaying on the chart. In the backend this will be translated into JSON and sent to the frontend to be displayed using a library such as Chart.js.
+18 | The user should be able to format a number input on the sheet as a currency. By setting a cell as a certain currency such as the US dollars, pounds, euros, etc. there will be that currencies symbol next to the decimal and it would be rounded up to correct value. 
+19 | The user can choose the option to round a numerical value in a cell up to a certain decimal point.
 
 ## MVP:
 ### Basis (Described above):
