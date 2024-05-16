@@ -33,10 +33,14 @@ The team aims to create a version of Google Spreadsheets called HuskSheets using
 19 | The user can choose the option to round a numerical value in a cell up to a certain decimal point.
 
 ## MVP:
-### Basis (Described above):
-1. Server
-2. UI
-3. API
+### Basis:
+1. Implementation of a server to interact with the user interface
+   - The server will be connected to a database that holds user information such as credentials and documents made by the user.
+2. Implementation of a user interface displaying a spreadsheet with cells
+   - The user interface will show a basic spreadsheet with cells from an example data (since it won't be connected to a server yet).
+   - So, we will have to define the data structure that captures a spreadsheet.
+3. Implementation of an API to interact between the server and the user client
+   - API will handle data interaction such as get and update between the server and the client.
 ### Creation:
 4. User accounts should be defined
    - Program will allow the user to choose to register a new account or login into their existing account. (front end - UI)
