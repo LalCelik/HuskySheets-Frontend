@@ -26,13 +26,11 @@
 
 //  export default App;
 
-
-//import logo from './logo.svg';
-import React from 'react';
-//import { BrowserRouter as Router } from 'react-router-dom';
-//import HomePage from './HomePage.js';
-import './App.css';
-//import { Link } from "react-router-dom";
+import React from "react";
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import MyButton from "./MyButton";
+//import HomePage from "./HomePage";
 
 function App() {
   return (
@@ -48,12 +46,10 @@ function App() {
           Learn React
         </a>
       </header>
-      {/* <header className="App-content">
-        <Link to ="home_page"><button>
-            Go to the sheet
-        </button>
-        </Link>
-      </header> */}
+      <header className="App-content">
+        {/* <MyButton to="/" text="Home" /> */}
+        <MyButton to="home_page" text="Access the sheet" />
+      </header>
     </div>
   );
 }
