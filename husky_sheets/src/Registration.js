@@ -1,7 +1,7 @@
 import React from "react";
 import "./Registration.css";
-//import { Button } from "@material-ui/core";
 import MyButton from "./MyButton";
+import Button from "@mui/material/Button";
 
 function Registration() {
   return (
@@ -16,23 +16,30 @@ function Registration() {
             Your username should be unique and no more than 20 characters long
           </h6>
         </div>
-        <input
-          type="text"
-          placeholder="Please enter a username"
-          className="name-field"
-        />
-        {/* <Button variant="contained" color="primary" onClick={() => {}}>
+        <div className="input-container">
+          <input
+            type="text"
+            placeholder="Please enter a username"
+            className="name-field"
+          />
+          <Button variant="contained" color="primary" onClick={() => {}}>
             Submit
-        </Button> */}
+          </Button>
+        </div>
         <div>
           <h4>Please input a password to create a new account</h4>
           <h6>Your password should be no more than 15 characters long</h6>
         </div>
-        <input
-          type="text"
-          placeholder="Please enter a password"
-          className="name-field"
-        />
+        <div className="input-container">
+          <input
+            type="text"
+            placeholder="Please enter a password"
+            className="name-field"
+          />
+          <Button variant="contained" color="primary" onClick={() => {}}>
+            Submit
+          </Button>
+        </div>
       </div>
       <div className="button-container">
         <MyButton to="/" text="Back to login page" />

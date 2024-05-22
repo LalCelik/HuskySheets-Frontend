@@ -20,7 +20,13 @@
     justify-content: flex-start;
     align-items: center;
     padding: 20px;
-    margin-top: 40px;
+    margin-top: 10px;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
   }
 
   button {
@@ -42,5 +48,5 @@
   .name-field {
     padding: 15px;
     font-size: 16px;
-    margin: 10px 0;
+    margin-right: 10px;
   }
