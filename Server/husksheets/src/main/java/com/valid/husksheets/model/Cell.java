@@ -1,4 +1,5 @@
 //a single cell on a sheet
+package com.valid.husksheets.model;
 
 public class Cell {
 
