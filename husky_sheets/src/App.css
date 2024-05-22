@@ -1,59 +1,51 @@
 .App {
-    text-align: center;
-    background-color: rgb(217, 170, 251);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .App-header {
-    background-color: rgb(209, 93, 209);
-    padding: 20px;
-  }
-  
-  .App-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
+  text-align: center;
+  background-color: rgb(217, 170, 251);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    gap: 10px;
-  }
+.App-header {
+  background-color: rgb(209, 93, 209);
+  padding: 20px;
+}
 
-  .button-container {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    margin-top: 20px;
-  }
+.App-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px;
+}
 
-  .HomePage {
-    background-color: rgb(237, 155, 227);
-    text-align: center;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  gap: 10px;
+}
 
-  .Registration {
-    background-color: rgb(237, 155, 227);
-    text-align: center;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .login-fields {
-    display: flex;
+.button-container {
+  display: flex;
   flex-direction: row;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+
+.HomePage {
+  background-color: rgb(237, 155, 227);
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   margin: 20px 0;
 }
@@ -62,4 +54,5 @@
 .password-field {
   padding: 15px;
   font-size: 16px;
-  }
+  width: 200px;
+}

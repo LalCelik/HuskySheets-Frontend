@@ -21,10 +21,10 @@ function App() {
             className="password-field"
           />
         </div>
-        <div className="button-container">
-          <MyButton to="register" text="Make an account" />
-          <MyButton to="home_page" text="Access the sheet" />
-        </div>
+      </div>
+      <div className="button-container">
+        <MyButton to="register" text="Make an account" />
+        <MyButton to="home_page" text="Access the sheet" />
       </div>
     </div>
   );
