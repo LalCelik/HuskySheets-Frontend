@@ -7,18 +7,25 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Welcome to the login page</h1>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
-      <header className="App-content">
-        <MyButton to="home_page" text="Access the sheet" />
-      </header>
+      <div className="App-content">
+        <div className="login-fields">
+          <input
+            type="text"
+            placeholder="Enter your username"
+            className="name-field"
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            className="password-field"
+          />
+        </div>
+        <div className="button-container">
+          <MyButton to="register" text="Make an account" />
+          <MyButton to="home_page" text="Access the sheet" />
+        </div>
+      </div>
     </div>
   );
 }
