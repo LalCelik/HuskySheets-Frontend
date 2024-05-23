@@ -1,0 +1,55 @@
+.HomePage {
+    background-color: rgb(237, 155, 227);
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .Home-header {
+    background-color: rgb(209, 93, 209);
+    padding: 20px;
+  }
+
+  .Home-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    gap: 10px;
+  }
+
+  .popup-content {
+    background-color: rgb(255, 237, 255);
+    width: 500px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    align-items: center;
+  }
+
+  .popup-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .input-field {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding-top: 15px;
+  }
