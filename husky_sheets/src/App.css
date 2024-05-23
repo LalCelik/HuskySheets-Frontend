@@ -33,16 +33,6 @@ button {
   margin-top: 20px;
 }
 
-
-.HomePage {
-  background-color: rgb(237, 155, 227);
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .login-fields {
   display: flex;
   flex-direction: column;
