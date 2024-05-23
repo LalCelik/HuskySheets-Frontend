@@ -11,7 +11,7 @@ public class SheetService {
     //should we hasmap to store?
     //defualt size of sheet?
 
-    public boolean createSheet(String publisher, String name, String message, List value) {
+    public boolean createSheet(String publisher, String message, List value) {
         //if it fails put the error message in message
         //takes in publisher str which is the name of the client
         //takes in the sheet str which is the name of the sheet to create
@@ -19,7 +19,7 @@ public class SheetService {
         //need to alter the value input to be the data to update
         int height = 5;
         int width = 5;
-        Sheet newSheet = new Sheet(sheetIdCount, name, publisher, height, width);
+        Sheet newSheet = new Sheet(sheetIdCount, null, publisher, height, width);
 
         //add to database track any issues
         sheetIdCount++;
