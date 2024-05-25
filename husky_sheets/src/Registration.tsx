@@ -1,6 +1,6 @@
 import React from "react";
 import "./Registration.css";
-import MyButton from "./MyButton";
+import MyButton from "./MyButton.tsx";
 import Button from "@mui/material/Button";
 
 function Registration() {

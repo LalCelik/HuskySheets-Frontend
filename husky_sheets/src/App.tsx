@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import MyButton from "./MyButton";
+import MyButton from "./MyButton.tsx";
 
 function App() {
   return (
