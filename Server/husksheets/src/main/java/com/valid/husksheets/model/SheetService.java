@@ -2,7 +2,9 @@
 //from a databse or local files
 package com.valid.husksheets.model;
 import org.springframework.stereotype.Service;
-import com.valid.husksheets.model.Sheet;
+
+import com.valid.husksheets.JSON.Argument;
+
 import java.util.List;
 
 @Service
@@ -11,7 +13,7 @@ public class SheetService {
     //should we hasmap to store?
     //defualt size of sheet?
 
-    public boolean createSheet(String publisher, String message, List value) {
+    public boolean createSheet(String publisher, String message, List<Argument> value) {
         //if it fails put the error message in message
         //takes in publisher str which is the name of the client
         //takes in the sheet str which is the name of the sheet to create

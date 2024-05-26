@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record Argument(
     @JsonProperty("publisher") String publisher,
     //name of sheet
-    @JsonProperty("sheet") String sheet,
+    @JsonProperty("name") String name,
     //update to a sheet
     @JsonProperty("id") Number id,
     //the data for an update
@@ -19,7 +19,7 @@ public record Argument(
     
     // Getter method for sheet
     public String getSheet() {
-        return sheet;
+        return name;
     }
 }
 

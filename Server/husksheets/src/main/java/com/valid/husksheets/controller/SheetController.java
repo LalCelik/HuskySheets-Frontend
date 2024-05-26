@@ -29,7 +29,7 @@ public class SheetController {
     //the argument contains the name of the sheet to create and name of client
     public Result createSheet(@RequestBody Argument argument) {
 
-        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getSheet(), message, value);
+        boolean success = sheetService.createSheet(argument.getPublisher(), message, value);
         if (success) {
             return new Result(success, null, value);
         } else {
