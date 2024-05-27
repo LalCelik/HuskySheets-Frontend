@@ -30,12 +30,9 @@ public class SheetController {
 
     @PostMapping("/createSheet")
     public Result createSheet(@RequestBody Argument argument) {
-        // boolean success = true;
-        //  return new Result(success, null, value);
-
-        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getName(), message, value);
+        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getName(), message);
         if (success) {
-            return new Result(success, null, value);
+            return new Result(success, null, null);
         } else {
             return new Result(success, message, null);
         }
@@ -58,10 +55,9 @@ public class SheetController {
 //no value is returned? should these be void?
     @PostMapping("/deleteSheet")
     public Result deleteSheet(@RequestBody Argument argument) {
-
-        boolean success = sheetService.deleteSheet(argument.getPublisher(), argument.getName(), message, value);
+        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getName(), message);
         if (success) {
-            return new Result(success, null, value);
+            return new Result(success, null, null);
         } else {
             return new Result(success, message, null);
         }

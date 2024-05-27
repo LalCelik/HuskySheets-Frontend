@@ -9,31 +9,43 @@ import com.valid.husksheets.JSON.Argument;
 
 @Service
 public class SheetService {
-    private int sheetIdCount = 1; 
+    private int sheetIdCount = 1;
+
+    //default height and width of a sheet
+    //can be updated
+    private int height = 5;
+    private int width = 5;
     //should we hasmap to store?
     //defualt size of sheet?
 
-    public boolean createSheet(String publisher, String sheetName, String message, List<Argument> value) {
+    public boolean createSheet(String publisher, String sheetName,
+     String message) {
         //if it fails put the error message in message
         //takes in publisher str which is the name of the client
         //takes in the sheet str which is the name of the sheet to create
 
-        //need to alter the value input to be the data to update
-        int height = 5;
-        int width = 5;
-        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
-
-        //add to database track any issues
-        sheetIdCount++;
+        if (publisher == null || sheetName == null) {
+        // If any parameter is null, set the error message and return false
+        message = "Publisher or sheetName can't be null";
         return false;
-    }
-
-    public boolean deleteSheet(String publisher,String sheetName, String message, List<Argument> value) {
-        //if it fails put the error message in message
-        //takes in publisher str which is the name of the client
-        //takes in the sheet str which is the name of the sheet to delete
+        }
         
         //need to alter the value input to be the data to update
+        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
+        //add to database track any issues
+        sheetIdCount++;
+        return true;
+    }
+
+    public boolean deleteSheet(String publisher, String sheetName, String message) {
+        if (publisher == null || sheetName == null) {
+        // If any parameter is null, set the error message and return false
+        message = "Publisher or sheetName can't be null";
         return false;
+        }
+        
+        //do action to delete sheet
+        
+        return true;
     }
 }
