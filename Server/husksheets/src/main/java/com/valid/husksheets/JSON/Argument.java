@@ -12,9 +12,13 @@ public record Argument(
     //the data for an update
     @JsonProperty("payload") String payload) {
 
-        // Getter method for publisher
+    // Getter method for publisher
     public String getPublisher() {
         return publisher;
+    }
+
+     public String getName() {
+        return name;
     }
     
     // Getter method for sheet

@@ -1,11 +1,11 @@
 //this class is going to deal with fetching
 //from a databse or local files
 package com.valid.husksheets.model;
+
 import org.springframework.stereotype.Service;
-
-import com.valid.husksheets.JSON.Argument;
-
+import com.valid.husksheets.model.Sheet;
 import java.util.List;
+import com.valid.husksheets.JSON.Argument;
 
 @Service
 public class SheetService {
@@ -13,7 +13,7 @@ public class SheetService {
     //should we hasmap to store?
     //defualt size of sheet?
 
-    public boolean createSheet(String publisher, String message, List<Argument> value) {
+    public boolean createSheet(String publisher, String sheetName, String message, List<Argument> value) {
         //if it fails put the error message in message
         //takes in publisher str which is the name of the client
         //takes in the sheet str which is the name of the sheet to create
@@ -21,14 +21,14 @@ public class SheetService {
         //need to alter the value input to be the data to update
         int height = 5;
         int width = 5;
-        Sheet newSheet = new Sheet(sheetIdCount, null, publisher, height, width);
+        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
 
         //add to database track any issues
         sheetIdCount++;
         return false;
     }
 
-    public boolean deleteSheet(String publisher, String sheet, String message, List value) {
+    public boolean deleteSheet(String publisher,String sheetName, String message, List<Argument> value) {
         //if it fails put the error message in message
         //takes in publisher str which is the name of the client
         //takes in the sheet str which is the name of the sheet to delete
