@@ -30,12 +30,19 @@ public class SheetController {
 
     @PostMapping("/createSheet")
     public Result createSheet(@RequestBody Argument argument) {
-        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getName(), message);
-        if (success) {
-            return new Result(success, null, null);
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            message = "Publisher or sheetName can't be null";
+            return new Result(false, message, null);
         } else {
-            return new Result(success, message, null);
+        message = sheetService.createSheetSer(argument.getPublisher(), argument.getName());
+        if (message.equals("success")) {
+            return new Result(true, "Sheet has been created", null);
+        } else {
+            return new Result(false, message, null);
         }
+    }
+
+        // return new Result(true, message, null);
     }
 
 //shows up with the json
@@ -54,11 +61,12 @@ public class SheetController {
 //no value is returned? should these be void?
     @PostMapping("/deleteSheet")
     public Result deleteSheet(@RequestBody Argument argument) {
-        boolean success = sheetService.createSheet(argument.getPublisher(), argument.getName(), message);
-        if (success) {
-            return new Result(success, null, null);
-        } else {
-            return new Result(success, message, null);
-        }
+        // boolean success = sheetService.createSheetSer(argument.getPublisher(), argument.getName(), message);
+        // if (success) {
+        //     return new Result(success, null, null);
+        // } else {
+        //     return new Result(success, message, null);
+        // }
+        return new Result(true, message, null);
     }
 }
