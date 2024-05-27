@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());
+        http.csrf().disable();
         return http.build();
     }
 
