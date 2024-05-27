@@ -32,13 +32,4 @@ public class SheetDao {
 
     }
 
-    // public List<Sheet> loadSheets() {
-    //     try (FileReader fileReader = new FileReader(SHEETS_FILE)) {
-    //         return objectMapper.readValue(fileReader, new TypeReference<List<Sheet>>() {});
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return new ArrayList<>();
-    // }
-
 }
