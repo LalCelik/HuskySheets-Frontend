@@ -1,4 +1,5 @@
 package com.valid.husksheets.model;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class System {
     for (int i = 0; i < users.size(); i++) {
       if (users.get(i).equals(user)) {
         throw new IllegalArgumentException("User already exists in the system. Create a different" +
-                "username.")
+                "username");
       }
     }
     users.add(user);

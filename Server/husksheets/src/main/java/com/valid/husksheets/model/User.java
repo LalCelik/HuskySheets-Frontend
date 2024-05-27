@@ -18,7 +18,8 @@ public class User {
    * @param user User being compared to
    * @return true if the usernames are the same, else return false
    */
-  @Override
+  
+  //@Override
   public boolean equals(User user) {
     return this.username.equals(user.username);
   }
@@ -28,7 +29,9 @@ public class User {
    * and password
    * @return hashcode
    */
-  @Override
+
+  //comment this out?
+  // @Override
   public int hashCode() {
     int hash = this.username.hashCode();
     hash += this.password.hashCode();
@@ -40,7 +43,7 @@ public class User {
    * Returns the User's username
    * @return User's username
    */
-  public getUsername() {
+  public String getUsername() {
     return this.username;
   }
 

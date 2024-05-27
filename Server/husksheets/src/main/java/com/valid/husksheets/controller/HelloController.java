@@ -1,4 +1,4 @@
-package com.valid.husksheets;
+package com.valid.husksheets.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
