@@ -45,6 +45,20 @@ public class SheetSystem {
         return exists;
     }
 
+    public boolean deleteSheet(Sheet sheet) {
+        boolean deleted = false;
+        for(Sheet s: sheets) {
+            if(s != null) {
+                if((s.getName().equals(sheet.getName()))) {
+                    sheets.remove(s);
+                    deleted = true;
+                    break;
+                }
+            }
+        }
+        return deleted;
+    }
+
     private List<Sheet> readSheets() {
         try {
             String jsonString = Files.readString(Path.of("src/main/resources/sheets.json"));

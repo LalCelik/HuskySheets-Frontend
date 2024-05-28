@@ -35,11 +35,19 @@ public class SheetService {
         return message;
     }
 
-    // public boolean deleteSheet(String publisher, String sheetName, String message) {
+    // public String deleteSheet(String publisher, String sheetName) {
     //     if (publisher == null || sheetName == null) {
-    //         message = "Publisher or sheetName can't be null";
-    //         return false;
+    //         return "Publisher or sheetName can't be null";
     //     }
-    //     return true;
+    //     Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
+    //     SheetSystem sheetSystem = new SheetSystem(newSheet);
+    //     SheetDao sheetDao = new SheetDao();
+    //     if(sheetSystem.sheetExists(newSheet)) {
+    //         sheetSystem.deleteSheet(newSheet);
+    //         sheetDao.writeToFile(sheetSystem);
+    //         return "success";
+    //     } else {
+    //         return "dne";
+    //     }
     // }
 }

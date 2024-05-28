@@ -8,6 +8,9 @@ import com.google.gson.Gson;
 /**
  * Data functionality for sheets
  * Made by Lal
+ * 
+ * 
+ * Will reorganize these classes ignore the mess
  */
 public class SheetDao {
     private final String SHEETS_FILE = "src/main/resources/sheets.json";
@@ -36,5 +39,14 @@ public class SheetDao {
             return false;
         }
     }
+
+    // public void writeToFile(SheetSystem sheetSystem) {
+    //     try {
+    //         String jsonOutput = new Gson().toJson(sheetSystem);
+    //         Files.writeString(Path.of(SHEETS_FILE), jsonOutput);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
 }
