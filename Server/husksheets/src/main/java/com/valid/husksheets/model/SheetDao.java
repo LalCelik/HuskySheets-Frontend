@@ -5,6 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import com.google.gson.Gson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,16 +26,38 @@ public class SheetDao {
         this.objectMapper = objectMapper;
     }
 
-    public boolean saveSheet(Sheet sheet) {
+    // public boolean saveSheet(Sheet sheet) {
 
-        try (FileWriter fileWriter = new FileWriter(SHEETS_FILE, true)) {
-            objectMapper.writeValue(fileWriter, sheet);
+    //     try (FileWriter fileWriter = new FileWriter(SHEETS_FILE, true)) {
+    //         objectMapper.writeValue(fileWriter, sheet);
+    //         return true;
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+
+    // }
+
+    public boolean saveSheet(Sheet sheet) {
+        try {
+            SheetSystem sheetSystem = new SheetSystem(sheet);
+            String jsonOutput = new Gson().toJson(sheetSystem);
+            Files.writeString(Path.of(SHEETS_FILE), jsonOutput);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-
     }
+
+    // private List<Sheet> readSheets() {
+    //     try {
+    //         String jsonString = Files.readString(Path.of(SHEETS_FILE));
+    //         SheetSystem sheetSystem = new Gson().fromJson(jsonString, SheetSystem.class);
+    //         return sheetSystem.getSheets();
+    //     } catch (IOException e) {
+    //         throw new RuntimeException(e);
+    //     }
+    // }
 
 }
