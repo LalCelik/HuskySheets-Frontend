@@ -2,11 +2,8 @@ package com.valid.husksheets.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.Files;
 import com.google.gson.Gson;
 
@@ -25,12 +22,27 @@ public class SheetSystem {
     public SheetSystem(Sheet newSheet) {
         this.sheets = new ArrayList<>();
         sheets = readSheets();
-        sheets.add(newSheet);
-        //sheets.add(newSheet);
     }
 
     public List<Sheet> getSheets() {
         return sheets;
+    }
+
+    public void addSheet(Sheet sheet) {
+        sheets.add(sheet);
+    }
+
+    public boolean sheetExists(Sheet sheet) {
+        boolean exists = false;
+        for(Sheet s: sheets) {
+            if(s != null) {
+                if((s.getName().equals(sheet.getName()))) {
+                    exists = true;
+                    break;
+                }
+            }
+        }
+        return exists;
     }
 
     private List<Sheet> readSheets() {

@@ -1,46 +1,33 @@
 package com.valid.husksheets.model;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.nio.file.Files;
 import com.google.gson.Gson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * Data functionality for sheets
+ * Made by Lal
+ */
 public class SheetDao {
-    // File paths
     private final String SHEETS_FILE = "src/main/resources/sheets.json";
-    //private final String USERS_FILE = "users.json";
-
-    // ObjectMapper for JSON serialization/deserialization
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    public SheetDao(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public SheetDao() {
     }
 
-    // public boolean saveSheet(Sheet sheet) {
-
-    //     try (FileWriter fileWriter = new FileWriter(SHEETS_FILE, true)) {
-    //         objectMapper.writeValue(fileWriter, sheet);
-    //         return true;
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-
-    // }
-
+    /**
+     * Saves a sheet to the JSON file
+     *
+     * @param sheet the sheet to save
+     * @return true if the sheet was successfully saved
+     */
     public boolean saveSheet(Sheet sheet) {
         try {
             SheetSystem sheetSystem = new SheetSystem(sheet);
+            if (!sheetSystem.sheetExists(sheet)) {
+                sheetSystem.addSheet(sheet);
+            } else {
+                return false;
+            }
             String jsonOutput = new Gson().toJson(sheetSystem);
             Files.writeString(Path.of(SHEETS_FILE), jsonOutput);
             return true;
@@ -49,15 +36,5 @@ public class SheetDao {
             return false;
         }
     }
-
-    // private List<Sheet> readSheets() {
-    //     try {
-    //         String jsonString = Files.readString(Path.of(SHEETS_FILE));
-    //         SheetSystem sheetSystem = new Gson().fromJson(jsonString, SheetSystem.class);
-    //         return sheetSystem.getSheets();
-    //     } catch (IOException e) {
-    //         throw new RuntimeException(e);
-    //     }
-    // }
 
 }
