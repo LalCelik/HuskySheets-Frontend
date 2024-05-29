@@ -2,6 +2,7 @@ package com.valid.husksheets.security;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,10 @@ import java.nio.file.Path;
 import com.google.gson.Gson;
 
 public class CustomUserDetailService implements UserDetailsService {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private UserSystem userSystem;
+
     @Override
     public UserDetails loadUserByUsername(final String username) {
         User user = findByUsername(username);
@@ -23,13 +28,7 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
     private User findByUsername(String username) {
-        try {
-            String jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
-            UserSystem userSystem = new Gson().fromJson(jsonString, UserSystem.class);
-            return userSystem.findByUsername(username);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return userSystem.findByUsername(username);
     }
 
 }
