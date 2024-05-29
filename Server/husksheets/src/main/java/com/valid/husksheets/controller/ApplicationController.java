@@ -9,6 +9,7 @@ import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,9 +41,10 @@ public class ApplicationController {
         }
         else {
             try {
+                String password = new BCryptPasswordEncoder().encode(userArgument.getPassword());
                 userSystem.addUser(new User(
                         userArgument.getUsername(),
-                        userArgument.getPassword(),
+                        password,
                         new ArrayList<Integer>()));
             } catch (IllegalArgumentException iae) {
                 return new Result(false, "Registering a user failed", null);
