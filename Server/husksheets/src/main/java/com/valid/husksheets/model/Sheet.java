@@ -11,7 +11,7 @@ public class Sheet {
 
     public Sheet(int id, String name, String publisher,int height, int width) {
         this.id = id;
-        //this.publisher = publisher;
+        this.publisher = publisher;
         this.name = name;
         this.grid = new Cell[height][width];
 
@@ -32,9 +32,9 @@ public class Sheet {
         return name;
     }
 
-    // public User getPublisher() {
-    //     return publisher;
-    // }
+    public String getPublisher() {
+        return publisher;
+    }
 
     public Cell getCell(int row, int col) {
         if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length) {

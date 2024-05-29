@@ -4,6 +4,8 @@ import java.io.IOException;
 import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data functionality for sheets
@@ -53,7 +55,8 @@ public class SheetDao {
         boolean exists = false;
         for(Sheet s: system.getSheets()) {
             if(s != null) {
-                if((s.getName().equals(sheet.getName()))) {
+                if((s.getName().equals(sheet.getName())) &&
+                (s.getPublisher().equals(sheet.getName()))) {
                     exists = true;
                     break;
                 }
@@ -76,6 +79,24 @@ public class SheetDao {
             return false;
         }
     }
+}
+
+public List<Sheet> getSheets(String publisher) throws IOException {
+        SheetSystem sheetSystem = new SheetSystem();
+        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        return publisherSheets(sheetSystem,publisher);
+}
+
+private List<Sheet> publisherSheets(SheetSystem system, String publisher) {
+    List<Sheet> list = new ArrayList<>();
+    for(Sheet s: system.getSheets()) {
+        if(s != null) {
+            if((s.getPublisher().equals(publisher))) {
+                list.add(s);
+            }
+        }
+    }
+    return list;
 }
 
 }

@@ -36,18 +36,16 @@ public class SheetService {
     }
 
     public String deleteSheet(String publisher, String sheetName) {
-        String message ="Sheet hasn't been deleted";
+        String message ="Sheet hasn't been saved";
         Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
         try {
-            boolean deleteSuccess = sheetDao.deleteSheet(newSheet);
-            if(deleteSuccess) {
-                sheetIdCount--;
+            if(sheetDao.deleteSheet(newSheet)) {
                 message = "success";
             } else {
-                message = "Sheet doesn't exist";
+                message = "Couldn't be deleted";
             }
         } catch (Exception e) {
-            message = "Sheet couldn't be saved: " + e.getMessage();
+            message = "Sheet couldn't be deleted: " + e.getMessage();
         }
         return message;
     }

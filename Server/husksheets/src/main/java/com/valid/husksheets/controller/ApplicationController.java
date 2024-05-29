@@ -3,6 +3,8 @@ package com.valid.husksheets.controller;
 import com.google.gson.Gson;
 import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.SheetService;
+import com.valid.husksheets.model.SheetDao;
+import com.valid.husksheets.model.Sheet;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
@@ -86,19 +88,6 @@ public class ApplicationController {
         }
     }
 
-    //shows up with the json
-    @GetMapping("/testCreateSheet")
-    public Result testCreateSheet() {
-        System.out.println("Received testCreateSheet request");
-        boolean success = true; // For testing purposes, always return true
-
-        // Populate the value list with sample data
-        List<Argument> sampleArguments = new ArrayList<>();
-        sampleArguments.add(new Argument("SamplePublisher1", "SampleSheet1", 1, "SamplePayload1"));
-
-        return new Result(success, "This is a test message", sampleArguments);
-    }
-
     //no value is returned? should these be void?
     @PostMapping("/deleteSheet")
     public Result deleteSheet(@RequestBody Argument argument) {
@@ -110,6 +99,25 @@ public class ApplicationController {
             if (message.equals("success")) {
                 return new Result(true, "Sheet has been deleted", null);
             } else {
+                return new Result(false, message, null);
+            }
+        }
+    }
+
+    @PostMapping("/getSheets")
+    public Result getSheets(@RequestBody Argument argument) {
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+            List<Sheet> list = new ArrayList<>();
+            String value = "";
+            try {
+                list = sheetDao.getSheets(argument.getPublisher());
+                message = list.toString();
+                return new Result(true, message, null);
+            } catch (Exception e) {
+                message = "Sheet couldn't be deleted: " + e.getMessage();
                 return new Result(false, message, null);
             }
         }
