@@ -2,6 +2,12 @@ import React from "react";
 import "./App.css";
 import MyButton from "./MyButton.tsx";
 
+
+/*
+This function is responsible for the UI for the login page
+
+Owner: Amani
+*/
 function App() {
   return (
     <div className="App">

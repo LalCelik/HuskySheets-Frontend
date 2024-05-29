@@ -3,6 +3,12 @@ import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import "./HomePage.css";
 
+
+/*
+This function is responsible for the UI for the homepage page
+
+Owner: Amani
+*/
 function HomePage() {
   const [open, setOpen] = React.useState(false);
 
