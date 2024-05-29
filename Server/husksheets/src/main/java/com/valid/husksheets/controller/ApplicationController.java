@@ -1,6 +1,7 @@
 package com.valid.husksheets.controller;
 
 import com.google.gson.Gson;
+import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.SheetService;
 
 import com.valid.husksheets.JSON.Result;
@@ -8,6 +9,7 @@ import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +34,22 @@ public class ApplicationController {
 
     // Only this endpoint is open to public
     @PostMapping("/register")
-    public Result register(@RequestBody Argument argument)
-    {
-        // TODO
-        userSystem.addUser(new User(3, "user4", "$2a$10$BezvAEoJKUHvpklxHnzqK.ralY2l99EEp1QvJUgrGxsRFazAKYtWi", new ArrayList<>()));
+    public Result register(@RequestBody UserArgument userArgument) {
+        if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
+            message = "Username and Password cannot be null";
+            return new Result(false, message, null);
+        }
+        else {
+            try {
+                String password = new BCryptPasswordEncoder().encode(userArgument.getPassword());
+                userSystem.addUser(new User(
+                        userArgument.getUsername(),
+                        password,
+                        new ArrayList<Integer>()));
+            } catch (IllegalArgumentException iae) {
+                return new Result(false, "Registering a user failed", null);
+            }
+        }
         return new Result(true, "Successfully registered a user", null);
     }
 
