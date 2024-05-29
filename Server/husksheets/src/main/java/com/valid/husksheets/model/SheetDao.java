@@ -47,7 +47,6 @@ public class SheetDao {
                 return false;
             }
         }
-        
     }
 
     private boolean sheetExists(SheetSystem system, Sheet sheet) {
@@ -62,5 +61,21 @@ public class SheetDao {
         }
         return exists;
     }
+
+    public boolean deleteSheet(Sheet sheet) throws IOException {
+        if(!Files.exists(sheetPath)) {
+            return false;
+        } else {
+        SheetSystem sheetSystem = new SheetSystem();
+        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        if (sheetExists(sheetSystem, sheet)) {
+            sheetSystem.deleteSheet(sheet);
+            systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 }

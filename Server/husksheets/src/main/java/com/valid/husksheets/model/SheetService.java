@@ -34,4 +34,21 @@ public class SheetService {
         }
         return message;
     }
+
+    public String deleteSheet(String publisher, String sheetName) {
+        String message ="Sheet hasn't been deleted";
+        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
+        try {
+            boolean deleteSuccess = sheetDao.deleteSheet(newSheet);
+            if(deleteSuccess) {
+                sheetIdCount--;
+                message = "success";
+            } else {
+                message = "Sheet doesn't exist";
+            }
+        } catch (Exception e) {
+            message = "Sheet couldn't be saved: " + e.getMessage();
+        }
+        return message;
+    }
 }

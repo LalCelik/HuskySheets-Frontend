@@ -24,4 +24,8 @@ public class SheetSystem {
     public void addSheet(Sheet sheet) {
         sheets.add(sheet);
     }
+
+    public void deleteSheet(Sheet sheet) {
+        sheets.remove(sheet);
+    }
 }

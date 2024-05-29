@@ -70,8 +70,6 @@ public class ApplicationController {
                 return new Result(false, message, null);
             }
         }
-
-        // return new Result(true, message, null);
     }
 
     //shows up with the json
@@ -90,12 +88,16 @@ public class ApplicationController {
     //no value is returned? should these be void?
     @PostMapping("/deleteSheet")
     public Result deleteSheet(@RequestBody Argument argument) {
-        // boolean success = sheetService.createSheetSer(argument.getPublisher(), argument.getName(), message);
-        // if (success) {
-        //     return new Result(success, null, null);
-        // } else {
-        //     return new Result(success, message, null);
-        // }
-        return new Result(true, message, null);
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            message = "Publisher or sheetName can't be null";
+            return new Result(false, message, null);
+        } else {
+            message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
+            if (message.equals("success")) {
+                return new Result(true, "Sheet has been deleted", null);
+            } else {
+                return new Result(false, message, null);
+            }
+        }
     }
 }

@@ -1,10 +1,12 @@
 //class for a sheet
 package com.valid.husksheets.model;
 
+import java.util.Objects;
+
 public class Sheet {
     private int id;
     private String name;
-    //private User publisher; //the user that created the sheet
+    private String publisher; //the user that created the sheet
     private Cell[][] grid; //2d array of cells
 
     public Sheet(int id, String name, String publisher,int height, int width) {
@@ -49,4 +51,17 @@ public class Sheet {
     //         throw new IndexOutOfBoundsException("Cell index out of range");
     //     }
     // }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sheet sheet = (Sheet) o;
+        return Objects.equals(name, sheet.name) && Objects.equals(publisher, sheet.publisher);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, publisher);
+    }
 }
