@@ -3,6 +3,12 @@ import "./Registration.css";
 import MyButton from "./MyButton.tsx";
 import Button from "@mui/material/Button";
 
+
+/*
+This function is responsible for the UI for the registration page
+
+Owner: Amani
+*/
 function Registration() {
   return (
     <div className="Registration">
