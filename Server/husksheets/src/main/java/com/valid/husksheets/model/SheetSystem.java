@@ -19,11 +19,6 @@ public class SheetSystem {
         this.sheets = newSheets;
     }
 
-    public SheetSystem(Sheet newSheet) {
-        this.sheets = new ArrayList<>();
-        sheets = readSheets();
-    }
-
     public List<Sheet> getSheets() {
         return sheets;
     }
@@ -36,40 +31,17 @@ public class SheetSystem {
         sheets.add(sheet);
     }
 
-    public boolean sheetExists(Sheet sheet) {
-        boolean exists = false;
-        for(Sheet s: sheets) {
-            if(s != null) {
-                if((s.getName().equals(sheet.getName()))) {
-                    exists = true;
-                    break;
-                }
-            }
-        }
-        return exists;
-    }
-
-    public boolean deleteSheet(Sheet sheet) {
-        boolean deleted = false;
-        for(Sheet s: sheets) {
-            if(s != null) {
-                if((s.getName().equals(sheet.getName()))) {
-                    sheets.remove(s);
-                    deleted = true;
-                    break;
-                }
-            }
-        }
-        return deleted;
-    }
-
-    private List<Sheet> readSheets() {
-        try {
-            String jsonString = Files.readString(Path.of("src/main/resources/sheets.json"));
-            SheetSystem sheetSystem = new Gson().fromJson(jsonString, SheetSystem.class);
-            return sheetSystem.getSheets();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    // public boolean deleteSheet(Sheet sheet) {
+    //     boolean deleted = false;
+    //     for(Sheet s: sheets) {
+    //         if(s != null) {
+    //             if((s.getName().equals(sheet.getName()))) {
+    //                 sheets.remove(s);
+    //                 deleted = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return deleted;
+    // }
 }
