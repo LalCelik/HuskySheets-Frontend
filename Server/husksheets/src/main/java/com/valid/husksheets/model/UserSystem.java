@@ -79,7 +79,7 @@ public class UserSystem {
     public void addUser(User user) {
         for (User value : this.users) {
             if (value.equals(user)) {
-                throw new IllegalArgumentException("User already exists in the system. Create a different" +
+                throw new IllegalArgumentException("User already exists in the system" +
                         "username");
             }
         }

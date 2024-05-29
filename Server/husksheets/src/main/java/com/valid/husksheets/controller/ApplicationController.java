@@ -74,7 +74,7 @@ public class ApplicationController {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
         } else {
-            message = sheetService.createSheetSer(argument.getPublisher(), argument.getName());
+            message = sheetService.createSheet(argument.getPublisher(), argument.getName());
             if (message.equals("success")) {
                 return new Result(true, "Sheet has been created", null);
             } else {

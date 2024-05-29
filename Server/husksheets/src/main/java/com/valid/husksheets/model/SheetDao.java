@@ -1,35 +1,66 @@
 package com.valid.husksheets.model;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * Data functionality for sheets
+ * Made by Lal
+ * 
+ * 
+ * Will reorganize these classes ignore the mess
+ */
 public class SheetDao {
-    // File paths
     private final String SHEETS_FILE = "src/main/resources/sheets.json";
-    //private final String USERS_FILE = "users.json";
-
-    // ObjectMapper for JSON serialization/deserialization
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    public SheetDao(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    private final Path sheetPath = Path.of(SHEETS_FILE);
+    private final SheetSystemUtils systemUtils = new SheetSystemUtils();
+    public SheetDao() {
+        // SHEETS_FILE = "src/main/resources/sheets.json";
+        // sheetPath = Path.of(SHEETS_FILE);
+        // systemUtils = new SheetSystemUtils();
     }
 
-    public boolean saveSheet(Sheet sheet) {
+    /**
+     * Saves a sheet to the JSON file
+     *
+     * @param sheet the sheet to save
+     * @return true if the sheet was successfully saved
+     */
+    public boolean saveSheet(Sheet sheet) throws IOException {
 
-        try (FileWriter fileWriter = new FileWriter(SHEETS_FILE, true)) {
-            objectMapper.writeValue(fileWriter, sheet);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            if(!Files.exists(sheetPath)) {
+                Files.createFile(sheetPath);
+                SheetSystem sheetSystem = new SheetSystem();
+                sheetSystem.addSheet(sheet);
+                systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
+                return true;
+            } else {
+            SheetSystem sheetSystem = new SheetSystem();
+            sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+            if (!sheetExists(sheetSystem, sheet)) {
+                sheetSystem.addSheet(sheet);
+                systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
+                return true;
+            } else {
+                return false;
+            }
         }
+        
+    }
 
+    private boolean sheetExists(SheetSystem system, Sheet sheet) {
+        boolean exists = false;
+        for(Sheet s: system.getSheets()) {
+            if(s != null) {
+                if((s.getName().equals(sheet.getName()))) {
+                    exists = true;
+                    break;
+                }
+            }
+        }
+        return exists;
     }
 
 }
