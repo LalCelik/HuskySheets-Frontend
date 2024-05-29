@@ -68,7 +68,7 @@ public class UserSystem {
     public List<Argument> getPublishers() {
         List<Argument> result = new ArrayList<>();
         for (User u : this.users) {
-            result.add(new Argument(u.getUsername(), null, u.getId(), null));
+            result.add(new Argument(u.getUsername(), null, null, null));
         }
         return result;
     }

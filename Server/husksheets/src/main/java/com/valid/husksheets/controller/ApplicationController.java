@@ -1,6 +1,7 @@
 package com.valid.husksheets.controller;
 
 import com.google.gson.Gson;
+import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.SheetService;
 
 import com.valid.husksheets.JSON.Result;
@@ -35,14 +36,14 @@ public class ApplicationController {
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
             message = "Username and Password cannot be null";
-            return new Result(false, message, null)
+            return new Result(false, message, null);
         }
         else {
             try {
-                message = userSystem.addUser(new User(
+                userSystem.addUser(new User(
                         userArgument.getUsername(),
                         userArgument.getPassword(),
-                        userArgument.getSheets()));
+                        new ArrayList<Integer>()));
             } catch (IllegalArgumentException iae) {
                 return new Result(false, "Registering a user failed", null);
             }
