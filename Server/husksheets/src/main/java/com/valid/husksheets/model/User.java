@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private int id;
     private String username;
     private String password;
     private List<Integer> sheets = new ArrayList<>();
 
-    public User(int id, String username, String password, List<Integer> sheets) {
-        this.id = id;
+    public User(String username, String password, List<Integer> sheets) {
         this.username = username;
         this.password = password;
         this.sheets = sheets;
@@ -42,13 +40,13 @@ public class User {
         return hash;
     }
 
-    /**
-     * Returns the User's id
-     * @return id of this User
-     */
-    public int getId() {
-        return this.id;
-    }
+//    /**
+//     * Returns the User's id
+//     * @return id of this User
+//     */
+//    public int getId() {
+//        return this.id;
+//    }
 
     /**
      * Returns the User's username

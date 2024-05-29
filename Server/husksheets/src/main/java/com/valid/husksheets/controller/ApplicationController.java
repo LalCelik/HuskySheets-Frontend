@@ -32,10 +32,21 @@ public class ApplicationController {
 
     // Only this endpoint is open to public
     @PostMapping("/register")
-    public Result register(@RequestBody Argument argument)
-    {
-        // TODO
-        userSystem.addUser(new User(3, "user4", "$2a$10$BezvAEoJKUHvpklxHnzqK.ralY2l99EEp1QvJUgrGxsRFazAKYtWi", new ArrayList<>()));
+    public Result register(@RequestBody UserArgument userArgument) {
+        if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
+            message = "Username and Password cannot be null";
+            return new Result(false, message, null)
+        }
+        else {
+            try {
+                message = userSystem.addUser(new User(
+                        userArgument.getUsername(),
+                        userArgument.getPassword(),
+                        userArgument.getSheets()));
+            } catch (IllegalArgumentException iae) {
+                return new Result(false, "Registering a user failed", null);
+            }
+        }
         return new Result(true, "Successfully registered a user", null);
     }
 
