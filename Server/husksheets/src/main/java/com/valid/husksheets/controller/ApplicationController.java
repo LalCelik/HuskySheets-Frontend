@@ -1,16 +1,23 @@
 package com.valid.husksheets.controller;
 
+import com.google.gson.Gson;
 import com.valid.husksheets.model.SheetService;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
 
+import com.valid.husksheets.model.User;
+import com.valid.husksheets.model.UserSystem;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +27,16 @@ public class ApplicationController {
     @Autowired
     private SheetService sheetService;
 
+    @Autowired
+    private UserSystem userSystem;
+
     // Only this endpoint is open to public
-    @GetMapping("/register")
-    public String register()
+    @PostMapping("/register")
+    public Result register(@RequestBody Argument argument)
     {
-        return "register";
+        // TODO
+        userSystem.addUser(new User(3, "user4", "$2a$10$BezvAEoJKUHvpklxHnzqK.ralY2l99EEp1QvJUgrGxsRFazAKYtWi", new ArrayList<>()));
+        return new Result(true, "Successfully registered a user", null);
     }
 
 
@@ -36,6 +48,14 @@ public class ApplicationController {
 
     private String message;
 
+    // Getting all users from the database
+    @GetMapping("/getPublishers")
+    public Result getPublishers() throws IOException {
+        System.out.println("Received getPublishers request");
+        boolean success = true; // For testing purposes, always return true
+
+        return new Result(success, "Getting all Publishers", userSystem.getPublishers());
+    }
 
     @PostMapping("/createSheet")
     public Result createSheet(@RequestBody Argument argument) {

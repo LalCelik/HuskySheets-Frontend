@@ -43,14 +43,21 @@ public class User {
     }
 
     /**
+     * Returns the User's id
+     * @return id of this User
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /**
      * Returns the User's username
      * @return User's username
      */
     public String getUsername() {
         return this.username;
     }
-
-
+    
     /**
      * Returns the User's password
      * @return User's password
