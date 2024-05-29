@@ -20,7 +20,7 @@ public class Cell {
         return input;
     }
 
-    public void setInput() {
-        this.input = input;
+    public void setInput(String newInput) {
+        this.input = newInput;
     }
 }

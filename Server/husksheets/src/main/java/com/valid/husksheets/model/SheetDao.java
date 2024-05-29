@@ -32,7 +32,11 @@ public class SheetDao {
 
             if(!Files.exists(sheetPath)) {
                 Files.createFile(sheetPath);
-            } 
+                SheetSystem sheetSystem = new SheetSystem();
+                sheetSystem.addSheet(sheet);
+                systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
+                return true;
+            } else {
             SheetSystem sheetSystem = new SheetSystem();
             sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
             if (!sheetExists(sheetSystem, sheet)) {
@@ -42,6 +46,8 @@ public class SheetDao {
             } else {
                 return false;
             }
+        }
+        
     }
 
     private boolean sheetExists(SheetSystem system, Sheet sheet) {
