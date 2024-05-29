@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+// Owner: Sunkwan
 public class CustomUserDetails implements UserDetails {
     private final User user;
 

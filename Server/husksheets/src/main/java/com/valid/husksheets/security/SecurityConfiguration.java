@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
+// Owner: Sunkwan
 @Configuration
 public class SecurityConfiguration {
 
@@ -33,6 +34,7 @@ public class SecurityConfiguration {
         return new CustomUserDetailService();
     }
 
+    // Using Bcrypt encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

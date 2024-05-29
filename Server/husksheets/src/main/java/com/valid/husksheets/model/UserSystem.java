@@ -17,6 +17,8 @@ import java.util.List;
 /**
  * System that holds a list of Users. If the system is preset with a list of Users, assume all
  * Users are unique.
+ *
+ * Owner: Sunkwan
  */
 @Service
 public class UserSystem {

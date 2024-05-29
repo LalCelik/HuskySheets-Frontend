@@ -13,6 +13,7 @@ import java.nio.file.Path;
 
 import com.google.gson.Gson;
 
+// Owner: Sunkwan
 public class CustomUserDetailService implements UserDetailsService {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired

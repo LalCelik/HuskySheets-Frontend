@@ -35,6 +35,7 @@ public class ApplicationController {
     private UserSystem userSystem;
 
     // Only this endpoint is open to public
+    // Owner: Victoria & Sunkwan
     @PostMapping("/register")
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
@@ -54,17 +55,10 @@ public class ApplicationController {
         }
         return new Result(true, "Successfully registered a user", null);
     }
-
-
-    @GetMapping("/secret")
-    public String secret()
-    {
-        return "Hey! welcome to secret page";
-    }
-
     private String message;
 
     // Getting all users from the database
+    // Owner: Sunkwan
     @GetMapping("/getPublishers")
     public Result getPublishers() throws IOException {
         System.out.println("Received getPublishers request");
