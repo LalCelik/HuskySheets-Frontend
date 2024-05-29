@@ -27,7 +27,7 @@ public class SheetService {
                 sheetIdCount++;
                 message = "success";
             } else {
-                message = "Sheet couldn't be saved to database";
+                message = "Sheet already exists. It couldn't be saved to database";
             }
         } catch (Exception e) {
             message = "Sheet couldn't be saved: " + e.getMessage();

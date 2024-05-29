@@ -28,6 +28,10 @@ public class SheetSystem {
         return sheets;
     }
 
+    public void setSheets(List<Sheet> newSheets) {
+        sheets = newSheets;
+    }
+
     public void addSheet(Sheet sheet) {
         sheets.add(sheet);
     }
