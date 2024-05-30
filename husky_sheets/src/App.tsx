@@ -30,7 +30,7 @@ function App() {
       </div>
       <div className="button-container">
         <MyButton to="register" text="Make an account" />
-        <MyButton to="home_page" text="Access the sheet" />
+        <MyButton to="home_page" text="Login" />
       </div>
     </div>
   );
