@@ -45,6 +45,7 @@ public class ApplicationController {
         }
         else {
             try {
+                // Encrypt using Bcrypt
                 String password = new BCryptPasswordEncoder().encode(userArgument.getPassword());
                 userSystem.addUser(new User(
                         userArgument.getUsername(),

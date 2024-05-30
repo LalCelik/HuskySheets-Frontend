@@ -3,11 +3,12 @@ package com.valid.husksheets.JSON;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
- * @param publisher
- * @param name
- * @param id
- * @param payload
+ * Argument received through REST api calls
+ * Owner: Lal
+ * @param publisher name of the publisher
+ * @param name name of the sheet
+ * @param id relevant id
+ * @param payload relevant data of the call
  */
 public record Argument(
         @JsonProperty("publisher") String publisher,
@@ -20,15 +21,15 @@ public record Argument(
 
     /**
      * Getter method for publisher
-     * @return
+     * @return String name of the publisher
      */
     public String getPublisher() {
         return publisher;
     }
 
     /**
-     *
-     * @return
+     * Getter method for the name
+     * @return String name of the sheet
      */
     public String getName() {
         return name;

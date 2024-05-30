@@ -3,6 +3,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Provides services for sheets.
+ * Owner: Lal
  */
 @Service
 public class SheetService {
@@ -13,7 +14,7 @@ public class SheetService {
 
     /**
      * Creates a new sheet with the given publisher and sheet name
-     *
+     * Owner: Lal
      * @param publisher the publisher of the sheet
      * @param sheetName the name of the sheet
      * @return a string indicating the result of creating a sheet
@@ -35,6 +36,12 @@ public class SheetService {
         return message;
     }
 
+    /**
+     * Delete the given sheet
+     * @param publisher Publisher of the sheet
+     * @param sheetName Name of the sheet
+     * @return String of the result message
+     */
     public String deleteSheet(String publisher, String sheetName) {
         String message ="Sheet hasn't been saved";
         Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);

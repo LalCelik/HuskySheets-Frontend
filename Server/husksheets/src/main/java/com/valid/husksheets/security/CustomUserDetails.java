@@ -8,10 +8,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-// Owner: Sunkwan
+
+/**
+ * UserDetails needed for the SpringBoot Security
+ * Owner: Sunkwan
+ */
 public class CustomUserDetails implements UserDetails {
+    /**
+     * User object that we want to add detail
+     */
     private final User user;
 
+    /**
+     * Instantiate CustomUserDetails class with the given user
+     * @param user User we want plug in
+     */
     public CustomUserDetails(User user) {
         this.user = user;
     }
@@ -46,11 +57,16 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
+
     @Override
     public boolean isEnabled() {
         return true;
     }
 
+    /**
+     * Getter method for the User
+     * @return the User of the current UesrDetails
+     */
     public User getUser() {
         return user;
     }
