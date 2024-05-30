@@ -7,14 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import com.google.gson.Gson;
-
-// Owner: Sunkwan
-
 /**
  * UserDetailService needed for SpringBoot Security, we need to find user from the database and hand it to UserDetails
  * Owner: Sunkwan
