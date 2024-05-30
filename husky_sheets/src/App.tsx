@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./App.css";
 import MyButton from "./MyButton.tsx";
-import {useCookies} from 'react-cookie';
-import {useNavigate} from 'react-router-dom';
-
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 /*
 This function is responsible for the UI for the login page
@@ -11,19 +10,20 @@ This function is responsible for the UI for the login page
 Owner: Amani
 */
 function App() {
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [, setCookie] = useCookies(['user']);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
 
+  /*
+  This is responsible for creating a cookie of a user's name and password once
+  they login to the site
+  */
   function loginEvent(event) {
     event.preventDefault();
-    setCookie('user', {username, password}, {path: '/'});
-    navigate('/home_page');
+    setCookie("user", { username, password }, { path: "/" });
+    navigate("/home_page");
   }
-
-
 
   return (
     <div className="App">
@@ -31,7 +31,7 @@ function App() {
         <h1>Welcome to the login page</h1>
       </header>
       <div className="App-content">
-        <form onSubmit = {loginEvent} className="login-fields">
+        <form onSubmit={loginEvent} className="login-fields">
           <input
             type="text"
             placeholder="Enter your username"
@@ -47,7 +47,7 @@ function App() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="login-button">
-          <button type="submit">Login</button>
+            <button type="submit">Login</button>
           </div>
         </form>
       </div>
