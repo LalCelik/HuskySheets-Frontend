@@ -2,6 +2,7 @@ import React from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import "./HomePage.css";
+// import {useCookies} from 'react-cookie';
 
 
 /*
@@ -15,6 +16,9 @@ function HomePage() {
   const openPopup = () => {
     setOpen(!open);
   };
+  
+  // const [cookies] = useCookies(['user']);
+  // const user = cookies.user;
 
   return (
     <div className="HomePage">
@@ -22,6 +26,14 @@ function HomePage() {
         <h2>HuskSheets Homepage</h2>
       </header>
       <div className="Home-content">
+
+
+        {/* This is just an example of how to see the username and password
+        set by the cookie in App.tsx */}
+
+        {/* <p> Username: {user.username}</p>
+        <p> Password: {user.password}</p> */}
+        
         <Button variant="contained" color="secondary" onClick={openPopup}>
           Create a new sheet
         </Button>

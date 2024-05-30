@@ -26,12 +26,14 @@ button {
   gap: 10px;
 }
 
-.button-container {
-  display: flex;
+.button-container,
+.login-button {
+  display: center;
   flex-direction: row;
   gap: 30px;
   margin-top: 20px;
 }
+
 
 .login-fields {
   display: flex;
