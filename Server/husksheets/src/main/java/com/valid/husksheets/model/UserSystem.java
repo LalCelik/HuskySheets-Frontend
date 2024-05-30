@@ -31,15 +31,15 @@ public class UserSystem {
     }
 
     /**
-     *
-     * @param users
+     * Instantiates an UserSystem with given List of Users
+     * @param users List of Users that we want to input
      */
     public UserSystem(List<User> users) {
         this.users = users;
     }
 
     /**
-     *
+     * Load from the DB json to this UserSystem
      */
     private void loadDB() {
         String jsonString;
@@ -53,7 +53,7 @@ public class UserSystem {
     }
 
     /**
-     *
+     * Update the given Json DB from this current UserSystem
      */
     private void updateDB() {
         try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
@@ -68,7 +68,7 @@ public class UserSystem {
     /**
      * Finds the User by the given username from the User System
      * @param username, which is a String that we want to find
-     * @return User
+     * @return User that we are looking for, null if none found
      */
     public User findByUsername(String username) {
         for (User u : this.users) {
@@ -80,8 +80,8 @@ public class UserSystem {
     }
 
     /**
-     *
-     * @return
+     * Get all users in the System
+     * @return List of Argument where each User's name is in it.
      */
     public List<Argument> getPublishers() {
         List<Argument> result = new ArrayList<>();
