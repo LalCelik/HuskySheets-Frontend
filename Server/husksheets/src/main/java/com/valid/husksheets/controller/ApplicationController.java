@@ -12,12 +12,8 @@ import com.valid.husksheets.JSON.Argument;
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +33,7 @@ public class ApplicationController {
     // Only this endpoint is open to public
     // Owner: Victoria & Sunkwan
     @PostMapping("/register")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
             message = "Username and Password cannot be null";
@@ -50,7 +47,7 @@ public class ApplicationController {
                         password,
                         new ArrayList<Integer>()));
             } catch (IllegalArgumentException iae) {
-                return new Result(false, "Registering a user failed", null);
+                return new Result(false, "User already exists, please try again.", null);
             }
         }
         return new Result(true, "Successfully registered a user", null);
