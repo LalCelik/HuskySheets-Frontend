@@ -1,0 +1,92 @@
+package com.valid.husksheets.model;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.valid.husksheets.JSON.Argument;
+import org.springframework.stereotype.Service;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * System that holds a list of Users. If the system is preset with a list of Users, assume all
+ * Users are unique.
+ *
+ * Owner: Sunkwan
+ */
+@Service
+public class UserSystem {
+    private List<User> users = new ArrayList<>();;
+
+    public UserSystem() {
+        this.loadDB();
+    }
+
+    public UserSystem(List<User> users) {
+        this.users = users;
+    }
+
+    private void loadDB() {
+        String jsonString = null;
+        try {
+            jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.users = new Gson().fromJson(jsonString, new TypeToken<ArrayList<User>>(){}.getType());
+        System.out.println("UserSystem DB loaded");
+    }
+
+    private void updateDB() {
+        try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(users, writer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("UserSystem DB updated");
+    }
+
+    /**
+     * Finds the User by the given username from the User System
+     * @param username, which is a String that we want to find
+     * @return User
+     */
+    public User findByUsername(String username) {
+        for (User u : this.users) {
+            if (username.equals(u.getUsername())) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public List<Argument> getPublishers() {
+        List<Argument> result = new ArrayList<>();
+        for (User u : this.users) {
+            result.add(new Argument(u.getUsername(), null, null, null));
+        }
+        return result;
+    }
+
+    /**
+     * Adds a User to the system
+     */
+    public void addUser(User user) {
+        for (User value : this.users) {
+            if (value.equals(user)) {
+                throw new IllegalArgumentException("User already exists in the system" +
+                        "username");
+            }
+        }
+        this.users.add(user);
+        this.updateDB();
+    }
+
+}

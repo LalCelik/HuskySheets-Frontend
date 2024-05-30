@@ -1,8 +1,14 @@
 import React from "react";
 import "./Registration.css";
-import MyButton from "./MyButton";
+import MyButton from "./MyButton.tsx";
 import Button from "@mui/material/Button";
 
+
+/*
+This function is responsible for the UI for the registration page
+
+Owner: Amani
+*/
 function Registration() {
   return (
     <div className="Registration">
@@ -12,9 +18,6 @@ function Registration() {
       <div className="Register-content">
         <div>
           <h4>Please input a username to create a new account</h4>
-          <h6>
-            Your username should be unique and no more than 20 characters long
-          </h6>
         </div>
         <div className="input-container">
           <input
@@ -22,24 +25,22 @@ function Registration() {
             placeholder="Please enter a username"
             className="name-field"
           />
-          <Button variant="contained" color="primary" onClick={() => {}}>
-            Submit
-          </Button>
         </div>
         <div>
           <h4>Please input a password to create a new account</h4>
-          <h6>Your password should be no more than 15 characters long</h6>
         </div>
         <div className="input-container">
           <input
             type="text"
             placeholder="Please enter a password"
-            className="name-field"
+            className="password-field"
           />
-          <Button variant="contained" color="primary" onClick={() => {}}>
-            Submit
-          </Button>
         </div>
+      </div>
+      <div className="submit-button">
+      <Button variant="contained" color="secondary" onClick={() => {}}>
+            Create Account
+          </Button>
       </div>
       <div className="button-container">
         <MyButton to="/" text="Back to login page" />

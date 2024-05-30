@@ -1,0 +1,17 @@
+[
+  {
+    "username": "user1",
+    "password": "$2a$10$lkmuah5FKqEdoQoivjiZV.pzwDUZuEloOuWi1Qo5eAJLzReowmyLK",
+    "sheets": []
+  },
+  {
+    "username": "user2",
+    "password": "$2a$10$zfd0DC7KOEyhh/oUEgWRouGsJF01NYVdkXq9m/XI5W90osUVyuNe6",
+    "sheets": []
+  },
+  {
+    "username": "user3",
+    "password": "$2a$10$ut8unBW8hOmrmBuZU5INWOgsTblkEvVQr6Rl9hif1b99Lxg.5YKN6",
+    "sheets": []
+  }
+]
