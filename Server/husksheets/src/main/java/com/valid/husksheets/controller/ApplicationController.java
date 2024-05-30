@@ -1,6 +1,5 @@
 package com.valid.husksheets.controller;
 
-import com.google.gson.Gson;
 import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.SheetService;
 import com.valid.husksheets.model.SheetDao;
@@ -15,12 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls REST api calls
+ */
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
@@ -30,8 +29,13 @@ public class ApplicationController {
     @Autowired
     private UserSystem userSystem;
 
-    // Only this endpoint is open to public
-    // Owner: Victoria & Sunkwan
+    /**
+     * Receives username and password and tries to add new user to the UserSystem
+     * Only this endpoint is open to public
+     * Owner: Victoria and Sunkwan
+     * @param userArgument which holds username and password
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/register")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(@RequestBody UserArgument userArgument) {
@@ -45,7 +49,7 @@ public class ApplicationController {
                 userSystem.addUser(new User(
                         userArgument.getUsername(),
                         password,
-                        new ArrayList<Integer>()));
+                        new ArrayList<>()));
             } catch (IllegalArgumentException iae) {
                 return new Result(false, "User already exists, please try again.", null);
             }
@@ -54,17 +58,26 @@ public class ApplicationController {
     }
     private String message;
 
-    // Getting all users from the database
-    // Owner: Sunkwan
+    /**
+     * Returns all Users in the UserSystem
+     * Owner: Sunkwan
+     * @return Result object that has list of Users
+     */
     @GetMapping("/getPublishers")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getPublishers() throws IOException {
+    public Result getPublishers() {
         System.out.println("Received getPublishers request");
         boolean success = true; // For testing purposes, always return true
 
         return new Result(success, "Getting all Publishers", userSystem.getPublishers());
     }
 
+    /**
+     * Create a sheet based on the given argument
+     * Owner: Lal
+     * @param argument object that has the name of the publisher and the sheet
+     * @return Result of the process
+     */
     @PostMapping("/createSheet")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result createSheet(@RequestBody Argument argument) {
@@ -82,6 +95,12 @@ public class ApplicationController {
     }
 
     //no value is returned? should these be void?
+    /**
+     * Deletes the given Sheet based on the argument
+     * Owner: Lal
+     * @param argument object that has the name of the publisher and the sheet
+     * @return Result of the process
+     */
     @PostMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result deleteSheet(@RequestBody Argument argument) {
@@ -98,6 +117,12 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Get sheets by the given Publisher
+     * Owner: Lal
+     * @param argument object which has the Publisher's name
+     * @return Result of the process
+     */
     @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {

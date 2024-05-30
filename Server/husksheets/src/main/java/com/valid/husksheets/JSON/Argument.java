@@ -2,7 +2,13 @@ package com.valid.husksheets.JSON;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+/**
+ *
+ * @param publisher
+ * @param name
+ * @param id
+ * @param payload
+ */
 public record Argument(
         @JsonProperty("publisher") String publisher,
         //name of sheet
@@ -12,11 +18,18 @@ public record Argument(
         //the data for an update
         @JsonProperty("payload") String payload) {
 
-    // Getter method for publisher
+    /**
+     * Getter method for publisher
+     * @return
+     */
     public String getPublisher() {
         return publisher;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }

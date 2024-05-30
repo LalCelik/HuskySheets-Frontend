@@ -17,23 +17,32 @@ import java.util.List;
 /**
  * System that holds a list of Users. If the system is preset with a list of Users, assume all
  * Users are unique.
- *
  * Owner: Sunkwan
  */
 @Service
 public class UserSystem {
-    private List<User> users = new ArrayList<>();;
+    private List<User> users = new ArrayList<>();
 
+    /**
+     * Instantiates an UserSystem object by loading the database from local persistent storage.
+     */
     public UserSystem() {
         this.loadDB();
     }
 
+    /**
+     *
+     * @param users
+     */
     public UserSystem(List<User> users) {
         this.users = users;
     }
 
+    /**
+     *
+     */
     private void loadDB() {
-        String jsonString = null;
+        String jsonString;
         try {
             jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
         } catch (IOException e) {
@@ -43,6 +52,9 @@ public class UserSystem {
         System.out.println("UserSystem DB loaded");
     }
 
+    /**
+     *
+     */
     private void updateDB() {
         try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
             Gson gson = new GsonBuilder().create();
@@ -67,6 +79,10 @@ public class UserSystem {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Argument> getPublishers() {
         List<Argument> result = new ArrayList<>();
         for (User u : this.users) {
@@ -76,7 +92,8 @@ public class UserSystem {
     }
 
     /**
-     * Adds a User to the system
+     * Adds user to the System
+     * @param user that needs to be added
      */
     public void addUser(User user) {
         for (User value : this.users) {
