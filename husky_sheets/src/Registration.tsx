@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "./Registration.css";
 import MyButton from "./MyButton.tsx";
 import Button from "@mui/material/Button";
-import { Buffer } from 'buffer';
+// import { Buffer } from 'buffer';
 import { useNavigate } from "react-router-dom";
 
 
@@ -48,7 +48,9 @@ function Registration() {
                 } else {
                     console.log(data["message"]);
                     const mes = document.getElementById('message');
-                    mes.innerHTML = data["message"];
+                    if (mes) {
+                      mes.innerHTML = data["message"];
+                    }
                 }
             })
             .catch((error) => {
