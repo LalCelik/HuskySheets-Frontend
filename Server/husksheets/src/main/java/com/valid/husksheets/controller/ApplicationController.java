@@ -57,6 +57,7 @@ public class ApplicationController {
     // Getting all users from the database
     // Owner: Sunkwan
     @GetMapping("/getPublishers")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Result getPublishers() throws IOException {
         System.out.println("Received getPublishers request");
         boolean success = true; // For testing purposes, always return true
@@ -65,6 +66,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/createSheet")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Result createSheet(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
@@ -81,6 +83,7 @@ public class ApplicationController {
 
     //no value is returned? should these be void?
     @PostMapping("/deleteSheet")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Result deleteSheet(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
@@ -96,6 +99,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/getSheets")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
