@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App.tsx';
 import HomePage from './HomePage.tsx';
 import Registration from './Registration.tsx';
+import Sheet from "./Sheet.tsx"
+
 
 const rootElement = document.getElementById('root');
 
@@ -22,6 +24,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/home_page" element={<HomePage />} />
         <Route path="/register" element={<Registration />} />
+        <Route path="/home_page/sheet" element={<Sheet />} />
       </Routes>
     </Router>
   </React.StrictMode>

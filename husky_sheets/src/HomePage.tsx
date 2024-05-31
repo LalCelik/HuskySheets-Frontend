@@ -1,8 +1,11 @@
 import React from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
+import MyButton from "./MyButton.tsx"
 import "./HomePage.css";
-
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import Sheet from "./Sheet.tsx"
 
 /*
 This function is responsible for the UI for the homepage page
@@ -11,10 +14,16 @@ Owner: Amani
 */
 function HomePage() {
   const [open, setOpen] = React.useState(false);
+  const [page, setPage] = React.useState(false)
+  
 
   const openPopup = () => {
     setOpen(!open);
   };
+
+  const handleClick = () => {
+    <MyButton to="sheet" text="" />
+  }
 
   return (
     <div className="HomePage">
@@ -32,18 +41,17 @@ function HomePage() {
               <input
                 type="text"
                 placeholder="Sheet Name"
-                className="Sheet-name-field"
+                className="Sheet-name-cd husky_hfield"
               />
             </div>
             <div className="popup-button">
-              <Button variant="contained" color="secondary" onClick={() => {}}>
-                Open Sheet
-              </Button>
+              <MyButton to="sheet" text="Open Sheet" />
             </div>
           </div>
         </Popup>
       </div>
     </div>
+
   );
 }
 
