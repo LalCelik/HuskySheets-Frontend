@@ -3,9 +3,14 @@ import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import MyButton from "./MyButton.tsx"
 import "./HomePage.css";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Sheet from "./Sheet.tsx"
+=======
+// import {useCookies} from 'react-cookie';
+
+>>>>>>> f197f31cea783a39d6c85210fe10b788671c2a3c
 
 /*
 This function is responsible for the UI for the homepage page
@@ -20,6 +25,9 @@ function HomePage() {
   const openPopup = () => {
     setOpen(!open);
   };
+  
+  // const [cookies] = useCookies(['user']);
+  // const user = cookies.user;
 
   const handleClick = () => {
     <MyButton to="sheet" text="" />
@@ -31,6 +39,14 @@ function HomePage() {
         <h2>HuskSheets Homepage</h2>
       </header>
       <div className="Home-content">
+
+
+        {/* This is just an example of how to see the username and password
+        set by the cookie in App.tsx */}
+
+        {/* <p> Username: {user.username}</p>
+        <p> Password: {user.password}</p> */}
+        
         <Button variant="contained" color="secondary" onClick={openPopup}>
           Create a new sheet
         </Button>

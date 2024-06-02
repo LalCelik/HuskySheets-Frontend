@@ -1,13 +1,23 @@
 package com.valid.husksheets.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User or the Publisher of the husksheets
+ * Owner: Victoria and Sunkwan
+ */
 public class User {
-    private String username;
-    private String password;
-    private List<Integer> sheets = new ArrayList<>();
+    private final String username;
+    private final String password;
+    private final List<Integer> sheets;
 
+
+    /**
+     * Instantiate the User object with given inputs
+     * @param username username of the user
+     * @param password password of the user
+     * @param sheets sheets of the user
+     */
     public User(String username, String password, List<Integer> sheets) {
         this.username = username;
         this.password = password;
@@ -19,7 +29,6 @@ public class User {
      * @param user User being compared to
      * @return true if the usernames are the same, else return false
      */
-
     //@Override
     public boolean equals(User user) {
         return this.username.equals(user.username);
@@ -30,7 +39,6 @@ public class User {
      * and password
      * @return hashcode
      */
-
     //comment this out?
     // @Override
     public int hashCode() {
@@ -62,5 +70,13 @@ public class User {
      */
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * Returns the User's sheets
+     * @return List of id of the sheets of the User
+     */
+    public List<Integer> getSheets() {
+        return this.sheets;
     }
 }

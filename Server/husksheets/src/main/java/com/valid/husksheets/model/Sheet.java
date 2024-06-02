@@ -3,12 +3,24 @@ package com.valid.husksheets.model;
 
 import java.util.Objects;
 
+/**
+ * Sheet Object to represent Sheet in husksheets
+ * Owner: Lal
+ */
 public class Sheet {
-    private int id;
-    private String name;
-    private String publisher; //the user that created the sheet
-    private Cell[][] grid; //2d array of cells
+    private final int id;
+    private final String name;
+    private final String publisher; //the user that created the sheet
+    private final Cell[][] grid; //2d array of cells
 
+    /**
+     * Instantiate new Sheet object with given inputs
+     * @param id integer id of the cell
+     * @param name name of the cell
+     * @param publisher String representation of the publisher
+     * @param height height of the cell in int
+     * @param width width of the cell in int
+     */
     public Sheet(int id, String name, String publisher,int height, int width) {
         this.id = id;
         this.publisher = publisher;
@@ -23,19 +35,36 @@ public class Sheet {
         }
     }
 
-    //getters and setters
+    /**
+     * Getter for the id
+     * @return id of the sheet
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Getter for the name
+     * @return name of the sheet
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for the publisher
+     * @return publisher of the sheet
+     */
     public String getPublisher() {
         return publisher;
     }
 
+    /**
+     * Getter for the cell at the specific location
+     * @param row row of the cell
+     * @param col column of the cell
+     * @return Cell at given location
+     */
     public Cell getCell(int row, int col) {
         if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length) {
             return grid[row][col];

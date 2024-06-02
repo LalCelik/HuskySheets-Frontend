@@ -9,15 +9,17 @@ import java.util.List;
 
 /**
  * Data functionality for sheets
- * Made by Lal
- * 
- * 
+ * Owner: Lal
  * Will reorganize these classes ignore the mess
  */
 public class SheetDao {
     private final String SHEETS_FILE = "src/main/resources/sheets.json";
     private final Path sheetPath = Path.of(SHEETS_FILE);
     private final SheetSystemUtils systemUtils = new SheetSystemUtils();
+
+    /**
+     * Instantiate the SheetDao object
+     */
     public SheetDao() {
         // SHEETS_FILE = "src/main/resources/sheets.json";
         // sheetPath = Path.of(SHEETS_FILE);
@@ -26,9 +28,9 @@ public class SheetDao {
 
     /**
      * Saves a sheet to the JSON file
-     *
      * @param sheet the sheet to save
      * @return true if the sheet was successfully saved
+     * @throws IOException for any IO errors
      */
     public boolean saveSheet(Sheet sheet) throws IOException {
 
@@ -51,6 +53,12 @@ public class SheetDao {
         }
     }
 
+    /**
+     * Checks if the sheet exists in the DB
+     * @param system SheetSystem connected to a db
+     * @param sheet Sheet to check
+     * @return Boolean value of the result
+     */
     private boolean sheetExists(SheetSystem system, Sheet sheet) {
         boolean exists = false;
         for(Sheet s: system.getSheets()) {
@@ -65,6 +73,12 @@ public class SheetDao {
         return exists;
     }
 
+    /**
+     * Deletes the given sheet
+     * @param sheet Sheet to delete
+     * @return Boolean value of success
+     * @throws IOException for any IO errors
+     */
     public boolean deleteSheet(Sheet sheet) throws IOException {
         if(!Files.exists(sheetPath)) {
             return false;
@@ -81,13 +95,25 @@ public class SheetDao {
     }
 }
 
-public List<Sheet> getSheets(String publisher) throws IOException {
+    /**
+     * Get all sheets from the given publisher
+     * @param publisher Publisher that we want to search
+     * @return List of sheets of the given publisher
+     * @throws IOException for any IO errors
+     */
+    public List<Sheet> getSheets(String publisher) throws IOException {
         SheetSystem sheetSystem = new SheetSystem();
         sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         return publisherSheets(sheetSystem,publisher);
 }
 
-private List<Sheet> publisherSheets(SheetSystem system, String publisher) {
+    /**
+     * Pulls List of Sheets from the SheetSystem
+     * @param system SheetSystem connected to a DB
+     * @param publisher Publisher that we want to search
+     * @return List of sheets of the given publisher
+     */
+    private List<Sheet> publisherSheets(SheetSystem system, String publisher) {
     List<Sheet> list = new ArrayList<>();
     for(Sheet s: system.getSheets()) {
         if(s != null) {
