@@ -28,6 +28,10 @@ public class Sheet {
         this.updates = new ArrayList<>();
     }
 
+    public List<Update> getUpdates() {
+        return updates;
+    }
+
     /**
      * Getter for the name
      * @return name of the sheet
