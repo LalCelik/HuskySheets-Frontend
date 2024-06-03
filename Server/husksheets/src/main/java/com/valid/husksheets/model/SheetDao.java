@@ -41,8 +41,7 @@ public class SheetDao {
                 systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
                 return true;
             } else {
-            SheetSystem sheetSystem = new SheetSystem();
-            sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+            SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
             if (!sheetExists(sheetSystem, sheet)) {
                 sheetSystem.addSheet(sheet);
                 systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
@@ -63,8 +62,8 @@ public class SheetDao {
         boolean exists = false;
         for(Sheet s: system.getSheets()) {
             if(s != null) {
-                if((s.getName().equals(sheet.getName())) &&
-                (s.getPublisher().equals(sheet.getName()))) {
+                if ((s.getName().equals(sheet.getName())) &&
+                (s.getPublisher().equals(sheet.getPublisher()))) {
                     exists = true;
                     break;
                 }
@@ -83,8 +82,7 @@ public class SheetDao {
         if(!Files.exists(sheetPath)) {
             return false;
         } else {
-        SheetSystem sheetSystem = new SheetSystem();
-        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         if (sheetExists(sheetSystem, sheet)) {
             sheetSystem.deleteSheet(sheet);
             systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
@@ -102,8 +100,7 @@ public class SheetDao {
      * @throws IOException for any IO errors
      */
     public List<Sheet> getSheets(String publisher) throws IOException {
-        SheetSystem sheetSystem = new SheetSystem();
-        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         return publisherSheets(sheetSystem, publisher);
     }
 
@@ -126,8 +123,7 @@ public class SheetDao {
     }
 
     public Sheet getSheet(String publisher, String name) throws IOException {
-        SheetSystem sheetSystem = new SheetSystem();
-        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         for(Sheet s: sheetSystem.getSheets()) {
             if(s != null) {
                 if((s.getPublisher().equals(publisher)) && (s.getName().equals(name))) {

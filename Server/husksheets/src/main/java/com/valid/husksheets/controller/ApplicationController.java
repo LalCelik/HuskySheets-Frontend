@@ -4,26 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.*;
-import com.valid.husksheets.model.SheetService;
-import com.valid.husksheets.model.SheetDao;
-import com.valid.husksheets.model.Sheet;
-import com.valid.husksheets.model.STATUS;
-import com.valid.husksheets.model.Update;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
-import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,10 +140,8 @@ public class ApplicationController {
             return new Result(false, "Publisher can't be null", null);
         } else {
             SheetDao sheetDao = new SheetDao();
-            List<Sheet> list = new ArrayList<>();
-            String value = "";
             try {
-                list = sheetDao.getSheets(argument.getPublisher());
+                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
                 List<Argument> arguments = new ArrayList<>();
                 for (Sheet sheet : list) {
                     arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
