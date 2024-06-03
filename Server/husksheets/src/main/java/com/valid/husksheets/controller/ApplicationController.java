@@ -15,6 +15,7 @@ import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +98,7 @@ public class ApplicationController {
         } else {
             //temporary
             List<Update> updates = new ArrayList<>();
-            Update update = new Update(STATUS.APPROVED, 1, argument.payload());
+            Update update = new Update(STATUS.PUBLISHED, 0, argument.payload());
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
@@ -166,24 +167,45 @@ public class ApplicationController {
     public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
-        } else if (authentication.getName().equals(argument.getPublisher()) && principal.getName().equals(argument.getPublisher())) {
+        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             SheetDao sheetDao = new SheetDao();
             try {
                 Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
-                int last = 0;
 
-                Writer writer = new StringWriter();
+                if (sheet == null) {
+                    return new Result(false, "No updates found", null);
+                }
+
+                List<Update> pendingUpdates = new ArrayList<>();
+
+                int lastID = 0;
+
+                for (Update u : sheet.getUpdates()) {
+                    if (u.getStatus() == STATUS.REQUESTED) {
+                        if (u.getId() > lastID) {
+                            lastID = u.getId();
+                        }
+                        pendingUpdates.add(u);
+                    }
+                }
+
+                if (pendingUpdates.isEmpty()) {
+                    return new Result(false, "No new pending updates", null);
+                }
+
                 Gson gson = new GsonBuilder().create();
-                gson.toJson(sheet.getUpdates(), writer);
+                String payload = gson.toJson(pendingUpdates);
 
-                return new Result(true, "Getting updates", null);
+                List<Argument> arguments = new ArrayList<>();
+                arguments.add(new Argument(argument.getPublisher(), argument.getName(), lastID, payload));
+
+                return new Result(true, "Getting updates", arguments);
             } catch (Exception e) {
-                message = "Sheet couldn't be loaded" + e.getMessage();
+                message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
             }
-            return new Result(true, null, null);
         }
     }
 }
