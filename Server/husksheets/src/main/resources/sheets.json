@@ -1,17 +1,1 @@
-{"sheets":
-{"name":"b","publisher":"name1",
-  "updates":  [{
-    "id": 0,
-    "status": "APPROVED",
-    "update": "$A1 1\n$a2 \"help\"\n$B1 -1.01\n$C4 \"\"\n$c1 = SUM($A1:$B1)\n"
-  }, {
-    "id": 1,
-    "status": "APPROVED",
-    "update": "$A1 1\n$a2 \"help\"\n$B1 -346436\n$C4 \"\"\n$c1 = SUM($A1:$B1)\n"
-  },
-    {
-      "id": 2,
-      "status": "APPROVED",
-      "update": "$A1 1\n$a2 \"help\"\n$B1 -346436\n$C4 \"\"\n$c1 = $A1 & $B1\n"
-    }
-  ]}}
+{"sheets":[{"name":"Example Sheet","publisher":"John Doe","updates":[]}]}
