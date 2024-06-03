@@ -4,10 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.*;
+import com.valid.husksheets.model.SheetService;
+import com.valid.husksheets.model.SheetDao;
+import com.valid.husksheets.model.Sheet;
+import com.valid.husksheets.model.STATUS;
+import com.valid.husksheets.model.Update;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
 
+import com.valid.husksheets.model.User;
+import com.valid.husksheets.model.UserSystem;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +95,12 @@ public class ApplicationController {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
         } else {
-            message = sheetService.createSheet(argument.getPublisher(), argument.getName());
+            //temporary
+            List<Update> updates = new ArrayList<>();
+            Update update = new Update(STATUS.APPROVED, 1, argument.payload());
+            updates.add(update);
+
+            message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
             if (message.equals("success")) {
                 return new Result(true, "Sheet has been created", null);
             } else {

@@ -25,7 +25,7 @@ public class Sheet {
     public Sheet(String name, String publisher, List<Update> updates) {
         this.publisher = publisher;
         this.name = name;
-        this.updates = new ArrayList<>();
+        this.updates = updates;
     }
 
     public List<Update> getUpdates() {
@@ -40,6 +40,10 @@ public class Sheet {
         return name;
     }
 
+    public List<Update> getUpdate() {
+        return updates;
+    }
+
     /**
      * Getter for the publisher
      * @return publisher of the sheet
@@ -48,7 +52,7 @@ public class Sheet {
         return publisher;
     }
 
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
