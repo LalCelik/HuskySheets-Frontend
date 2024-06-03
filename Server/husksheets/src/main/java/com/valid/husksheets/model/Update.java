@@ -22,4 +22,16 @@ public class Update {
     public String getUpdate() {
         return update;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(STATUS status) {
+        this.status = status;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
 }
