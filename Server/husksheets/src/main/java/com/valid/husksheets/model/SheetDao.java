@@ -104,8 +104,8 @@ public class SheetDao {
     public List<Sheet> getSheets(String publisher) throws IOException {
         SheetSystem sheetSystem = new SheetSystem();
         sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
-        return publisherSheets(sheetSystem,publisher);
-}
+        return publisherSheets(sheetSystem, publisher);
+    }
 
     /**
      * Pulls List of Sheets from the SheetSystem
@@ -114,15 +114,27 @@ public class SheetDao {
      * @return List of sheets of the given publisher
      */
     private List<Sheet> publisherSheets(SheetSystem system, String publisher) {
-    List<Sheet> list = new ArrayList<>();
-    for(Sheet s: system.getSheets()) {
-        if(s != null) {
-            if((s.getPublisher().equals(publisher))) {
-                list.add(s);
+        List<Sheet> list = new ArrayList<>();
+        for(Sheet s: system.getSheets()) {
+            if(s != null) {
+                if((s.getPublisher().equals(publisher))) {
+                    list.add(s);
+                }
             }
         }
+        return list;
     }
-    return list;
-}
 
+    public Sheet getSheet(String publisher, String name) throws IOException {
+        SheetSystem sheetSystem = new SheetSystem();
+        sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        for(Sheet s: sheetSystem.getSheets()) {
+            if(s != null) {
+                if((s.getPublisher().equals(publisher)) && (s.getName().equals(name))) {
+                    return s;
+                }
+            }
+        }
+        return null;
+    }
 }

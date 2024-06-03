@@ -1,6 +1,9 @@
 package com.valid.husksheets.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
+import com.valid.husksheets.model.*;
 import com.valid.husksheets.model.SheetService;
 import com.valid.husksheets.model.SheetDao;
 import com.valid.husksheets.model.Sheet;
@@ -17,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,16 +161,28 @@ public class ApplicationController {
         }
     }
 
-    @PostMapping("/getUpdatesForSubscription")
+    @GetMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getUpdatesForSubscription(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else if (authentication.getName().equals(argument.getPublisher()) && principal.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             SheetDao sheetDao = new SheetDao();
+            try {
+                Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+                int last = 0;
 
+                Writer writer = new StringWriter();
+                Gson gson = new GsonBuilder().create();
+                gson.toJson(sheet.getUpdates(), writer);
+
+                return new Result(true, "Getting updates", null);
+            } catch (Exception e) {
+                message = "Sheet couldn't be loaded" + e.getMessage();
+                return new Result(false, message, null);
+            }
             return new Result(true, null, null);
         }
     }
