@@ -206,6 +206,7 @@ public class ApplicationController {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
             }
+            return new Result(true, null, null);
         }
     }
 }
