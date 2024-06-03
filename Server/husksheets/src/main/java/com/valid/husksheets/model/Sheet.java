@@ -1,6 +1,7 @@
 //class for a sheet
 package com.valid.husksheets.model;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
