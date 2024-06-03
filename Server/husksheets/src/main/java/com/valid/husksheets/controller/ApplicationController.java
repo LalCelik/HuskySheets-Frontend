@@ -92,7 +92,7 @@ public class ApplicationController {
         } else {
             //temporary
             List<Update> updates = new ArrayList<>();
-            Update update = new Update(STATUS.APPROVED, 1, argument.payload());
+            Update update = new Update(STATUS.APPROVED, 0, argument.payload());
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
