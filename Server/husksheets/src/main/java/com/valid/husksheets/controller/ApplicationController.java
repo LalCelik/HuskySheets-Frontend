@@ -70,9 +70,7 @@ public class ApplicationController {
      */
     @GetMapping("/getPublishers")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getPublishers(Authentication authentication, Principal principal) {
-        System.out.println(authentication.getName());
-        System.out.println(principal.getName());
+    public Result getPublishers() {
         System.out.println("Received getPublishers request");
         boolean success = true; // For testing purposes, always return true
 
@@ -135,23 +133,40 @@ public class ApplicationController {
      * @param argument object which has the Publisher's name
      * @return Result of the process
      */
-    @PostMapping("/getSheets")
+    @GetMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {
-        if (argument.getPublisher() == null || argument.getName() == null) {
-            return new Result(false, "Publisher or sheetName can't be null", null);
+        if (argument.getPublisher() == null) {
+            return new Result(false, "Publisher can't be null", null);
         } else {
             SheetDao sheetDao = new SheetDao();
             List<Sheet> list = new ArrayList<>();
             String value = "";
             try {
                 list = sheetDao.getSheets(argument.getPublisher());
-                message = list.toString();
-                return new Result(true, message, null);
+                List<Argument> arguments = new ArrayList<>();
+                for (Sheet sheet : list) {
+                    arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
+                }
+                return new Result(true, "Outputting sheets in the system:", arguments);
             } catch (Exception e) {
                 message = "Sheet couldn't be deleted: " + e.getMessage();
                 return new Result(false, message, null);
             }
+        }
+    }
+
+    @PostMapping("/getUpdatesForSubscription")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result getUpdatesForSubscription(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else if (authentication.getName().equals(argument.getPublisher()) && principal.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+
+            return new Result(true, null, null);
         }
     }
 }
