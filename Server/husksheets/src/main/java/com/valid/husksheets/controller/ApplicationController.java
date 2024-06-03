@@ -158,6 +158,7 @@ public class ApplicationController {
             return new Result(false, "You don't have access to this request", null);
         } else {
             SheetDao sheetDao = new SheetDao();
+
             return new Result(true, null, null);
         }
     }
