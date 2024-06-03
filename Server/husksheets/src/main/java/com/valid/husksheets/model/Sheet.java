@@ -8,10 +8,9 @@ import java.util.Objects;
  * Owner: Lal
  */
 public class Sheet {
-    private final int id;
     private final String name;
     private final String publisher; //the user that created the sheet
-    private final Cell[][] grid; //2d array of cells
+    private final List<Update> updates; //2d array of cells
 
     /**
      * Instantiate new Sheet object with given inputs

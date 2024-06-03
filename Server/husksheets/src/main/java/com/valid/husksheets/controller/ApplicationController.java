@@ -10,10 +10,12 @@ import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +68,9 @@ public class ApplicationController {
      */
     @GetMapping("/getPublishers")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getPublishers() {
+    public Result getPublishers(Authentication authentication, Principal principal) {
+        System.out.println(authentication.getName());
+        System.out.println(principal.getName());
         System.out.println("Received getPublishers request");
         boolean success = true; // For testing purposes, always return true
 

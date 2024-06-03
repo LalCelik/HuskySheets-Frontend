@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
     private final String username;
     private final String password;
-    private final List<Integer> sheets;
+    private final List<String> sheets;
 
 
     /**
@@ -18,7 +18,7 @@ public class User {
      * @param password password of the user
      * @param sheets sheets of the user
      */
-    public User(String username, String password, List<Integer> sheets) {
+    public User(String username, String password, List<String> sheets) {
         this.username = username;
         this.password = password;
         this.sheets = sheets;
@@ -74,9 +74,9 @@ public class User {
 
     /**
      * Returns the User's sheets
-     * @return List of id of the sheets of the User
+     * @return List of names of the sheets of the User
      */
-    public List<Integer> getSheets() {
+    public List<String> getSheets() {
         return this.sheets;
     }
 }
