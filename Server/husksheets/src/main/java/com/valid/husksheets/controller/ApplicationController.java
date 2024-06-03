@@ -156,7 +156,7 @@ public class ApplicationController {
         }
     }
 
-    private Result filterGetSheet(String publisher, String name, STATUS state) throws IOException {
+    private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
         SheetDao sheetDao = new SheetDao();
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
@@ -173,7 +173,9 @@ public class ApplicationController {
                 if (u.getId() > lastID) {
                     lastID = u.getId();
                 }
-                pendingUpdates.add(u);
+                if (u.getId() > above) {
+                    pendingUpdates.add(u);
+                }
             }
         }
 
@@ -199,7 +201,7 @@ public class ApplicationController {
             return new Result(false, "You don't have access to this request", null);
         } else {
             try {
-                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.REQUESTED);
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.REQUESTED, argument.getId());
             } catch (Exception e) {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
@@ -214,7 +216,7 @@ public class ApplicationController {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else {
             try {
-                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED);
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
