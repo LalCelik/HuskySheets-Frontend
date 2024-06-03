@@ -1,16 +1,13 @@
 import React from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
-import MyButton from "./MyButton.tsx"
+import MyButton from "./MyButton.tsx";
 import "./HomePage.css";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import Sheet from "./Sheet.tsx"
-=======
+import Sheet from "./Sheet.tsx";
 // import {useCookies} from 'react-cookie';
 
->>>>>>> f197f31cea783a39d6c85210fe10b788671c2a3c
 
 /*
 This function is responsible for the UI for the homepage page
