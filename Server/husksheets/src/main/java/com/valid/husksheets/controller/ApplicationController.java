@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.security.Principal;
@@ -163,6 +164,40 @@ public class ApplicationController {
         }
     }
 
+    private Result filterGetSheet(String publisher, String name, STATUS state) throws IOException {
+        SheetDao sheetDao = new SheetDao();
+        Sheet sheet = sheetDao.getSheet(publisher, name);
+
+        if (sheet == null) {
+            return new Result(false, "No updates found", null);
+        }
+
+        List<Update> pendingUpdates = new ArrayList<>();
+
+        int lastID = 0;
+
+        for (Update u : sheet.getUpdates()) {
+            if (u.getStatus() == state) {
+                if (u.getId() > lastID) {
+                    lastID = u.getId();
+                }
+                pendingUpdates.add(u);
+            }
+        }
+
+        if (pendingUpdates.isEmpty()) {
+            return new Result(false, "No new pending updates", null);
+        }
+
+        Gson gson = new GsonBuilder().create();
+        String payload = gson.toJson(pendingUpdates);
+
+        List<Argument> arguments = new ArrayList<>();
+        arguments.add(new Argument(publisher, name, lastID, payload));
+
+        return new Result(true, "Getting updates", arguments);
+    }
+
     @GetMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
@@ -171,38 +206,8 @@ public class ApplicationController {
         } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             try {
-                Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
-
-                if (sheet == null) {
-                    return new Result(false, "No updates found", null);
-                }
-
-                List<Update> pendingUpdates = new ArrayList<>();
-
-                int lastID = 0;
-
-                for (Update u : sheet.getUpdates()) {
-                    if (u.getStatus() == STATUS.REQUESTED) {
-                        if (u.getId() > lastID) {
-                            lastID = u.getId();
-                        }
-                        pendingUpdates.add(u);
-                    }
-                }
-
-                if (pendingUpdates.isEmpty()) {
-                    return new Result(false, "No new pending updates", null);
-                }
-
-                Gson gson = new GsonBuilder().create();
-                String payload = gson.toJson(pendingUpdates);
-
-                List<Argument> arguments = new ArrayList<>();
-                arguments.add(new Argument(argument.getPublisher(), argument.getName(), lastID, payload));
-
-                return new Result(true, "Getting updates", arguments);
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.REQUESTED);
             } catch (Exception e) {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
@@ -216,38 +221,8 @@ public class ApplicationController {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             try {
-                Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
-
-                if (sheet == null) {
-                    return new Result(false, "No updates found", null);
-                }
-
-                List<Update> pendingUpdates = new ArrayList<>();
-
-                int lastID = 0;
-
-                for (Update u : sheet.getUpdates()) {
-                    if (u.getStatus() == STATUS.PUBLISHED) {
-                        if (u.getId() > lastID) {
-                            lastID = u.getId();
-                        }
-                        pendingUpdates.add(u);
-                    }
-                }
-
-                if (pendingUpdates.isEmpty()) {
-                    return new Result(false, "No new pending updates", null);
-                }
-
-                Gson gson = new GsonBuilder().create();
-                String payload = gson.toJson(pendingUpdates);
-
-                List<Argument> arguments = new ArrayList<>();
-                arguments.add(new Argument(argument.getPublisher(), argument.getName(), lastID, payload));
-
-                return new Result(true, "Getting updates", arguments);
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED);
             } catch (Exception e) {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
