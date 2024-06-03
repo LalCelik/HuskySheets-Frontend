@@ -91,14 +91,15 @@ public class ApplicationController {
      */
     @PostMapping("/createSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result createSheet(@RequestBody Argument argument) {
+    public Result createSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
+        } else if (!argument.getPublisher().equals(authentication.getName()) && !argument.getPublisher().equals(principal.getName())) {
+            return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
-            //temporary
             List<Update> updates = new ArrayList<>();
-            Update update = new Update(STATUS.PUBLISHED, 0, argument.payload());
+            Update update = new Update(STATUS.PUBLISHED, 0, "");
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
@@ -206,7 +207,51 @@ public class ApplicationController {
                 message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
             }
-            return new Result(true, null, null);
+        }
+    }
+
+    @GetMapping("/getUpdatesForSubscription")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result getUpdatesForSubscription(@RequestBody Argument argument) {
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+            try {
+                Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+
+                if (sheet == null) {
+                    return new Result(false, "No updates found", null);
+                }
+
+                List<Update> pendingUpdates = new ArrayList<>();
+
+                int lastID = 0;
+
+                for (Update u : sheet.getUpdates()) {
+                    if (u.getStatus() == STATUS.PUBLISHED) {
+                        if (u.getId() > lastID) {
+                            lastID = u.getId();
+                        }
+                        pendingUpdates.add(u);
+                    }
+                }
+
+                if (pendingUpdates.isEmpty()) {
+                    return new Result(false, "No new pending updates", null);
+                }
+
+                Gson gson = new GsonBuilder().create();
+                String payload = gson.toJson(pendingUpdates);
+
+                List<Argument> arguments = new ArrayList<>();
+                arguments.add(new Argument(argument.getPublisher(), argument.getName(), lastID, payload));
+
+                return new Result(true, "Getting updates", arguments);
+            } catch (Exception e) {
+                message = "Couldn't get the sheet updates: " + e.getMessage();
+                return new Result(false, message, null);
+            }
         }
     }
 }
