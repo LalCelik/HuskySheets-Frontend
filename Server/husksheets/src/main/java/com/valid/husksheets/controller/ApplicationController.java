@@ -111,12 +111,14 @@ public class ApplicationController {
      * @param argument object that has the name of the publisher and the sheet
      * @return Result of the process
      */
-    @PostMapping("/deleteSheet")
+    @DeleteMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result deleteSheet(@RequestBody Argument argument) {
+    public Result deleteSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
+        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request", null);
         } else {
             message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
             if (message.equals("success")) {
