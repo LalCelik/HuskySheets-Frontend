@@ -1,5 +1,6 @@
 package com.valid.husksheets.model;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,9 @@ public class SheetService {
      * @param sheetName the name of the sheet
      * @return a string indicating the result of creating a sheet
      */
-    public String createSheet(String publisher, String sheetName) {
+    public String createSheet(String publisher, String sheetName, List<Update> updates) {
         String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetName, publisher, new ArrayList<>());
+        Sheet newSheet = new Sheet(sheetName, publisher, updates);
         try {
             boolean creationSuccess = sheetDao.saveSheet(newSheet);
             if(creationSuccess) {
