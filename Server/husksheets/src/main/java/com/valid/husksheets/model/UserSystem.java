@@ -86,7 +86,9 @@ public class UserSystem {
     public List<Argument> getPublishers() {
         List<Argument> result = new ArrayList<>();
         for (User u : this.users) {
-            result.add(new Argument(u.getUsername(), null, null, null));
+            if (u.getPublisher()) {
+                result.add(new Argument(u.getUsername(), null, null, null));
+            }
         }
         return result;
     }
@@ -106,4 +108,12 @@ public class UserSystem {
         this.updateDB();
     }
 
+    public void register(String username) {
+        for (User u : this.users) {
+            if (u.getUsername().equals(username)) {
+                u.setPublisher();
+            }
+        }
+        this.updateDB();
+    }
 }

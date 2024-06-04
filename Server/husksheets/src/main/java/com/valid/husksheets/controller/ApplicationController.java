@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class ApplicationController {
      * @param userArgument which holds username and password
      * @return Result object which could succeed or fail
      */
-    @PostMapping("/register")
+    @GetMapping("/registerUser")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
@@ -60,6 +59,14 @@ public class ApplicationController {
         }
         return new Result(true, "Successfully registered a user", null);
     }
+
+    @GetMapping("/register")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result register(Authentication authentication) {
+        userSystem.register(authentication.getName());
+        return new Result(true,  null, null);
+    }
+
     private String message;
 
     /**
@@ -84,11 +91,11 @@ public class ApplicationController {
      */
     @PostMapping("/createSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result createSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result createSheet(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
-        } else if (!argument.getPublisher().equals(authentication.getName()) && !argument.getPublisher().equals(principal.getName())) {
+        } else if (!argument.getPublisher().equals(authentication.getName())) {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
@@ -113,11 +120,11 @@ public class ApplicationController {
      */
     @PostMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result deleteSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result deleteSheet(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
-        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+        } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
@@ -193,10 +200,10 @@ public class ApplicationController {
 
     @PostMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result getUpdatesForPublished(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
-        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+        } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             try {

@@ -10,6 +10,7 @@ public class User {
     private final String username;
     private final String password;
     private final List<String> sheets;
+    private boolean publisher;
 
 
     /**
@@ -22,6 +23,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.sheets = sheets;
+        this.publisher = false;
     }
 
     /**
@@ -33,6 +35,7 @@ public class User {
     public boolean equals(User user) {
         return this.username.equals(user.username);
     }
+
 
     /**
      * Creates a unique hashcode for this User based on the User's username
@@ -78,5 +81,14 @@ public class User {
      */
     public List<String> getSheets() {
         return this.sheets;
+    }
+
+
+    public boolean getPublisher() {
+        return this.publisher;
+    }
+
+    public void setPublisher() {
+        this.publisher = true;
     }
 }
