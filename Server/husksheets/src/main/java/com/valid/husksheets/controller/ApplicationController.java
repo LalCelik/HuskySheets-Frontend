@@ -111,7 +111,7 @@ public class ApplicationController {
      * @param argument object that has the name of the publisher and the sheet
      * @return Result of the process
      */
-    @DeleteMapping("/deleteSheet")
+    @PostMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result deleteSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
@@ -135,7 +135,7 @@ public class ApplicationController {
      * @param argument object which has the Publisher's name
      * @return Result of the process
      */
-    @GetMapping("/getSheets")
+    @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {
         if (argument.getPublisher() == null) {
@@ -161,10 +161,10 @@ public class ApplicationController {
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
-            return new Result(false, "No updates found", null);
+            return new Result(false, "No sheet found", null);
         }
 
-        List<Update> pendingUpdates = new ArrayList<>();
+        String result = "";
 
         int lastID = 0;
 
@@ -174,25 +174,24 @@ public class ApplicationController {
                     lastID = u.getId();
                 }
                 if (u.getId() > above) {
-                    pendingUpdates.add(u);
+                    result = result + u.getUpdate();
                 }
             }
         }
 
-        if (pendingUpdates.isEmpty()) {
-            return new Result(false, "No new pending updates", null);
+        if (result == "") {
+            List<Argument> noUpdate = new ArrayList<>();
+            noUpdate.add(new Argument(publisher, name, above, ""));
+            return new Result(true, "Getting updates: No updates found", noUpdate);
         }
 
-        Gson gson = new GsonBuilder().create();
-        String payload = gson.toJson(pendingUpdates);
-
         List<Argument> arguments = new ArrayList<>();
-        arguments.add(new Argument(publisher, name, lastID, payload));
+        arguments.add(new Argument(publisher, name, lastID, result));
 
         return new Result(true, "Getting updates", arguments);
     }
 
-    @GetMapping("/getUpdatesForPublished")
+    @PostMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
@@ -209,7 +208,7 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping("/getUpdatesForSubscription")
+    @PostMapping("/getUpdatesForSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForSubscription(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {

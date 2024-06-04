@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Argument received through REST api calls
  * Owner: Lal
  * @param publisher name of the publisher
- * @param name name of the sheet
+ * @param sheet name of the sheet
  * @param id relevant id
  * @param payload relevant data of the call
  */
 public record Argument(
         @JsonProperty("publisher") String publisher,
         //name of sheet
-        @JsonProperty("name") String name,
+        @JsonProperty("sheet") String name,
         //update to a sheet
         @JsonProperty("id") Number id,
         //the data for an update
