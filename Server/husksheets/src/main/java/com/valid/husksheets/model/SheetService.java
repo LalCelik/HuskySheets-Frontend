@@ -1,4 +1,7 @@
 package com.valid.husksheets.model;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,9 +10,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SheetService {
-    private int sheetIdCount = 1;
-    private int height = 5;
-    private int width = 5;
     private SheetDao sheetDao = new SheetDao();
 
     /**
@@ -19,13 +19,12 @@ public class SheetService {
      * @param sheetName the name of the sheet
      * @return a string indicating the result of creating a sheet
      */
-    public String createSheet(String publisher, String sheetName) {
+    public String createSheet(String publisher, String sheetName, List<Update> updates) {
         String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
+        Sheet newSheet = new Sheet(sheetName, publisher, updates);
         try {
             boolean creationSuccess = sheetDao.saveSheet(newSheet);
             if(creationSuccess) {
-                sheetIdCount++;
                 message = "success";
             } else {
                 message = "Sheet already exists. It couldn't be saved to database";
@@ -44,7 +43,7 @@ public class SheetService {
      */
     public String deleteSheet(String publisher, String sheetName) {
         String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetIdCount, sheetName, publisher, height, width);
+        Sheet newSheet = new Sheet(sheetName, publisher, new ArrayList<>());
         try {
             if(sheetDao.deleteSheet(newSheet)) {
                 message = "success";

@@ -1,19 +1,22 @@
 package com.valid.husksheets.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
-import com.valid.husksheets.model.SheetService;
-import com.valid.husksheets.model.SheetDao;
-import com.valid.husksheets.model.Sheet;
+import com.valid.husksheets.model.*;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
 
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,12 +84,18 @@ public class ApplicationController {
      */
     @PostMapping("/createSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result createSheet(@RequestBody Argument argument) {
+    public Result createSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
+        } else if (!argument.getPublisher().equals(authentication.getName()) && !argument.getPublisher().equals(principal.getName())) {
+            return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
-            message = sheetService.createSheet(argument.getPublisher(), argument.getName());
+            List<Update> updates = new ArrayList<>();
+            Update update = new Update(STATUS.PUBLISHED, 0, "");
+            updates.add(update);
+
+            message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
             if (message.equals("success")) {
                 return new Result(true, "Sheet has been created", null);
             } else {
@@ -104,10 +113,12 @@ public class ApplicationController {
      */
     @PostMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result deleteSheet(@RequestBody Argument argument) {
+    public Result deleteSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
+        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request", null);
         } else {
             message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
             if (message.equals("success")) {
@@ -127,18 +138,86 @@ public class ApplicationController {
     @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {
+        if (argument.getPublisher() == null) {
+            return new Result(false, "Publisher can't be null", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+            try {
+                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
+                List<Argument> arguments = new ArrayList<>();
+                for (Sheet sheet : list) {
+                    arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
+                }
+                return new Result(true, "Outputting sheets in the system:", arguments);
+            } catch (Exception e) {
+                message = "Sheet couldn't be deleted: " + e.getMessage();
+                return new Result(false, message, null);
+            }
+        }
+    }
+
+    private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
+        SheetDao sheetDao = new SheetDao();
+        Sheet sheet = sheetDao.getSheet(publisher, name);
+
+        if (sheet == null) {
+            return new Result(false, "No sheet found", null);
+        }
+
+        String result = "";
+
+        int lastID = 0;
+
+        for (Update u : sheet.getUpdates()) {
+            if (u.getStatus() == state) {
+                if (u.getId() > lastID) {
+                    lastID = u.getId();
+                }
+                if (u.getId() > above) {
+                    result = result + u.getUpdate();
+                }
+            }
+        }
+
+        if (result == "") {
+            List<Argument> noUpdate = new ArrayList<>();
+            noUpdate.add(new Argument(publisher, name, above, ""));
+            return new Result(true, "Getting updates: No updates found", noUpdate);
+        }
+
+        List<Argument> arguments = new ArrayList<>();
+        arguments.add(new Argument(publisher, name, lastID, result));
+
+        return new Result(true, "Getting updates", arguments);
+    }
+
+    @PostMapping("/getUpdatesForPublished")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request", null);
+        } else {
+            try {
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.REQUESTED, argument.getId());
+            } catch (Exception e) {
+                message = "Couldn't get the sheet updates: " + e.getMessage();
+                return new Result(false, message, null);
+            }
+        }
+    }
+
+    @PostMapping("/getUpdatesForSubscription")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result getUpdatesForSubscription(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
-            List<Sheet> list = new ArrayList<>();
-            String value = "";
             try {
-                list = sheetDao.getSheets(argument.getPublisher());
-                message = list.toString();
-                return new Result(true, message, null);
+                return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
-                message = "Sheet couldn't be deleted: " + e.getMessage();
+                message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
             }
         }
