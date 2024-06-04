@@ -1,7 +1,7 @@
 {"sheets":[{"name":"Example Sheet","publisher":"John Doe","updates":[{"id":0,"update":""}]},
   {"name":"Example Sheet","publisher":"John Doe","updates":[{"id":0,"update":""}]},
   {"name":"Example Sheet",
-    "publisher":"user4",
+    "publisher":"user3",
     "updates": [
       {"status":"PUBLISHED","id":0,"update":"Initial data entry completed"},
       {"status":"PUBLISHED","id":1,"update":"Update1"},

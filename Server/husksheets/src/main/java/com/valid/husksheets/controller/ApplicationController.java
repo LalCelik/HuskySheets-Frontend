@@ -38,7 +38,7 @@ public class ApplicationController {
      * @param userArgument which holds username and password
      * @return Result object which could succeed or fail
      */
-    @GetMapping("/registerUser")
+    @PostMapping("/registerUser")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {

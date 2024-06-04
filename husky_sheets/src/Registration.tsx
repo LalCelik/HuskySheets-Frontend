@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./Registration.css";
 import MyButton from "./MyButton.tsx";
 import Button from "@mui/material/Button";
-// import { Buffer } from 'buffer';
 import { useNavigate } from "react-router-dom";
+
 
 /*
 This function is responsible for the UI for the registration page
@@ -30,9 +30,8 @@ function Registration() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
     fetch("http://localhost:8080/api/v1/registerUser", {
-      method: "GET",
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -55,7 +54,6 @@ function Registration() {
         }
       })
       .catch((error) => {
-        // Handle any errors
       });
   };
 

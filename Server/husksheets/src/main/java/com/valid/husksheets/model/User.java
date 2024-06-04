@@ -23,7 +23,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.sheets = sheets;
-        this.publisher = false;
+        this.publisher = true;
+    }
+
+    public User(String username, String password, List<String> sheets, boolean publihser) {
+        this.username = username;
+        this.password = password;
+        this.sheets = sheets;
+        this.publisher = publihser;
     }
 
     /**
