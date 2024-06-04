@@ -32,7 +32,7 @@ function Registration() {
     event.preventDefault();
 
     fetch("http://localhost:8080/api/v1/registerUser", {
-      method: "POST",
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
