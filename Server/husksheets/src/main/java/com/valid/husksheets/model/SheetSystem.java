@@ -55,5 +55,19 @@ public class SheetSystem {
     public void deleteSheet(Sheet sheet) {
         sheets.remove(sheet);
     }
+    
+    public boolean updateSystem(Sheet sheet, Update update) {
+        for(Sheet s: sheets) {
+            if(s != null) {
+                if(s.sheetEquals(sheet)) {
+                    s.addUpdate(update);
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 
 }

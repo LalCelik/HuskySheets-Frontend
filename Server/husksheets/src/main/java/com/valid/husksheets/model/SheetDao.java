@@ -21,9 +21,6 @@ public class SheetDao {
      * Instantiate the SheetDao object
      */
     public SheetDao() {
-        // SHEETS_FILE = "src/main/resources/sheets.json";
-        // sheetPath = Path.of(SHEETS_FILE);
-        // systemUtils = new SheetSystemUtils();
     }
 
     /**
@@ -64,7 +61,7 @@ public class SheetDao {
         for(Sheet s: system.getSheets()) {
             if(s != null) {
                 if((s.getName().equals(sheet.getName())) &&
-                (s.getPublisher().equals(sheet.getName()))) {
+                (s.getPublisher().equals(sheet.getPublisher()))) {
                     exists = true;
                     break;
                 }
@@ -136,5 +133,27 @@ public class SheetDao {
             }
         }
         return null;
+    }
+
+    public String updateFileUpdate(Sheet sheet, Update newUpdate) {
+        String str = "Hasn't updated";
+        SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
+        SheetSystem sheetSys = new SheetSystem();
+        try {
+         sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
+        } catch (IOException e) {
+            return "Error reading from file";
+        }
+        if (!sheetSys.updateSystem(sheet, newUpdate)) {
+            str = "Issue Updating system";
+        } else {
+            str = "success";
+        }
+        try {
+        sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
+        } catch (IOException e) {
+            return "Error reading from file"; 
+        }
+        return str;
     }
 }

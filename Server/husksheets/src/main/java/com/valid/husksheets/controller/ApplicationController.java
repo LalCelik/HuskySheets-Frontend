@@ -1,5 +1,8 @@
 package com.valid.husksheets.controller;
 
+
+import java.io.IOException;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
@@ -9,6 +12,7 @@ import com.valid.husksheets.model.SheetDao;
 import com.valid.husksheets.model.Sheet;
 import com.valid.husksheets.model.STATUS;
 import com.valid.husksheets.model.Update;
+import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
 
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.JSON.Argument;
@@ -183,7 +187,96 @@ public class ApplicationController {
                 message = "Sheet couldn't be loaded" + e.getMessage();
                 return new Result(false, message, null);
             }
-            return new Result(true, null, null);
         }
     }
+
+    // @PostMapping("/updatePublished")
+    // @CrossOrigin(origins = "http://localhost:3000")
+    // public Result updatePublished(@RequestBody Argument argument) {
+    //     //get last id of updates and add more to it 
+    //     //get the sheet publisher and name to find it
+    //     SheetDao sheetDao = new SheetDao();
+    //     try  {
+    //          Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+    //         // //check the id of update
+    //          int lastID = sheet.getLastUpdateId();
+    //          lastID++;
+    //          Update newUpdate = new Update(STATUS.APPROVED, lastID, argument.getPayload());
+    //         // sheet.addUpdates(newUpdate);
+
+    //         // SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
+    //         // sheetSystemUtils.readFromFile("src/main/resources/sheets.json");
+
+    //         // sheetSystemUtils.writeUpdateToFile(sheet, newUpdate, "src/main/resources/sheets.json");
+    //         // return new Result(true, "aaaaaaa", null); 
+
+    //          SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
+    //          sheetSystemUtils.writeUpdateToFile(argument.getName(), argument.getPublisher(), newUpdate, "src/main/resources/sheets.json");
+    //          return new Result(true, "aaaaaaa", null); 
+
+    //     } catch (IOException e) {
+    //         message = "Sheet couldn't be found: " + e.getMessage();
+    //         return new Result(false, message, null); 
+    //     }
+    // }
+
+    @PostMapping("/updatePublished")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result updatePublished(@RequestBody Argument argument) {
+        //get last id of updates and add more to it 
+        //get the sheet publisher and name to find it
+        SheetDao sheetDao = new SheetDao();
+        try  {
+             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+             int lastID = sheet.getLastUpdateId();
+             lastID++;
+             Update newUpdate = new Update(STATUS.APPROVED, lastID, argument.getPayload());
+             sheet.addUpdate(newUpdate);
+            String message = sheetDao.updateFileUpdate(sheet, newUpdate);
+            if(message.equals("success")) {
+                return new Result(true, message, null);
+            } else {
+                return new Result(false, message, null);
+            }
+        } catch (IOException e) {
+            message = "Sheet couldn't be found: " + e.getMessage();
+            return new Result(false, message, null); 
+        }
+
+    }
+
+    @PostMapping("/updateSubscription")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result updateSubscription(@RequestBody Argument argument) {
+        //get last id of updates and add more to it 
+        //get the sheet publisher and name to find it
+        SheetDao sheetDao = new SheetDao();
+        try  {
+             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+             int lastID = sheet.getLastUpdateId();
+             lastID++;
+             Update newUpdate = new Update(STATUS.PENDING, lastID, argument.getPayload());
+             sheet.addUpdate(newUpdate);
+            String message = sheetDao.updateFileUpdate(sheet, newUpdate);
+            if(message.equals("success")) {
+                return new Result(true, message, null);
+            } else {
+                return new Result(false, message, null);
+            }
+        } catch (IOException e) {
+            message = "Sheet couldn't be found: " + e.getMessage();
+            return new Result(false, message, null); 
+        }
+
+    }
+
+    //for published its published
+    //check if theyre the publisher
+    //for subscription 
+
+    //updatePublished then authentication.getName is get publisher
+    //pub is PUBLISHED 
+
+    //updateSubscription authentication.getName is NOT getpublisher
+    //sub is a REQUEST
 }

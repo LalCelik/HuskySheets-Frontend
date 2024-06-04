@@ -27,6 +27,10 @@ public record Argument(
         return publisher;
     }
 
+    public String getPayload() {
+        return payload;
+    }
+
     /**
      * Getter method for the name
      * @return String name of the sheet

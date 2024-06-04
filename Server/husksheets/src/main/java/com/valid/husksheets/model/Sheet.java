@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Sheet {
     private final String name;
     private final String publisher; //the user that created the sheet
-    private final List<Update> updates; //2d array of cells
+    private final List<Update> updates;
 
     /**
      * Instantiate new Sheet object with given inputs
@@ -40,8 +40,8 @@ public class Sheet {
         return name;
     }
 
-    public List<Update> getUpdate() {
-        return updates;
+    public void addUpdate(Update update) {
+        updates.add(update);
     }
 
     /**
@@ -64,5 +64,16 @@ public class Sheet {
     @Override
     public int hashCode() {
         return Objects.hash(name, publisher);
+    }
+
+    public int getLastUpdateId() {
+        if (updates.isEmpty()) {
+            return -1;
+        }
+        return updates.get(updates.size() - 1).getId();
+    }
+
+    public boolean sheetEquals(Sheet other) {
+        return (other.getName().equals(name)) && other.getPublisher().equals(publisher);
     }
 }
