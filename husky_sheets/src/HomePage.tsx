@@ -3,9 +3,7 @@ import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import MyButton from "./MyButton.tsx";
 import "./HomePage.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import Sheet from "./Sheet.tsx";
 import {Buffer} from "buffer";
 // import {useCookies} from 'react-cookie';
 
@@ -19,10 +17,10 @@ function HomePage() {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
-  const [page, setPage] = React.useState(false)
+  // const [page, setPage] = React.useState(false)
 
   const user = document.cookie;
-  if (user == "") {
+  if (user === "") {
     navigate("/");
   }
   const username = user.split(":")[0];
@@ -43,7 +41,7 @@ function HomePage() {
             navigate("/");
           }
         })
-  }, []);
+  }, );
 
   const openPopup = () => {
     setOpen(!open);
@@ -52,14 +50,17 @@ function HomePage() {
   // const [cookies] = useCookies(['user']);
   // const user = cookies.user;
 
-  const handleClick = () => {
-    <MyButton to="sheet" text="" />
-  }
+  // const handleClick = () => {
+  //   <MyButton to="sheet" text="" />
+  // }
 
   return (
     <div className="HomePage">
       <header className="Home-header">
         <h2>HuskSheets Homepage</h2>
+        <Button variant="contained" color="secondary" onClick={openPopup}>
+          Create a new sheet
+        </Button>
       </header>
       <div className="Home-content">
 
@@ -70,9 +71,6 @@ function HomePage() {
         {/* <p> Username: {user.username}</p>
         <p> Password: {user.password}</p> */}
         
-        <Button variant="contained" color="secondary" onClick={openPopup}>
-          Create a new sheet
-        </Button>
         <Popup open={open} closeOnDocumentClick onClose={openPopup}>
           <div className="popup-content">
             <p>Please give your new sheet a name, then press open sheet</p>
