@@ -7,7 +7,7 @@
     [
         [
             {
-            "status": "APPROVED",
+            "status": "PUBLISHED",
             "id": 0,
             "cell_update": [
                 "$A3 1",
@@ -18,7 +18,7 @@
         ],
         [
             {
-            "status": "APPROVED",
+            "status": "PUBLISHED",
             "id": 1,
             "cell_update": [
                 "$A3 8",

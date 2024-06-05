@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import MyButton from "./MyButton.tsx";
@@ -6,6 +6,7 @@ import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import Sheet from "./Sheet.tsx";
+import {Buffer} from "buffer";
 // import {useCookies} from 'react-cookie';
 
 
@@ -15,9 +16,34 @@ This function is responsible for the UI for the homepage page
 Owner: Amani
 */
 function HomePage() {
+  const navigate = useNavigate();
+
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(false)
-  
+
+  const user = document.cookie;
+  if (user == "") {
+    navigate("/");
+  }
+  const username = user.split(":")[0];
+  const password = user.split(":")[1];
+  const base64encodedData = Buffer.from(`${username}:${password}`).toString('base64');
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/v1/register", {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + base64encodedData
+      }
+    })
+        .then(response => {
+          if (!response.ok) {
+            navigate("/");
+          }
+        })
+  }, []);
 
   const openPopup = () => {
     setOpen(!open);

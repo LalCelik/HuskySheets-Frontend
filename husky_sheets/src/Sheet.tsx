@@ -10,6 +10,8 @@ import { PluginPosition } from "gridjs";
 import { log } from 'console';
 import axios from 'axios';
 import { json } from 'stream/consumers';
+import { Buffer } from 'buffer';
+import {useNavigate} from "react-router-dom";
 
 /**
  * Ownership : Ira 
@@ -21,11 +23,30 @@ function Sheet() {
   const gridContainerRef = useRef(null);
   const previousValues = useRef({}); 
   const [empListUpdates, setUpdates] = useState([]);
- 
+  const navigate = useNavigate();
+
+  const user = document.cookie;
+  if (user == "") {
+    navigate("/");
+  }
+  const username = user.split(":")[0];
+  const password = user.split(":")[1];
+  const base64encodedData = Buffer.from(`${username}:${password}`).toString('base64');
+
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/getSheet")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
+    fetch("http://localhost:8080/api/v1/register", {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + base64encodedData
+      }
+    })
+        .then(response => {
+          if (!response.ok) {
+            navigate("/");
+          }
+        })
   }, []);
  
   useEffect(() => {
@@ -159,7 +180,7 @@ function Sheet() {
         const colIdx = columnNameToIndex(cellCoords.letter);
         const rowIdx = cellCoords.number;
         data[rowIdx][colIdx] = splitStr[1];
-        //console.log(data[rowIdx][colIdx]);
+        // console.log(data[rowIdx][colIdx]);
         //return data;
       }
       else {
@@ -170,21 +191,19 @@ function Sheet() {
   }
 
   const saveSheetUpdates = () => {
-    const jsonData = require('./practice-sheet.json');
-
-    jsonData.sheets[0].updates.push([{"status": "APPROVED",
-    "id":jsonData.sheets[0].updates.length,
-    "cell_update": empListUpdates}]);
-
-    console.log(jsonData);
-
-    fetch("http://localhost:8080/api/v1/updateSheet", {
+    fetch("http://localhost:8080/api/v1/updatePublished", {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-        // Add any other headers if needed
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ${base64encodedData}'
       },
-      body: JSON.stringify(jsonData)
+      body: JSON.stringify({
+        publisher: "user3",
+        sheet: "Example Sheet",
+        id: 0,
+        payload: "test", // Change this
+      })
     })
     .then(response => {
       if (!response.ok) {
@@ -201,8 +220,7 @@ function Sheet() {
       // Handle error
     });
   }
- 
-  
+
   return (
     <div ref={gridContainerRef}>
     <Grid
@@ -234,9 +252,15 @@ function Sheet() {
         }
       }}
       server={{
-        url: 'http://localhost:8080/api/v1/getSheet',
+        method: 'POST',
+        headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
+        url: 'http://localhost:8080/api/v1/getUpdatesForSubscription',
+        body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": "examplePayload"}',
         then: data => {
-          return reverseParse(data.sheets[0].updates[0][data.sheets[0].updates[0].length -1].cell_update);
+          // console.log(data.value[0].payload.split("\n"))
+          let resultList = data.value[0].payload.split("\n")
+          resultList.pop() // Removes empty string at the end
+          return reverseParse(resultList);
         }
       }}
     />
