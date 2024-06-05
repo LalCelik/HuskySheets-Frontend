@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import MyButton from "./MyButton.tsx";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 /*
