@@ -16,6 +16,7 @@ function HomePage() {
   const navigate = useNavigate();
 
   const [open, setOpen] = React.useState(false);
+  const [sheetName, setSheetName] = React.useState("");
   // const [page, setPage] = React.useState(false)
 
   const user = document.cookie;
@@ -91,6 +92,46 @@ function HomePage() {
     setOpen(!open);
   };
 
+
+  const creatingSheet = () => {
+    fetch("http://localhost:8080/api/v1/createSheet", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Basic " + base64encodedData,
+          },
+          body: JSON.stringify({
+            publisher: username,
+            sheet: sheetName,
+            id: null,
+            payload: null,
+        }),
+        })
+
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.success) {
+            navigate("/home_page/sheet");
+          } else {
+            navigate("/home_page");
+            console.log(data.message);
+            console.log(username);
+            console.log(sheetName);
+            console.log(data);
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+  };
+
+  const handleInputChange = (event) => {
+    setSheetName(event.target.value);
+  };
+
+
+
   // const [cookies] = useCookies(['user']);
   // const user = cookies.user;
 
@@ -121,10 +162,14 @@ function HomePage() {
                 type="text"
                 placeholder="Sheet Name"
                 className="Sheet-name-cd husky_hfield"
+                value={sheetName}
+                onChange={handleInputChange}
               />
             </div>
             <div className="popup-button">
-              <MyButton to="sheet" text="Open Sheet" />
+              <Button variant="contained" color="secondary" onClick={creatingSheet}>
+                Open Sheet
+              </Button>
             </div>
           </div>
         </Popup>
