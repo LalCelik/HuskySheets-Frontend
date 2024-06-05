@@ -1,5 +1,5 @@
-{"sheets":[{"name":"Example Sheet","publisher":"John Doe","updates":[{"id":0,"update":""}]},
-  {"name":"Example Sheet","publisher":"John Doe","updates":[{"id":0,"update":""}]},
+{"sheets":[{"name":"Example Sheet","publisher":"user2","updates":[{"id":0,"update":""}]},
+  {"name":"Example Sheet","publisher":"user1","updates":[{"id":0,"update":""}]},
   {"name":"Example Sheet",
     "publisher":"user3",
     "updates": [
