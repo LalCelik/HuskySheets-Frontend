@@ -224,7 +224,7 @@ public class ApplicationController {
             try {
                 return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
-                message = "Couldn't get the sheet updates: " + e.getMessage();
+                message = "Couldn't get the sheet updatecs: " + e.getMessage();
                 return new Result(false, message, null);
             }
         }

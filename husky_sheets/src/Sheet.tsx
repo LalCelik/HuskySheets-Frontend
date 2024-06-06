@@ -47,6 +47,10 @@ function Sheet() {
             navigate("/");
           }
         })
+        .catch(error => {
+          console.error('Error posting data:', error);
+          navigate("/");
+        });
   }, []);
  
   useEffect(() => {
@@ -268,5 +272,5 @@ function Sheet() {
   </div>
   );
 }
- 
+
 export default Sheet;

@@ -156,13 +156,14 @@ public class SheetDao {
             return false;
         }
         if (sheetSys.updateSystem(sheet, newUpdate)) {
-            return true;
+            try {
+                sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        } else {
+            return false;
         }
-        try {
-        sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
-        } catch (IOException e) {
-            return false; 
-        }
-        return true;
     }
 }

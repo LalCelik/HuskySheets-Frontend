@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
+import MyButton from "./MyButton.tsx";
 import "./HomePage.css";
-import { useNavigate } from "react-router-dom";
-import { Buffer } from "buffer";
-
-interface Sheet {
-  name: string;
-  publisher: string;
-}
-
-
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import Sheet from "./Sheet.tsx";
+import {Buffer} from "buffer";
+// import {useCookies} from 'react-cookie';
 
 
 /*
@@ -248,6 +245,7 @@ function HomePage() {
         </Popup>
       </div>
     </div>
+
   );
 }
 
