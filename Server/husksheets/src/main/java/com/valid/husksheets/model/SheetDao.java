@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import com.valid.husksheets.JSON.Argument;
 
 /**
  * Data functionality for sheets
@@ -122,9 +123,13 @@ public class SheetDao {
         return list;
     }
 
-    public Sheet getSheet(String publisher, String name) throws IOException {
+    public Sheet getSheet(String publisher, String name) {
         SheetSystem sheetSystem = new SheetSystem();
+        try {
         sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error writing");
+        }
         for(Sheet s: sheetSystem.getSheets()) {
             if(s != null) {
                 if((s.getPublisher().equals(publisher)) && (s.getName().equals(name))) {
@@ -135,25 +140,33 @@ public class SheetDao {
         return null;
     }
 
-    public String updateFileUpdate(Sheet sheet, Update newUpdate) {
-        String str = "Hasn't updated";
+    public boolean updateFile(Sheet sheet, Update newUpdate) {
         SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
         SheetSystem sheetSys = new SheetSystem();
         try {
          sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
         } catch (IOException e) {
-            return "Error reading from file";
+            return false;
         }
-        if (!sheetSys.updateSystem(sheet, newUpdate)) {
-            str = "Issue Updating system";
-        } else {
-            str = "success";
+        if (sheetSys.updateSystem(sheet, newUpdate)) {
+            return true;
         }
         try {
         sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
         } catch (IOException e) {
-            return "Error reading from file"; 
+            return false; 
         }
-        return str;
+        return true;
+    }
+ 
+    public Update newUpdate(Argument argument, boolean status) {
+        Sheet sheet = getSheet(argument.getPublisher(), argument.getName());
+        int lastID = sheet.getLastUpdateId();
+        lastID++;
+        Update newUpdate = new Update(STATUS.PENDING, lastID, argument.getPayload()); 
+        if (status) {
+        newUpdate = new Update(STATUS.APPROVED, lastID, argument.getPayload());
+        }
+        return newUpdate;
     }
 }
