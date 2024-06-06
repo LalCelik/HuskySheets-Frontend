@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
-import MyButton from "./MyButton.tsx";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
-// import {useCookies} from 'react-cookie';
+
+interface Sheet {
+  name: string;
+  publisher: string;
+}
+
+
+
 
 /*
 This function is responsible for the UI for the homepage page
@@ -17,7 +23,7 @@ function HomePage() {
 
   const [open, setOpen] = React.useState(false);
   const [sheetName, setSheetName] = React.useState("");
-  // const [page, setPage] = React.useState(false)
+  const [sheets, setSheets] = React.useState<Sheet[]>([]);
 
   const user = document.cookie;
   if (user === "") {
@@ -42,102 +48,107 @@ function HomePage() {
         navigate("/");
       }
     });
-  });
 
-  fetch("http://localhost:8080/api/v1/getPublishers", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Basic " + base64encodedData,
-    },
-  })
+    getSheets();
 
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data.value);
+    //do not remove this. The table will constantly update if removed
+  }, []);
 
-      var list = [];
-
-      for (let i = 0; i < data.value.length; i++) {
-        const dataPublisher = data.value[i].publisher;
-
-        fetch("http://localhost:8080/api/v1/getSheets", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Basic " + base64encodedData,
-          },
-          body: JSON.stringify({
-            publisher: dataPublisher,
-            sheet: null,
-            id: null,
-            payload: null,
-        })
-        })
-
-        .then((response1) => response1.json())
-        .then((data1) => {
-          console.log(data1.value);
-        })
-
-      }
+  const getSheets = () => {
+    fetch("http://localhost:8080/api/v1/getPublishers", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64encodedData,
+      },
     })
-    .catch((error) => {
-      // Handle any errors
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.value);
+
+        let listOfSheets: Sheet[] = [];
+
+        const fetchAllSheets = data.value.map((publisherData) => {
+          const dataPublisher = publisherData.publisher;
+
+          return fetch("http://localhost:8080/api/v1/getSheets", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: "Basic " + base64encodedData,
+            },
+            body: JSON.stringify({
+              publisher: dataPublisher,
+              sheet: null,
+              id: null,
+              payload: null,
+            }),
+          })
+            .then((response1) => response1.json())
+            .then((data1) => {
+              console.log(data1.value);
+              listOfSheets = [
+                ...listOfSheets,
+                ...data1.value.map((sheet) => ({
+                  name: sheet.sheet,
+                  publisher: sheet.publisher,
+                })),
+              ];
+            });
+        });
+
+        Promise.all(fetchAllSheets).then(() => {
+          setSheets(listOfSheets);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching sheets:", error);
+      });
+  };
+
 
   const openPopup = () => {
     setOpen(!open);
   };
 
-
   const creatingSheet = () => {
     fetch("http://localhost:8080/api/v1/createSheet", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Basic " + base64encodedData,
-          },
-          body: JSON.stringify({
-            publisher: username,
-            sheet: sheetName,
-            id: null,
-            payload: null,
-        }),
-        })
-
-        .then((response) => response.json())
-        .then((data) => {
-          if(data.success) {
-            navigate("/home_page/sheet");
-          } else {
-            navigate("/home_page");
-            console.log(data.message);
-            console.log(username);
-            console.log(sheetName);
-            console.log(data);
-          }
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64encodedData,
+      },
+      body: JSON.stringify({
+        publisher: username,
+        sheet: sheetName,
+        id: null,
+        payload: null,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          navigate("/home_page/sheet");
+        } else {
+          navigate("/home_page");
+          console.log(data.message);
+          console.log(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   const handleInputChange = (event) => {
     setSheetName(event.target.value);
   };
 
-
-
   // const [cookies] = useCookies(['user']);
   // const user = cookies.user;
-
-  // const handleClick = () => {
-  //   <MyButton to="sheet" text="" />
-  // }
 
   return (
     <div className="HomePage">
@@ -148,11 +159,41 @@ function HomePage() {
         </Button>
       </header>
       <div className="Home-content">
+
+
         {/* This is just an example of how to see the username and password
         set by the cookie in App.tsx */}
 
         {/* <p> Username: {user.username}</p>
         <p> Password: {user.password}</p> */}
+
+
+        <table className="sheets-table">
+          <thead>
+            <tr>
+              <th>Sheet Name</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sheets.map((sheet, index) => (
+              <tr key={index}>
+                <td>{sheet.name}</td>
+                <td>{sheet.publisher}</td>
+                <td>
+                  <Button variant="contained" color="secondary">
+                    Open Sheet
+                  </Button>
+                </td>
+                <td>
+                  <Button variant="contained" color="secondary">
+                    Delete Sheet
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         <Popup open={open} closeOnDocumentClick onClose={openPopup}>
           <div className="popup-content">
@@ -167,7 +208,11 @@ function HomePage() {
               />
             </div>
             <div className="popup-button">
-              <Button variant="contained" color="secondary" onClick={creatingSheet}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={creatingSheet}
+              >
                 Open Sheet
               </Button>
             </div>
