@@ -147,6 +147,34 @@ function HomePage() {
     setSheetName(event.target.value);
   };
 
+  const deletingSheet = (publisherName: string, nameOfSheet: string) => {
+    fetch("http://localhost:8080/api/v1/deleteSheet", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64encodedData,
+      },
+      body: JSON.stringify({
+        publisher: publisherName,
+        sheet: nameOfSheet,
+        id: null,
+        payload: null,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          getSheets();
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log("Couldn't delete the sheet. Error: " + error.message);
+      });
+  };
+
   // const [cookies] = useCookies(['user']);
   // const user = cookies.user;
 
@@ -186,7 +214,7 @@ function HomePage() {
                   </Button>
                 </td>
                 <td>
-                  <Button variant="contained" color="secondary">
+                  <Button variant="contained" color="secondary" onClick={() => deletingSheet(sheet.publisher, sheet.name)}>
                     Delete Sheet
                   </Button>
                 </td>
