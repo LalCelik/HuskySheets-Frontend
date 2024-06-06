@@ -122,6 +122,13 @@ public class SheetDao {
         return list;
     }
 
+    /**
+     * Gets a certain sheet from the sheet system based on the given publisher and name.
+     *
+     * @param publisher The publisher of the sheet to get
+     * @param name The name of the sheet to get
+     * @return returns Sheet if found and null if not found.
+     */
     public Sheet getSheet(String publisher, String name) {
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         for(Sheet s: sheetSystem.getSheets()) {
@@ -134,6 +141,13 @@ public class SheetDao {
         return null;
     }
 
+    /**
+     * Updates the sheet system by adding a new Update to the given sheet
+     *
+     * @param sheet The sheet to update
+     * @param newUpdate The new update to apply to the sheet
+     * @return true if the update was successful
+     */
     public boolean updateFile(Sheet sheet, Update newUpdate) {
         SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
         SheetSystem sheetSys = new SheetSystem();

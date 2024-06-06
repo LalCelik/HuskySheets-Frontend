@@ -1,7 +1,6 @@
 //class for a sheet
 package com.valid.husksheets.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +51,10 @@ public class Sheet {
         return publisher;
     }
 
-
+     /**
+     * Overrides equals
+     * @return true if is equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,11 +63,18 @@ public class Sheet {
         return Objects.equals(name, sheet.name) && Objects.equals(publisher, sheet.publisher);
     }
 
+     /**
+     * Overriding for the equals method
+     */
     @Override
     public int hashCode() {
         return Objects.hash(name, publisher);
     }
 
+     /**
+     * Gets the last update's id
+     * @return the last update id
+     */
     public int getLastUpdateId() {
         if (updates.isEmpty()) {
             return -1;
@@ -73,10 +82,18 @@ public class Sheet {
         return updates.get(updates.size() - 1).getId();
     }
 
+     /**
+     * Adds an update to this sheet
+     */
     public void addUpdate(Update update) {
         updates.add(update);
     }
 
+     /**
+     * Checks if this sheet is equal to given sheet
+     * Based on the sheets name and publisher
+     * @return true is it is equal
+     */
     public boolean sheetEquals(Sheet other) {
         return (other.getName().equals(name)) && other.getPublisher().equals(publisher);
     }

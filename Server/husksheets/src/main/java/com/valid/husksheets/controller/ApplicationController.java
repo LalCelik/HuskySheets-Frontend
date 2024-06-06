@@ -232,7 +232,7 @@ public class ApplicationController {
 
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result updatePublished(Authentication authentication, @RequestBody Argument argument) {
+    public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
 
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
