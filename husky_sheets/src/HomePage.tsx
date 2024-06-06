@@ -209,7 +209,7 @@ function HomePage() {
                 <td>{sheet.name}</td>
                 <td>{sheet.publisher}</td>
                 <td>
-                  <Button variant="contained" color="secondary">
+                  <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}>
                     Open Sheet
                   </Button>
                 </td>
