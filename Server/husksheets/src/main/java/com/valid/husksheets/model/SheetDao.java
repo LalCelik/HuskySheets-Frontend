@@ -122,7 +122,7 @@ public class SheetDao {
         return list;
     }
 
-    public Sheet getSheet(String publisher, String name) throws IOException {
+    public Sheet getSheet(String publisher, String name) {
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         for(Sheet s: sheetSystem.getSheets()) {
             if(s != null) {
@@ -132,5 +132,23 @@ public class SheetDao {
             }
         }
         return null;
+    }
+
+    public boolean updateFile(Sheet sheet, Update newUpdate) {
+        SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
+        SheetSystem sheetSys = new SheetSystem();
+        sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
+        if(sheetSys == null) {
+            return false;
+        }
+        if (sheetSys.updateSystem(sheet, newUpdate)) {
+            return true;
+        }
+        try {
+        sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
+        } catch (IOException e) {
+            return false; 
+        }
+        return true;
     }
 }

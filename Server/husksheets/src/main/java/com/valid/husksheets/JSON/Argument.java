@@ -38,4 +38,8 @@ public record Argument(
     public int getId() {
         return id.intValue();
     }
+
+    public String getPayload() {
+        return payload;
+    }
 }

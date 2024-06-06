@@ -65,4 +65,19 @@ public class Sheet {
     public int hashCode() {
         return Objects.hash(name, publisher);
     }
+
+    public int getLastUpdateId() {
+        if (updates.isEmpty()) {
+            return -1;
+        }
+        return updates.get(updates.size() - 1).getId();
+    }
+
+    public void addUpdate(Update update) {
+        updates.add(update);
+    }
+
+    public boolean sheetEquals(Sheet other) {
+        return (other.getName().equals(name)) && other.getPublisher().equals(publisher);
+    }
 }
