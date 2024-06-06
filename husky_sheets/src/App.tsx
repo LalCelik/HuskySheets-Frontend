@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import MyButton from "./MyButton.tsx";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 /*
@@ -12,7 +12,6 @@ Owner: Amani
 function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
 
   /*
@@ -21,7 +20,7 @@ function App() {
   */
   function loginEvent(event) {
     event.preventDefault();
-    setCookie("user", { username, password }, { path: "/" });
+    document.cookie = username + ":" + password;
     navigate("/home_page");
   }
 

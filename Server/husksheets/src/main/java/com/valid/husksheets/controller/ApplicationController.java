@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class ApplicationController {
      * @param userArgument which holds username and password
      * @return Result object which could succeed or fail
      */
-    @PostMapping("/register")
+    @PostMapping("/registerUser")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(@RequestBody UserArgument userArgument) {
         if (userArgument.getUsername() == null || userArgument.getPassword() == null) {
@@ -60,6 +59,14 @@ public class ApplicationController {
         }
         return new Result(true, "Successfully registered a user", null);
     }
+
+    @GetMapping("/register")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result register(Authentication authentication) {
+        userSystem.register(authentication.getName());
+        return new Result(true,  null, null);
+    }
+
     private String message;
 
     /**
@@ -84,11 +91,11 @@ public class ApplicationController {
      */
     @PostMapping("/createSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result createSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result createSheet(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
-        } else if (!argument.getPublisher().equals(authentication.getName()) && !argument.getPublisher().equals(principal.getName())) {
+        } else if (!argument.getPublisher().equals(authentication.getName())) {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
@@ -111,13 +118,13 @@ public class ApplicationController {
      * @param argument object that has the name of the publisher and the sheet
      * @return Result of the process
      */
-    @DeleteMapping("/deleteSheet")
+    @PostMapping("/deleteSheet")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result deleteSheet(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result deleteSheet(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             message = "Publisher or sheetName can't be null";
             return new Result(false, message, null);
-        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+        } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
@@ -135,7 +142,7 @@ public class ApplicationController {
      * @param argument object which has the Publisher's name
      * @return Result of the process
      */
-    @GetMapping("/getSheets")
+    @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getSheets(@RequestBody Argument argument) {
         if (argument.getPublisher() == null) {
@@ -161,10 +168,10 @@ public class ApplicationController {
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
-            return new Result(false, "No updates found", null);
+            return new Result(false, "No sheet found", null);
         }
 
-        List<Update> pendingUpdates = new ArrayList<>();
+        String result = "";
 
         int lastID = 0;
 
@@ -174,30 +181,29 @@ public class ApplicationController {
                     lastID = u.getId();
                 }
                 if (u.getId() > above) {
-                    pendingUpdates.add(u);
+                    result = result + u.getUpdate();
                 }
             }
         }
 
-        if (pendingUpdates.isEmpty()) {
-            return new Result(false, "No new pending updates", null);
+        if (result == "") {
+            List<Argument> noUpdate = new ArrayList<>();
+            noUpdate.add(new Argument(publisher, name, above, ""));
+            return new Result(true, "Getting updates: No updates found", noUpdate);
         }
 
-        Gson gson = new GsonBuilder().create();
-        String payload = gson.toJson(pendingUpdates);
-
         List<Argument> arguments = new ArrayList<>();
-        arguments.add(new Argument(publisher, name, lastID, payload));
+        arguments.add(new Argument(publisher, name, lastID, result));
 
         return new Result(true, "Getting updates", arguments);
     }
 
-    @GetMapping("/getUpdatesForPublished")
+    @PostMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getUpdatesForPublished(Authentication authentication, Principal principal, @RequestBody Argument argument) {
+    public Result getUpdatesForPublished(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
-        } else if (!authentication.getName().equals(argument.getPublisher()) && !principal.getName().equals(argument.getPublisher())) {
+        } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
             try {
@@ -209,7 +215,7 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping("/getUpdatesForSubscription")
+    @PostMapping("/getUpdatesForSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForSubscription(@RequestBody Argument argument) {
         if (argument.getPublisher() == null || argument.getName() == null) {
