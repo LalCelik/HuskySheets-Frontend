@@ -95,7 +95,7 @@ function Sheet() {
    
     if (oldValue !== newValue) {
       console.log(empListUpdates.length);
-      const updateToAdd = `${columnName}${rowIndex - 1} ${newValue}`
+      const updateToAdd = `\$${columnName}${rowIndex - 1} ${newValue}\n`
       empListUpdates.push(updateToAdd);
       setUpdates(empListUpdates);
       console.log(empListUpdates.length);
@@ -195,18 +195,22 @@ function Sheet() {
   }
 
   const saveSheetUpdates = () => {
+    var stringEmpListUpdates = "";
+    for (let i = 0; i < empListUpdates.length; i++) {
+      stringEmpListUpdates = stringEmpListUpdates + empListUpdates[i];
+    }
     fetch("http://localhost:8080/api/v1/updatePublished", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ${base64encodedData}'
+        'Authorization': 'Basic ' + base64encodedData
       },
       body: JSON.stringify({
-        publisher: "user3",
+        publisher: "user3",// TODO change hardcoded publisher and sheet
         sheet: "Example Sheet",
         id: 0,
-        payload: "test", // Change this
+        payload: stringEmpListUpdates,
       })
     })
     .then(response => {
@@ -259,7 +263,7 @@ function Sheet() {
         method: 'POST',
         headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
         url: 'http://localhost:8080/api/v1/getUpdatesForSubscription',
-        body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": "examplePayload"}',
+        body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": null}', // it's -1 to get all the updates. TODO change hardcoded publisher and sheet
         then: data => {
           // console.log(data.value[0].payload.split("\n"))
           let resultList = data.value[0].payload.split("\n")
