@@ -10,7 +10,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SheetService {
-    private SheetDao sheetDao = new SheetDao();
+    private String path;
+    private SheetDao sheetDao;;
+
+    public SheetService(String newPath) {
+        path = newPath;
+        sheetDao = new SheetDao(newPath);
+    }
+
+    public SheetService() {
+        path = "/src/main/resources/sheets.json";
+        sheetDao  = new SheetDao();
+    }
 
     /**
      * Creates a new sheet with the given publisher and sheet name

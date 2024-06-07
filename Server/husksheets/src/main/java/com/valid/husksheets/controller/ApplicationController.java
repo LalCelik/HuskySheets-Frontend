@@ -25,11 +25,25 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
-    @Autowired
-    private SheetService sheetService;
 
     @Autowired
-    private UserSystem userSystem;
+    private SheetService sheetService; // = new SheetService();
+
+    @Autowired
+    private UserSystem userSystem = new UserSystem();
+
+    private SheetDao sheetDao; // = new SheetDao();
+
+    public ApplicationController() {
+        sheetService = new SheetService();
+        sheetDao = new SheetDao();
+    }
+
+
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+        sheetDao = sheetDaoNew;
+        sheetService = sheetServiceNew;
+    }
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
@@ -99,7 +113,7 @@ public class ApplicationController {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
-            Update update = new Update(STATUS.PUBLISHED, 0, "");
+            Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
