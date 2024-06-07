@@ -25,11 +25,25 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
+    
     @Autowired
-    private SheetService sheetService;
+    private SheetService sheetService; // = new SheetService();
 
     @Autowired
-    private UserSystem userSystem;
+    private UserSystem userSystem = new UserSystem();
+
+    private SheetDao sheetDao; // = new SheetDao();
+
+    public ApplicationController() {
+        sheetService = new SheetService();
+        sheetDao = new SheetDao();
+    }
+
+
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+        sheetDao = sheetDaoNew;
+        sheetService = sheetServiceNew;
+    }
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
