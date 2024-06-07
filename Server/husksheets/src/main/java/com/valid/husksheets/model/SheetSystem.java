@@ -48,6 +48,17 @@ public class SheetSystem {
         sheets.add(sheet);
     }
 
+    public boolean containsSheet(Sheet sheet) {
+        boolean equal = false;
+        for(Sheet s: sheets) {
+            if(s.sheetEquals(sheet)) {
+                equal = true;
+                break;
+            }
+        }
+        return equal;
+    }
+
     /**
      * Delete the given sheet to the system
      * @param sheet Sheet that we want to delete

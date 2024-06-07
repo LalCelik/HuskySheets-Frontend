@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
-    
+
     @Autowired
     private SheetService sheetService; // = new SheetService();
 
@@ -113,7 +113,7 @@ public class ApplicationController {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
-            Update update = new Update(STATUS.PUBLISHED, 0, "");
+            Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
