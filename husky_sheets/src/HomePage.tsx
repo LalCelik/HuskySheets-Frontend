@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
 import "./HomePage.css";
-import { useNavigate } from "react-router-dom";
-import { Buffer } from "buffer";
+import { useNavigate } from 'react-router-dom';
+import {Buffer} from "buffer";
 
-interface Sheet {
+interface ISheet {
   name: string;
   publisher: string;
 }
-
-
 
 
 /*
@@ -23,7 +21,7 @@ function HomePage() {
 
   const [open, setOpen] = React.useState(false);
   const [sheetName, setSheetName] = React.useState("");
-  const [sheets, setSheets] = React.useState<Sheet[]>([]);
+  const [sheets, setSheets] = React.useState<ISheet[]>([]);
 
   const user = document.cookie;
   if (user === "") {
@@ -67,7 +65,7 @@ function HomePage() {
       .then((data) => {
         console.log(data.value);
 
-        let listOfSheets: Sheet[] = [];
+        let listOfSheets: ISheet[] = [];
 
         const fetchAllSheets = data.value.map((publisherData) => {
           const dataPublisher = publisherData.publisher;
@@ -209,7 +207,7 @@ function HomePage() {
                 <td>{sheet.name}</td>
                 <td>{sheet.publisher}</td>
                 <td>
-                  <Button variant="contained" color="secondary">
+                  <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}>
                     Open Sheet
                   </Button>
                 </td>
@@ -248,6 +246,7 @@ function HomePage() {
         </Popup>
       </div>
     </div>
+
   );
 }
 
