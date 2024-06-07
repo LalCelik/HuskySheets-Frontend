@@ -46,13 +46,10 @@ import org.springframework.boot.test.context.SpringBootTest;
         List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         Authentication authentication = new UsernamePasswordAuthenticationToken("user4", "password", authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        // Your test code goes here
-        // Example:
+      
         assertEquals(appControl.createSheet(authentication, argumentExisting), resultDiffPublisher);
         assertEquals(appControl.createSheet(authentication, argument4), resultSuccess);
 
-        // Clear the security context after the test
         SecurityContextHolder.clearContext();
     }
 }
