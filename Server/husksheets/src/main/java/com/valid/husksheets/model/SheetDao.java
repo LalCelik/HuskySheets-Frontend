@@ -7,23 +7,29 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * Data functionality for sheets
  * Owner: Lal
  * Will reorganize these classes ignore the mess
  */
+@Repository
 public class SheetDao {
-    private final String SHEETS_FILE = "src/main/resources/sheets.json";
-    private final Path sheetPath = Path.of(SHEETS_FILE);
-    private final SheetSystemUtils systemUtils = new SheetSystemUtils();
+    private final String SHEETS_FILE; // = "src/main/resources/sheets.json";
+    private final SheetSystemUtils systemUtils; // = new SheetSystemUtils();
 
     /**
      * Instantiate the SheetDao object
      */
+    public SheetDao(String path) {
+         SHEETS_FILE = path;
+         systemUtils = new SheetSystemUtils();
+    }
+
     public SheetDao() {
-        // SHEETS_FILE = "src/main/resources/sheets.json";
-        // sheetPath = Path.of(SHEETS_FILE);
-        // systemUtils = new SheetSystemUtils();
+        SHEETS_FILE =  "src/main/resources/sheets.json";
+        systemUtils = new SheetSystemUtils();
     }
 
     /**
@@ -34,8 +40,8 @@ public class SheetDao {
      */
     public boolean saveSheet(Sheet sheet) throws IOException {
 
-            if(!Files.exists(sheetPath)) {
-                Files.createFile(sheetPath);
+            if(!Files.exists(Path.of(SHEETS_FILE))) {
+                Files.createFile(Path.of(SHEETS_FILE));
                 SheetSystem sheetSystem = new SheetSystem();
                 sheetSystem.addSheet(sheet);
                 systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
@@ -79,7 +85,7 @@ public class SheetDao {
      * @throws IOException for any IO errors
      */
     public boolean deleteSheet(Sheet sheet) throws IOException {
-        if(!Files.exists(sheetPath)) {
+        if(!Files.exists(Path.of(SHEETS_FILE))) {
             return false;
         } else {
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);

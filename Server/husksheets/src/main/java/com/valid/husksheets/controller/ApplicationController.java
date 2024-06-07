@@ -26,10 +26,25 @@ import java.util.List;
 @RequestMapping("api/v1")
 public class ApplicationController {
     @Autowired
-    private SheetService sheetService;
+    private SheetService sheetService; // = new SheetService();
 
     @Autowired
-    private UserSystem userSystem;
+    private UserSystem userSystem = new UserSystem();
+
+    private SheetDao sheetDao; // = new SheetDao();
+
+    public ApplicationController() {
+        sheetService = new SheetService();
+        sheetDao = new SheetDao();
+    }
+
+
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+        sheetDao = sheetDaoNew;
+        sheetService = sheetServiceNew;
+    }
+
+    
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
@@ -148,7 +163,6 @@ public class ApplicationController {
         if (argument.getPublisher() == null) {
             return new Result(false, "Publisher can't be null", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             try {
                 List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
                 List<Argument> arguments = new ArrayList<>();
@@ -164,7 +178,6 @@ public class ApplicationController {
     }
 
     private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
-        SheetDao sheetDao = new SheetDao();
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
@@ -197,7 +210,7 @@ public class ApplicationController {
 
         return new Result(true, "Getting updates", arguments);
     }
-
+    
     @PostMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForPublished(Authentication authentication, @RequestBody Argument argument) {
@@ -224,12 +237,18 @@ public class ApplicationController {
             try {
                 return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
-                message = "Couldn't get the sheet updatecs: " + e.getMessage();
+                message = "Couldn't get the sheet updates: " + e.getMessage();
                 return new Result(false, message, null);
             }
         }
     }
 
+    /**
+     * Publisher adds an update tto an existing sheet
+     * Owner: Lal
+     * @param argument object which has the Publisher's name
+     * @return Result of the process
+     */
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
@@ -239,8 +258,10 @@ public class ApplicationController {
         } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+            if (sheet == null) {
+                return new Result(false, "Issue getting sheet", null);
+            }
             int lastID = sheet.getLastUpdateId();
             lastID++;
 
@@ -254,6 +275,12 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Subscriber adds an update tto an existing sheet
+     * Owner: Lal
+     * @param argument object which has the Publisher's name
+     * @return Result of the process
+     */
     @PostMapping("/updateSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updateSubscription(Authentication authentication, @RequestBody Argument argument) {
@@ -263,7 +290,6 @@ public class ApplicationController {
         } else if (authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request. You are the publisher.", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
             int lastID = sheet.getLastUpdateId();
             lastID++;

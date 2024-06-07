@@ -18,6 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.valid.husksheets.model.SheetDao;
+import com.valid.husksheets.model.SheetService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +28,11 @@ import java.util.List;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApplicationControllerTest {
-    ApplicationController appControl = new ApplicationController();
+ public class ApplicationControllerTest {
+    private String path = "src/main/resources/sheetsTest.json";
+    SheetDao sheetDao = new SheetDao(path);
+    SheetService sheetService = new SheetService(path);
+    ApplicationController appControl = new ApplicationController(sheetDao, sheetService);
 
     @Test
     void createSheetTest() {
