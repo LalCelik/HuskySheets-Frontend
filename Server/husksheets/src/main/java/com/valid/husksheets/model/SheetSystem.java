@@ -48,6 +48,20 @@ public class SheetSystem {
         sheets.add(sheet);
     }
 
+<<<<<<< HEAD
+=======
+    public boolean containsSheet(Sheet sheet) {
+        boolean equal = false;
+        for(Sheet s: sheets) {
+            if(s.sheetEquals(sheet)) {
+                equal = true;
+                break;
+            }
+        }
+        return equal;
+    }
+
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     /**
      * Delete the given sheet to the system
      * @param sheet Sheet that we want to delete
@@ -56,4 +70,21 @@ public class SheetSystem {
         sheets.remove(sheet);
     }
 
+<<<<<<< HEAD
+=======
+    public boolean updateSystem(Sheet sheet, Update update) {
+        for(Sheet s: sheets) {
+            if(s != null) {
+                if(s.sheetEquals(sheet)) {
+                    s.addUpdate(update);
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

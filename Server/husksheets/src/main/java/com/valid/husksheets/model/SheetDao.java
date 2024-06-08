@@ -13,17 +13,36 @@ import java.util.List;
  * Will reorganize these classes ignore the mess
  */
 public class SheetDao {
+<<<<<<< HEAD
     private final String SHEETS_FILE = "src/main/resources/sheets.json";
     private final Path sheetPath = Path.of(SHEETS_FILE);
     private final SheetSystemUtils systemUtils = new SheetSystemUtils();
+=======
+    private final String SHEETS_FILE; // = "src/main/resources/sheets.json";
+    private final SheetSystemUtils systemUtils; // = new SheetSystemUtils();
+
+    /**
+     * Instantiate the SheetDao object
+     * @param String of a path the json
+     */
+    public SheetDao(String path) {
+         SHEETS_FILE = path;
+         systemUtils = new SheetSystemUtils();
+    }
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 
     /**
      * Instantiate the SheetDao object
      */
     public SheetDao() {
+<<<<<<< HEAD
         // SHEETS_FILE = "src/main/resources/sheets.json";
         // sheetPath = Path.of(SHEETS_FILE);
         // systemUtils = new SheetSystemUtils();
+=======
+        SHEETS_FILE =  "src/main/resources/sheets.json";
+        systemUtils = new SheetSystemUtils();
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     }
 
     /**
@@ -34,8 +53,13 @@ public class SheetDao {
      */
     public boolean saveSheet(Sheet sheet) throws IOException {
 
+<<<<<<< HEAD
             if(!Files.exists(sheetPath)) {
                 Files.createFile(sheetPath);
+=======
+            if(!Files.exists(Path.of(SHEETS_FILE))) {
+                Files.createFile(Path.of(SHEETS_FILE));
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
                 SheetSystem sheetSystem = new SheetSystem();
                 sheetSystem.addSheet(sheet);
                 systemUtils.writeToFile(sheetSystem, SHEETS_FILE);
@@ -79,7 +103,11 @@ public class SheetDao {
      * @throws IOException for any IO errors
      */
     public boolean deleteSheet(Sheet sheet) throws IOException {
+<<<<<<< HEAD
         if(!Files.exists(sheetPath)) {
+=======
+        if(!Files.exists(Path.of(SHEETS_FILE))) {
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
             return false;
         } else {
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
@@ -122,7 +150,18 @@ public class SheetDao {
         return list;
     }
 
+<<<<<<< HEAD
     public Sheet getSheet(String publisher, String name) throws IOException {
+=======
+    /**
+     * Gets a certain sheet from the sheet system based on the given publisher and name.
+     *
+     * @param publisher The publisher of the sheet to get
+     * @param name The name of the sheet to get
+     * @return returns Sheet if found and null if not found.
+     */
+    public Sheet getSheet(String publisher, String name) {
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         for(Sheet s: sheetSystem.getSheets()) {
             if(s != null) {
@@ -133,4 +172,33 @@ public class SheetDao {
         }
         return null;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Updates the sheet system by adding a new Update to the given sheet
+     *
+     * @param sheet The sheet to update
+     * @param newUpdate The new update to apply to the sheet
+     * @return true if the update was successful
+     */
+    public boolean updateFile(Sheet sheet, Update newUpdate) {
+        SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
+        SheetSystem sheetSys = new SheetSystem();
+        sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
+        if(sheetSys == null) {
+            return false;
+        }
+        if (sheetSys.updateSystem(sheet, newUpdate)) {
+            try {
+                sheetSystemUtils.writeToFile(sheetSys,SHEETS_FILE);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

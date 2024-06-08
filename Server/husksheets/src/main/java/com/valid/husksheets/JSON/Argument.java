@@ -38,4 +38,11 @@ public record Argument(
     public int getId() {
         return id.intValue();
     }
+<<<<<<< HEAD
+=======
+
+    public String getPayload() {
+        return payload;
+    }
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

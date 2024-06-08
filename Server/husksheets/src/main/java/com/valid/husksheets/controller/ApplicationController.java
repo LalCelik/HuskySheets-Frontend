@@ -25,11 +25,33 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
+<<<<<<< HEAD
     @Autowired
     private SheetService sheetService;
 
     @Autowired
     private UserSystem userSystem;
+=======
+
+    @Autowired
+    private SheetService sheetService; // = new SheetService();
+
+    @Autowired
+    private UserSystem userSystem = new UserSystem();
+
+    private SheetDao sheetDao; // = new SheetDao();
+
+    public ApplicationController() {
+        sheetService = new SheetService();
+        sheetDao = new SheetDao();
+    }
+
+
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+        sheetDao = sheetDaoNew;
+        sheetService = sheetServiceNew;
+    }
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
@@ -99,7 +121,11 @@ public class ApplicationController {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
+<<<<<<< HEAD
             Update update = new Update(STATUS.PUBLISHED, 0, "");
+=======
+            Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
@@ -224,9 +250,64 @@ public class ApplicationController {
             try {
                 return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
+<<<<<<< HEAD
                 message = "Couldn't get the sheet updates: " + e.getMessage();
+=======
+                message = "Couldn't get the sheet updatecs: " + e.getMessage();
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
                 return new Result(false, message, null);
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    @PostMapping("/updatePublished")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
+
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else if (!authentication.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+            Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+            int lastID = sheet.getLastUpdateId();
+            lastID++;
+
+            Update newUpdate = new Update(STATUS.PUBLISHED, lastID, argument.getPayload());
+            sheet.addUpdate(newUpdate);
+            if(sheetDao.updateFile(sheet, newUpdate)) {
+                return new Result(true, "Updated published", null);
+            } else {
+                return new Result(false, "Couldn't update Publisher", null);  
+            }
+        }
+    }
+
+    @PostMapping("/updateSubscription")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result updateSubscription(Authentication authentication, @RequestBody Argument argument) {
+
+        if (argument.getPublisher() == null || argument.getName() == null) {
+            return new Result(false, "Publisher or sheetName can't be null", null);
+        } else if (authentication.getName().equals(argument.getPublisher())) {
+            return new Result(false, "You don't have access to this request. You are the publisher.", null);
+        } else {
+            SheetDao sheetDao = new SheetDao();
+            Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+            int lastID = sheet.getLastUpdateId();
+            lastID++;
+
+            Update newUpdate = new Update(STATUS.REQUESTED, lastID, argument.getPayload());
+            sheet.addUpdate(newUpdate);
+            if(sheetDao.updateFile(sheet, newUpdate)) {
+                return new Result(true, "Updated published", null);
+            } else {
+                return new Result(false, "Couldn't update Publisher", null);  
+            }
+        }
+    }
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

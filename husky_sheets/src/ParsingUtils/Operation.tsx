@@ -1,3 +1,7 @@
+/**
+ * Ownership: Ira
+ * Represents a binary operation data structure
+ */
 export default class Operation {
     constructor(operator, left, right) {
         this.type = 'Operation';

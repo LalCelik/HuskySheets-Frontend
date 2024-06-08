@@ -1,17 +1,20 @@
 import React from 'react';
 import NumberVal from "./NumberVal.tsx";
 
+/**
+ * Ownership: Ira
+ * Applies a given operation to given numbers
+ * @param num1 first number for formula
+ * @param num2 second number for formula
+ * @param oper operation to apply
+ * @returns a number in the form of a NumberVal data structure
+ */
+
 function OperatorHandling(num1, num2, oper) {
     var result = 0;
-
-    console.log("OPERATOR HANDLING", oper)
-    console.log("OPERATOR HANDLING", num1);
-    console.log("OPERATOR HANDLING", num2);
-
     
     if (oper === "+") {
         result = parseFloat(num1) + parseFloat(num2);
-        console.log("OPERATOR HANDLING", result);
     }
     else if (oper == "-") {
         result = parseFloat(num1) - parseFloat(num2);
