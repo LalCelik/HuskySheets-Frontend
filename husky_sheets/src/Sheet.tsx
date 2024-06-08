@@ -11,7 +11,7 @@ import { log } from 'console';
 import axios from 'axios';
 import { json } from 'stream/consumers';
 import { Buffer } from 'buffer';
-<<<<<<< HEAD
+
 import {Form, useNavigate} from "react-router-dom";
 import FormulaParse from './ParsingUtils/FormulaParse.tsx';
 import getCellsInFormula from './ParsingUtils/GetRefs.tsx';
@@ -19,9 +19,8 @@ import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
 import splitString from './ParsingUtils/StringToLetterAndNum'
 import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
 import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
-=======
 import {useNavigate} from "react-router-dom";
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
+
 
 /**
  * Ownership : Ira 
@@ -34,7 +33,6 @@ function Sheet() {
   const previousValues = useRef({}); 
   const [empListUpdates, setUpdates] = useState([]);
   const navigate = useNavigate();
-<<<<<<< HEAD
   const [cellsToUpdate, setCellsToUpdate] = useState(new Map([]));
   const dels = ["(", "+", ",", "-", "*", "/", ")", "=", ">", "<",
      "<>", "&", ":", "|", "IF", "SUM", "MIN", "MAX",
@@ -45,10 +43,8 @@ function Sheet() {
   const cellNamePattern = /^[A-Z]+[0-9]+$/;
   const user = document.cookie;
 
-=======
 
   const user = document.cookie;
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   if (user == "") {
     navigate("/");
   }
@@ -56,7 +52,6 @@ function Sheet() {
   const password = user.split(":")[1];
   const base64encodedData = Buffer.from(`${username}:${password}`).toString('base64');
 
-<<<<<<< HEAD
   /**
   function getCellsInFormula(expression) {
     const pattern =  "(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG|:|<|>|<>|&|=|\\+|,|\\*|-|\\/|\\||\\(|\\)|[A-Z]+\\d+)";
@@ -69,8 +64,6 @@ function Sheet() {
   }
     */
 
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/register", {
       method: 'GET',
@@ -85,32 +78,17 @@ function Sheet() {
             navigate("/");
           }
         })
-<<<<<<< HEAD
-=======
-        .catch(error => {
-          console.error('Error posting data:', error);
-          navigate("/");
-        });
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   }, []);
  
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const cells = document.querySelectorAll('[contenteditable="true"]');
       cells.forEach(cell => {
-<<<<<<< HEAD
         //cell.removeEventListener('focus', handleCellFocus);
         cell.removeEventListener('blur', handleCellBlur);
         cell.removeEventListener('input', handleCellInput);
  
         //cell.addEventListener('focus', handleCellFocus);
-=======
-        cell.removeEventListener('focus', handleCellFocus);
-        cell.removeEventListener('blur', handleCellBlur);
-        cell.removeEventListener('input', handleCellInput);
- 
-        cell.addEventListener('focus', handleCellFocus);
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
         cell.addEventListener('blur', handleCellBlur);
         cell.addEventListener('input', handleCellInput);
       });
@@ -128,7 +106,6 @@ function Sheet() {
     };
   }, []);
  
-<<<<<<< HEAD
   /**
   const handleCellFocus = (event) => {  
     console.log('Cell is being focused:', event.target.textContent);  
@@ -137,15 +114,6 @@ function Sheet() {
   const handleCellBlur = (event) => {    
     const cell = event.target;
     const newValue = cell.textContent.toUppercase();
-=======
-  const handleCellFocus = (event) => {  
-    console.log('Cell is being focused:', event.target.textContent);  
-  };
- 
-  const handleCellBlur = (event) => {    
-    const cell = event.target;
-    const newValue = cell.textContent;
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     const cellIndex = cell.cellIndex; // Get the column index directly from the cell
     const rowIndex = cell.parentElement.rowIndex ; // Subtract 1 to account for header row
    
@@ -154,7 +122,6 @@ function Sheet() {
     const oldValue = previousValues.current[`${columnName}-${rowIndex}`];
    
     if (oldValue !== newValue) {
-<<<<<<< HEAD
       const updateToAdd = `${columnName}${rowIndex - 1} ${newValue}`
       empListUpdates.push(updateToAdd);
       setUpdates(empListUpdates);
@@ -217,29 +184,12 @@ function Sheet() {
     data[formulaCellCol][formulaCellRow] = FormulaParse(convertedExpression);
   }
 
-=======
-      console.log(empListUpdates.length);
-      const updateToAdd = `\$${columnName}${rowIndex - 1} ${newValue}\n`
-      empListUpdates.push(updateToAdd);
-      setUpdates(empListUpdates);
-      console.log(empListUpdates.length);
-      
-      console.log(`Cell value changed at row ${rowIndex}, column ${columnName}. Old value: ${oldValue}, New value: ${newValue}`);
-      previousValues.current[`${columnName}-${rowIndex}`] = newValue;
-    } else {
-      console.log(`Cell editing finished at row ${rowIndex}, column ${columnName}. Value: ${newValue}`);
-    }
-  };
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
    
   const handleCellInput = (event) => {
     console.log('Cell value is changing:', event.target.textContent);
   };
  
-<<<<<<< HEAD
   /**
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   const generateColumnName = (index) => {
     let columnName = '';
     while (index > 0) {
@@ -255,10 +205,7 @@ function Sheet() {
     return columnName;
   };
 
-<<<<<<< HEAD
   **/
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 
   const columns = [
     {
@@ -298,10 +245,7 @@ function Sheet() {
     return [rowIndex + 0, ...row];
   });
   
-<<<<<<< HEAD
   /**
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   const columnNameToIndex = (columnName) => {
     let index = 0;
     for (let i = 0; i < columnName.length; i++) {
@@ -310,7 +254,6 @@ function Sheet() {
     return index; // Convert to 0-based index
   };
 
-<<<<<<< HEAD
   
   function splitString(input) {
     const regexPattern = /^([A-Z]+)(\d+)$/i;
@@ -358,30 +301,16 @@ function Sheet() {
       if (listUpdates[idx][splitStr[1]] === "=") {
         cellsWithFormulas.push(idx);
       }
-=======
-  function reverseParse(listUpdates) {
-    for (let idx=0; idx < listUpdates.length; idx++) {
-      const splitStr = listUpdates[idx].split(" ");
-      const regex = /([A-Z]+)(\d+)/;
-      const match = regex.exec(splitStr[0]);
-      
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
       if (match) {
         const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
         const colIdx = columnNameToIndex(cellCoords.letter);
         const rowIdx = cellCoords.number;
         data[rowIdx][colIdx] = splitStr[1];
-<<<<<<< HEAD
-=======
-        // console.log(data[rowIdx][colIdx]);
-        //return data;
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
       }
       else {
         console.log("INVALID");
       }
     }
-<<<<<<< HEAD
     for (let idx = 0; idx < cellsWithFormulas.length; idx++) {
       const splitStr = listUpdates[cellsWithFormulas[idx]].split(" ");
       const match = regex.exec(splitStr[0]);
@@ -390,25 +319,15 @@ function Sheet() {
       const rowIdx = cellCoords.number;
       data[rowIdx][colIdx] = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, splitStr[1])).value;
     }
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     return data;
   }
 
   const saveSheetUpdates = () => {
-<<<<<<< HEAD
-=======
-    var stringEmpListUpdates = "";
-    for (let i = 0; i < empListUpdates.length; i++) {
-      stringEmpListUpdates = stringEmpListUpdates + empListUpdates[i];
-    }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     fetch("http://localhost:8080/api/v1/updatePublished", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-<<<<<<< HEAD
         'Authorization': 'Basic ${base64encodedData}'
       },
       body: JSON.stringify({
@@ -416,15 +335,6 @@ function Sheet() {
         sheet: "Example Sheet",
         id: 0,
         payload: "test", // Change this
-=======
-        'Authorization': 'Basic ' + base64encodedData
-      },
-      body: JSON.stringify({
-        publisher: "user3",// TODO change hardcoded publisher and sheet
-        sheet: "Example Sheet",
-        id: 0,
-        payload: stringEmpListUpdates,
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
       })
     })
     .then(response => {
@@ -443,7 +353,6 @@ function Sheet() {
     });
   }
 
-<<<<<<< HEAD
   const shareSheet = () => {
     setShare(true);
   }
@@ -585,54 +494,4 @@ function Sheet() {
     </div>
   </div>);}
  
-=======
-  return (
-    <div ref={gridContainerRef}>
-    <Grid
-      columns={columns}
-      data={data}
-      style={{
-        borderCollapse: 'collapse', 
-        border: '1px solid #ddd', 
-        table: {
-          border: '1px solid #ccc',
-          borderCollapse: 'collapse'
-        },
-        th: {
-          'background-color': '#f0f0f0',
-          color: '#000',
-          'text-align': 'center',
-          border: '1px solid #ccc',
-          borderCollapse: 'collapse'
-        },
-        td: {
-          'text-align': 'center',
-          border: '1px solid #ccc',
-          borderCollapse: 'collapse'
-        }
-      }}
-      search={{
-        server: {
-          url: (prev, keyword) => `${prev}?search=${keyword}`
-        }
-      }}
-      server={{
-        method: 'POST',
-        headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
-        url: 'http://localhost:8080/api/v1/getUpdatesForSubscription',
-        body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": null}', // it's -1 to get all the updates. TODO change hardcoded publisher and sheet
-        then: data => {
-          // console.log(data.value[0].payload.split("\n"))
-          let resultList = data.value[0].payload.split("\n")
-          resultList.pop() // Removes empty string at the end
-          return reverseParse(resultList);
-        }
-      }}
-    />
-    <button onClick={saveSheetUpdates}>Save</button>
-  </div>
-  );
-}
-
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 export default Sheet;
