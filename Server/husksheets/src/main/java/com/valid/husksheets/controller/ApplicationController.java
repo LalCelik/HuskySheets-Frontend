@@ -25,13 +25,6 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1")
 public class ApplicationController {
-<<<<<<< HEAD
-    @Autowired
-    private SheetService sheetService;
-
-    @Autowired
-    private UserSystem userSystem;
-=======
 
     @Autowired
     private SheetService sheetService; // = new SheetService();
@@ -51,7 +44,6 @@ public class ApplicationController {
         sheetDao = sheetDaoNew;
         sheetService = sheetServiceNew;
     }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
@@ -121,11 +113,7 @@ public class ApplicationController {
             return new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         } else {
             List<Update> updates = new ArrayList<>();
-<<<<<<< HEAD
-            Update update = new Update(STATUS.PUBLISHED, 0, "");
-=======
             Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
             updates.add(update);
 
             message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
@@ -250,17 +238,11 @@ public class ApplicationController {
             try {
                 return filterGetSheet(argument.getPublisher(), argument.getName(), STATUS.PUBLISHED, argument.getId());
             } catch (Exception e) {
-<<<<<<< HEAD
                 message = "Couldn't get the sheet updates: " + e.getMessage();
-=======
-                message = "Couldn't get the sheet updatecs: " + e.getMessage();
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
                 return new Result(false, message, null);
             }
         }
     }
-<<<<<<< HEAD
-=======
 
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
@@ -309,5 +291,4 @@ public class ApplicationController {
             }
         }
     }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

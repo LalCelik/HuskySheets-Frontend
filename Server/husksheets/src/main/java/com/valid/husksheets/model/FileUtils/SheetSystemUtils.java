@@ -4,11 +4,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-<<<<<<< HEAD
-=======
 import com.valid.husksheets.model.Sheet;
 import com.valid.husksheets.model.Update;
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 import com.valid.husksheets.model.SheetSystem;
 
 /**
@@ -23,11 +20,6 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
      * @throws IOException for any IO errors
      */
     @Override
-<<<<<<< HEAD
-    public SheetSystem readFromFile(String filePath) throws IOException {
-        String jsonString = Files.readString(Path.of(filePath));
-        return new Gson().fromJson(jsonString, SheetSystem.class);
-=======
     public SheetSystem readFromFile(String filePath) {
         try {
         String jsonString = Files.readString(Path.of(filePath));
@@ -35,7 +27,6 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
         } catch (IOException e) {
             return null;
         }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     }
 
     /**
@@ -49,8 +40,6 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
         String jsonOutput = new Gson().toJson(sheetSystem);
         Files.writeString(Path.of(filePath), jsonOutput);
     }
-<<<<<<< HEAD
-=======
 
     public void writeUpdateToFile(Sheet sheet, Update update, String filePath) throws IOException {
         String jsonString = Files.readString(Path.of(filePath));
@@ -58,5 +47,4 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
         sheetSystem.updateSystem(sheet, update);
         writeToFile(sheetSystem, filePath);
     }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

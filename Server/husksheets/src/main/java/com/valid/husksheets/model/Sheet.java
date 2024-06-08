@@ -1,10 +1,6 @@
 //class for a sheet
 package com.valid.husksheets.model;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 import java.util.List;
 import java.util.Objects;
 
@@ -55,14 +51,10 @@ public class Sheet {
         return publisher;
     }
 
-<<<<<<< HEAD
-
-=======
      /**
      * Overrides equals
      * @return true if is equal
      */
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,18 +63,13 @@ public class Sheet {
         return Objects.equals(name, sheet.name) && Objects.equals(publisher, sheet.publisher);
     }
 
-<<<<<<< HEAD
-=======
      /**
      * Overriding for the equals method
      */
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     @Override
     public int hashCode() {
         return Objects.hash(name, publisher);
     }
-<<<<<<< HEAD
-=======
 
      /**
      * Gets the last update's id
@@ -110,5 +97,4 @@ public class Sheet {
     public boolean sheetEquals(Sheet other) {
         return (other.getName().equals(name)) && other.getPublisher().equals(publisher);
     }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

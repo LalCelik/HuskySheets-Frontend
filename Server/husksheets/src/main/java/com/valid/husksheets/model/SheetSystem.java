@@ -48,8 +48,6 @@ public class SheetSystem {
         sheets.add(sheet);
     }
 
-<<<<<<< HEAD
-=======
     public boolean containsSheet(Sheet sheet) {
         boolean equal = false;
         for(Sheet s: sheets) {
@@ -61,7 +59,6 @@ public class SheetSystem {
         return equal;
     }
 
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     /**
      * Delete the given sheet to the system
      * @param sheet Sheet that we want to delete
@@ -70,8 +67,6 @@ public class SheetSystem {
         sheets.remove(sheet);
     }
 
-<<<<<<< HEAD
-=======
     public boolean updateSystem(Sheet sheet, Update update) {
         for(Sheet s: sheets) {
             if(s != null) {
@@ -86,5 +81,4 @@ public class SheetSystem {
         return false;
     }
 
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }

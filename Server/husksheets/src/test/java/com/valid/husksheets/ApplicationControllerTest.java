@@ -1,8 +1,4 @@
 package com.valid.husksheets;
-<<<<<<< HEAD
-
-import org.junit.jupiter.api.Test;
-=======
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.JSON.Argument;
 import com.valid.husksheets.model.UserSystem;
@@ -39,13 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class ApplicationControllerTest {
-<<<<<<< HEAD
-=======
     private String path = "src/main/resources/sheetsTest.json";
     SheetDao sheetDao = new SheetDao(path);
     SheetService sheetService = new SheetService(path);
@@ -87,5 +80,4 @@ public class ApplicationControllerTest {
         }
 
     }
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
 }
