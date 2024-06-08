@@ -132,21 +132,112 @@ public class FormulaParseJava {
 
   // TODO colon operation
 //  x : y, if x and y are Ref and x <= y, return the range of cells denoted; otherwise error.
-
-//  IF( e1, e2, e3 ) if e1 is not zero return the value of e2, if it is zero return e3's value; error if e1 is not a number
-//  SUM( e1 ... en ) if all values are numbers then return their sum; otherwise error
-//  MIN( e1 ... en ) if all values are numbers then return the smallest value; otherwise error
-//  MAX( e1 ... en ) if all values are numbers then return the largest value; otherwise error
-//  AVG( e1 ... en ) if all values are numbers then return their average; otherwise error
-//  CONCAT( e1 ... en ) coerce all values to strings and concatenate them
+//  CONCAT(e1 ... en) coerce all values to strings and concatenate them
 
 
-//  public double debug(double e) {
-//    return e;
-//  }
-//
-//  public boolean validExpression(String exp) {
-//
-//  }
+  public int if(List stringList) {
+    if (stringList.size() == 3) {
+      try {
+        String first = stringList.get(0);
+        String second = stringList.get(1);
+        String third = stringList.get(2);
+        double a = Double.parseDouble(first);
+        if (a == 0) {
+          return String third;
+        }
+        return String second;
+      } catch (NumberFormatException nfe) {
+        throw new IllegalArgumentException("e1 needs to be a number")
+      }
+      throw new IllegalArgumentException("Need to enter 3 numbers")
+    }
+  }
+
+  public double sum(List stringList) {
+    List<Double> doubleList = new ArrayList<Double>();
+    double output = 0;
+    for (int i = 0; i < stringList.size(); i++) {
+      try {
+        double num = Double.parseDouble(stringList.get(i));
+        doubleList.append(num);
+      } catch(NumberFormatException nfe) {
+        throw new IllegalArgumentException("Cannot sum non-numbers")
+      }
+    }
+    for (int j = 0; j < doubleList.size(); j++) {
+      output += doubleList.get(j);
+    }
+    return output;
+  }
+
+  public double min(List stringList) {
+    List<Double> doubleList = new ArrayList<Double>();
+    double minimum = 0;
+    for (int i = 0; i < stringList.size(); i++) {
+      try {
+        double num = Double.parseDouble(stringList.get(i));
+        doubleList.append(num);
+      } catch(NumberFormatException nfe) {
+        throw new IllegalArgumentException("Cannot find the minimum of non-numbers")
+      }
+    }
+    for (int j = 0; j < doubleList.size(); j++) {
+      if (doubleList.get(j) < minimum) {
+        minimum = doubleList.get(j);
+      }
+    }
+    return minimum;
+  }
+
+  public double max(List stringList) {
+    List<Double> doubleList = new ArrayList<Double>();
+    double maximum = 0;
+    for (int i = 0; i < stringList.size(); i++) {
+      try {
+        double num = Double.parseDouble(stringList.get(i));
+        doubleList.append(num);
+      } catch(NumberFormatException nfe) {
+        throw new IllegalArgumentException("Cannot find the maximum of non-numbers")
+      }
+    }
+    for (int j = 0; j < doubleList.size(); j++) {
+      if (doubleList.get(j) > maximum) {
+        maximum = doubleList.get(j);
+      }
+    }
+    return maximum;
+  }
+
+  public double avg(List stringList) {
+    List<Double> doubleList = new ArrayList<Double>();
+    double average = 0;
+    for (int i = 0; i < stringList.size(); i++) {
+      try {
+        double num = Double.parseDouble(stringList.get(i));
+        doubleList.append(num);
+      } catch(NumberFormatException nfe) {
+        throw new IllegalArgumentException("Cannot find the average of non-numbers")
+      }
+    }
+
+    if (doubleList.size() == 0) {
+      return 0;
+    }
+
+    for (int j = 0; j < doubleList.size(); j++) {
+      average += doubleList.get(i);
+    }
+    average = average / doubleList.size();
+    return average;
+  }
+
+  public String concat()
+
+
+
+
+  public String debug(String e) {
+    return e;
+  }
 
 }
