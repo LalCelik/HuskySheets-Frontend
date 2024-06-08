@@ -70,7 +70,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
         //Trying to create a sheet that already exists
         assertEquals(appControl.createSheet(authentication, new Argument("user4", "Example1", 0, "")),
-         new Result(false, "Sheet already exists. It couldn't be saved to database", null));
+         new Result(false, "Sheet already exists. It couldn't be saved to JSON", null));
         assertEquals(sheetSystem.containsSheet(new Sheet("name", null, new ArrayList<>())), false);
 
         //Succesfully creating a sheet
@@ -128,6 +128,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 
     @Test
     void getSheetsTest() {
-        
+        //Authenticate with user1 for this test
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
+        Argument argument4 = new Argument("user1", "name", 0, "");
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+        //Succesfully creating a sheet
+        appControl.createSheet(authentication, argument4);
+        SheetSystem sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getSheets().size(), 2);
+
+        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
+        Result resultSuccess = new Result(true, "Sheet has been created", null);
+        Result resultDiffPublisher = new Result(false, "You don't have access to this request", null);
+      
+        assertEquals(appControl.getSheets(new Argument("user4", "name", 0, "")), new Result(true,
+         "Outputting sheets in the system:", new ArrayList<>())); //this isn't supposed to be empty
+
+        //reset the testing JSON
+        try {
+        utils.writeToFile(sheetSystemOrginal, path);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

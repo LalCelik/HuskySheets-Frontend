@@ -116,11 +116,10 @@ public class ApplicationController {
             Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
             updates.add(update);
 
-            message = sheetService.createSheet(argument.getPublisher(), argument.getName(), updates);
-            if (message.equals("success")) {
+            if (sheetService.createSheet(argument.getPublisher(), argument.getName(), updates)) {
                 return new Result(true, "Sheet has been created", null);
             } else {
-                return new Result(false, message, null);
+                return new Result(false, "Sheet already exists. It couldn't be saved to JSON", null);
             }
         }
     }
@@ -141,11 +140,10 @@ public class ApplicationController {
         } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
-            message = sheetService.deleteSheet(argument.getPublisher(), argument.getName());
-            if (message.equals("success")) {
+            if (sheetService.deleteSheet(argument.getPublisher(), argument.getName())) {
                 return new Result(true, "Sheet has been deleted", null);
             } else {
-                return new Result(false, message, null);
+                return new Result(false, "Couldn't be deleted", null);
             }
         }
     }
@@ -158,10 +156,10 @@ public class ApplicationController {
      */
     @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getSheets(Authentication authentication, @RequestBody Argument argument) {
+    public Result getSheets(@RequestBody Argument argument) {
         if (argument.getPublisher() == null) {
             return new Result(false, "Publisher can't be null", null);
-        } else if (authentication.getName().equals(argument.getPublisher())) {
+        } else {
             SheetDao sheetDao = new SheetDao();
             try {
                 List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
@@ -174,9 +172,10 @@ public class ApplicationController {
                 message = "Sheet couldn't be retrieved: " + e.getMessage();
                 return new Result(false, message, null);
             }
-        } else {
-            return new Result(false, "Sheet couldn't be retrieved, you don't have access", null);
         }
+        // } else {
+        //     return new Result(false, "Sheet couldn't be retrieved, you don't have access", null);
+        // }
     }
 
     private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
