@@ -38,7 +38,7 @@ import java.util.List;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class ApplicationControllerTest {
+ public class ApplicationControllerTest {
     private String path = "src/main/resources/sheetsTest.json";
     SheetDao sheetDao = new SheetDao(path);
     SheetService sheetService = new SheetService(path);
@@ -124,5 +124,10 @@ public class ApplicationControllerTest {
         sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(),1);
         assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
+    }
+
+    @Test
+    void getSheetsTest() {
+        
     }
 }

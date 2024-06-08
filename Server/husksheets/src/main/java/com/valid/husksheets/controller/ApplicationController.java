@@ -158,10 +158,10 @@ public class ApplicationController {
      */
     @PostMapping("/getSheets")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Result getSheets(@RequestBody Argument argument) {
+    public Result getSheets(Authentication authentication, @RequestBody Argument argument) {
         if (argument.getPublisher() == null) {
             return new Result(false, "Publisher can't be null", null);
-        } else {
+        } else if (authentication.getName().equals(argument.getPublisher())) {
             SheetDao sheetDao = new SheetDao();
             try {
                 List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
@@ -171,9 +171,11 @@ public class ApplicationController {
                 }
                 return new Result(true, "Outputting sheets in the system:", arguments);
             } catch (Exception e) {
-                message = "Sheet couldn't be deleted: " + e.getMessage();
+                message = "Sheet couldn't be retrieved: " + e.getMessage();
                 return new Result(false, message, null);
             }
+        } else {
+            return new Result(false, "Sheet couldn't be retrieved, you don't have access", null);
         }
     }
 
