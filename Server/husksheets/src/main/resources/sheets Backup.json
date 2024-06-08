@@ -7,4 +7,8 @@
       {"status":"PUBLISHED","id":1,"update":"$A3 8\n$B1 800000\n$C2 3333\n"},
       {"status":"REQUESTED","id":2,"update":"$A6 8\n$B2 12\n$C3 33123\n"},
       {"status":"REQUESTED","id":3,"update":"$A8 8\n$B3 312\n$C4 31333\n"},
+<<<<<<< HEAD
+      {"status":"PUBLISHED","id":4,"update":"$A9 8\n$B4 6540\n$C5 99\n"}]}]}
+=======
       {"status":"PUBLISHED","id":4,"update":"$A9 8\n$AB4 6540\n$C5 99\n"}]}]}
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02

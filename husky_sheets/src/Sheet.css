@@ -32,6 +32,29 @@
   .Sheet-link {
     color: #61dafb;
   }
+<<<<<<< HEAD
+
+  .dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc; /* Border style */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dialog-content {
+    text-align: center;
+  }
+  
+  .dialog button {
+    margin-top: 10px;
+  }
+=======
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   
   @keyframes Sheet-logo-spin {
     from {

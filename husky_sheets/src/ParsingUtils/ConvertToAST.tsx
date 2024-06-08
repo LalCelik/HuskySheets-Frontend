@@ -1,0 +1,124 @@
+import React, { useState } from 'react';
+import NumberVal from './NumberVal.tsx';
+import OperVal from './OperVal.tsx';
+import Function from './Function.tsx';
+import Operation from './Operation.tsx';
+
+
+/**
+ * Ownership: Ira
+ * @param tokens String parsed into tokens from "StringToToken.tsx"
+ * @returns an Abstract Syntax Tree (AST)
+ */
+
+function ConvertToAST(tokens) {
+    function parseExpression(tokens) {
+
+        // only valid handlers 
+        const validVals = ['IF', 'SUM', 'MIN', 'MAX', 'AVG', 'CONCAT', 'DEBUG',
+             ':', '<','>', '<>', '&', '=', '+', ',', '*', '-',
+            '/', '|', '(', ')'];
+
+        if (tokens.length === 0) {
+            return null;
+        }
+
+        let lowestPrecedenceIndex = -1;
+        let lowestPrecedence = 0;
+        let parenthesesCount = 0;
+        let funcPresent = [];
+        let parens = [];
+
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+
+            // keep track of where function handlers are located in the token sequence
+            if (['IF', 'SUM', 'MIN', 'MAX', 'AVG', 'CONCAT', 'DEBUG'].includes(token.props.children)
+                && (i == 0)) {
+                funcPresent.push(i); 
+            }
+
+            // keep track of the parentheses 
+            if (token.props.children === '(') {
+                parenthesesCount++;
+                parens.push(i);
+            } else if (token.props.children === ')') {
+                // keep track of where the end of a function is, if any present
+                if (funcPresent.length === 1) {
+                    funcPresent.push(i - 1); 
+                }
+                parenthesesCount--;
+                parens.push(i);
+            }
+
+            // looking at operations outside of a set of parentheses
+            if (parenthesesCount === 0) {
+                if (['+', '-'].includes(token.props.children) && lowestPrecedence >= 0) {
+                    lowestPrecedence = 1;
+                    lowestPrecedenceIndex = i;
+                } else if (['*', '/'].includes(token.props.children) && lowestPrecedence >= 0) {
+                    lowestPrecedence = 2;
+                    lowestPrecedenceIndex = i;
+                }
+                else if (['<', '>', "<>", "=", "&", "|"].includes(token.props.children) && lowestPrecedence >= 0) {
+                    lowestPrecedence = 3;
+                    lowestPrecedenceIndex = i;
+                }
+
+            }
+            
+        }
+        
+        // error handling for missing parentheses
+        if ((parenthesesCount === 1) || (parenthesesCount === -1)) {
+            throw Error("Invalid expression - missing opening or closing parentheses");
+        }
+
+        // if nothing outsidde the parentheses
+        // were detected in expression so lines 55-65 is skipped
+        // ex: =(1+2) is now parsed as =1+2
+        if (lowestPrecedence === 0 
+            && parenthesesCount === 0 
+            && parens.length !== 0 
+            && funcPresent.length === 0) {
+            // re
+            return parseExpression(tokens.slice(1, tokens.length - 1));
+        }
+        // grab numeric value
+        else if (lowestPrecedenceIndex === -1 && parens.length === 0) {
+            return new NumberVal(parseFloat(tokens[0].props.children));
+        }
+        
+        
+        let operator = new OperVal(null);
+        let leftTokens = null;
+        let rightTokens = null;
+        
+        // if no function present, continue dividing into left/right normally
+        if (funcPresent.length === 0) {
+            operator = new OperVal(tokens[lowestPrecedenceIndex].props.children);
+            leftTokens = tokens.slice(0, lowestPrecedenceIndex);
+            rightTokens = tokens.slice(lowestPrecedenceIndex + 1);    
+        }
+        // if there is a function, stop parsing and just return the function
+        else {
+            let args = tokens.slice(funcPresent[0], funcPresent[1]+1);
+            let evalArgs = []
+            for (let i = 2; i < args.length; i++) {
+                evalArgs.push(args[i].props.children);
+            }
+            return new Function(args[0].props.children, evalArgs)
+        }
+
+        // build the tree by recursively calling on the left and right branches
+        return new Operation(
+            operator,
+            parseExpression(leftTokens),
+            parseExpression(rightTokens)
+        );
+    }
+    
+    return parseExpression(tokens);
+}
+
+export default ConvertToAST;

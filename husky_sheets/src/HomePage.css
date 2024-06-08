@@ -66,6 +66,8 @@
     flex-direction: column;
     width: 250px;
     padding-top: 15px;
+<<<<<<< HEAD
+=======
   }
 
   .sheets-table {
@@ -102,4 +104,5 @@
 .sheets-table td:nth-child(2) {
     text-align: center;
     width: 80%;
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   }

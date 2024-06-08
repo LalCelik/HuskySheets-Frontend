@@ -20,6 +20,10 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "reactjs-popup": "^2.0.6",
+<<<<<<< HEAD
+    "rooks": "^7.14.1",
+=======
+>>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
     "web-vitals": "^2.1.4"
   },
   "scripts": {
