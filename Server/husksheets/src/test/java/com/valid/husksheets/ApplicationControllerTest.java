@@ -78,6 +78,69 @@ public class ApplicationControllerTest {
         } catch (IOException e) {
           throw new RuntimeException(e.getMessage());
         }
+    }
 
+    @Test
+    void deleteSheetTest() {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user4", "password");
+        Argument argument4 = new Argument("user4", "name", 0, "");
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+        //Succesfully creating a sheet
+        appControl.createSheet(authentication, argument4);
+        SheetSystem sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getSheets().size(), 2);
+
+        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
+        Result resultSuccess = new Result(true, "Sheet has been created", null);
+        Result resultDiffPublisher = new Result(false, "You don't have access to this request", null);
+      
+        //Trying to delete a sheet for a different publisher
+        assertEquals(appControl.deleteSheet(authentication, argumentExisting), resultDiffPublisher);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user1", new ArrayList<>())), false);
+
+        //Trying to delete a sheet with null publisher
+        assertEquals(appControl.deleteSheet(authentication, new Argument(null, "name", 0, "")), new Result(false, "Publisher or sheetName can't be null", null));
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "null", new ArrayList<>())), false);
+        sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getSheets().size(), 2);
+
+        //Trying to delete a sheet that doesn't exist
+        assertEquals(appControl.deleteSheet(authentication, new Argument("user4", "DNE", 0, "")),
+        new Result(false, "Couldn't be deleted", null));
+        assertEquals(sheetSystem.getSheets().size(), 2);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), true);
+
+        //Successfully deleting a sheet
+        assertEquals(appControl.deleteSheet(authentication, argument4),
+        new Result(true, "Sheet has been deleted", null));
+        sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getSheets().size(),1);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
+    }
+
+    @Test
+    void getSheetsTest() {
+        //Authenticate with user1 for this test
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
+        Argument argument4 = new Argument("user1", "name", 0, "");
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+        //Succesfully creating a sheet
+        appControl.createSheet(authentication, argument4);
+        SheetSystem sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getSheets().size(), 2);
+
+        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
+        Result resultSuccess = new Result(true, "Sheet has been created", null);
+        Result resultDiffPublisher = new Result(false, "You don't have access to this request", null);
+      
+        assertEquals(appControl.getSheets(new Argument("user4", "name", 0, "")), new Result(true,
+         "Outputting sheets in the system:", new ArrayList<>())); //this isn't supposed to be empty
+
+        //reset the testing JSON
+        try {
+        utils.writeToFile(sheetSystemOrginal, path);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
