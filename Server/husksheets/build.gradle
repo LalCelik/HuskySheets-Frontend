@@ -13,10 +13,10 @@ java {
 }
 
 test {
-    finalizedBy jacocoTestReport // report is always generated after tests run
+    finalizedBy jacocoTestReport 
 }
 jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
+    dependsOn test 
 }
 
 repositories {
