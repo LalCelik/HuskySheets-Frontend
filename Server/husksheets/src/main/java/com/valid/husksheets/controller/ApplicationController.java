@@ -257,10 +257,9 @@ public class ApplicationController {
         } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
             if(sheet == null) {
-                return new Result(true, "There is no such sheet, couldn't update", null);  
+                return new Result(false, "There is no such sheet, couldn't update", null);  
             } else {
             int lastID = sheet.getLastUpdateId();
             lastID++;
@@ -268,7 +267,7 @@ public class ApplicationController {
             Update newUpdate = new Update(STATUS.PUBLISHED, lastID, argument.getPayload());
             sheet.addUpdate(newUpdate);
             if(sheetDao.updateFile(sheet, newUpdate)) {
-                return new Result(true, "Updated published", null);
+                return new Result(true, "Update published", null);
             } else {
                 return new Result(false, "Couldn't update Publisher", null);  
             }
@@ -285,18 +284,21 @@ public class ApplicationController {
         } else if (authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request. You are the publisher.", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+            if(sheet == null) {
+                return new Result(false, "There is no such sheet, couldn't update", null);  
+            } else {
             int lastID = sheet.getLastUpdateId();
             lastID++;
 
             Update newUpdate = new Update(STATUS.REQUESTED, lastID, argument.getPayload());
             sheet.addUpdate(newUpdate);
             if(sheetDao.updateFile(sheet, newUpdate)) {
-                return new Result(true, "Updated published", null);
+                return new Result(true, "Update published", null);
             } else {
                 return new Result(false, "Couldn't update Publisher", null);  
             }
+        }
         }
     }
 }

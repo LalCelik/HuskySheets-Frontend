@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.valid.husksheets.model.SheetSystem;
 import com.valid.husksheets.model.Update;
 import com.valid.husksheets.model.Sheet;
+import com.valid.husksheets.model.STATUS;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -153,21 +154,114 @@ public class ApplicationControllerTest {
 
     @Test
     void getUpdatesForPublishedTest() {
-    Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
-    Argument noSheet = new Argument("user1", "Sheet1", 0, "");
-    Argument sheet = new Argument("user1", "Example1", 0, "");
+    SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+
+    Authentication authentication = new UsernamePasswordAuthenticationToken("user2", "password");
+    Authentication authentication1 = new UsernamePasswordAuthenticationToken("user1", "password");
+    Argument sheet0 = new Argument("user1", "Example1", 0, "");
+    Argument sheet1 = new Argument("user1", "Example1", 1, "");
+    Argument sheet = new Argument("user1", "Example1", 1, "UPDATE ADDED ");
     
     //No sheet found
-    assertEquals(appControl.getUpdatesForPublished(authentication, noSheet), new Result(false, "No sheet found", null));
+    assertEquals(appControl.getUpdatesForPublished(authentication, sheet0),
+     new Result(false, "You don't have access to this request", null));
     
-    //No Updates found
     List<Argument> list = new ArrayList<>();
     list.add(sheet);
-    Result noUpdate = new Result(true, "Getting updates: No updates found", list);
-    assertEquals(appControl.getUpdatesForPublished(authentication, sheet), noUpdate);
+    List<Argument> listNone = new ArrayList<>();
+    listNone.add(sheet1);
 
-    Argument sheetUpdate = new Argument("user1", "Example1", 0, "UPDATE ADDED");
-  //  assertEquals(appControl.updatePublished(sheetUpdate, authentication), noUpdate);
+    Result noUpdate = new Result(true, "Getting updates: No updates found", listNone);
+    Result update = new Result(true, "Getting updates", list);
 
+    //No Updates found
+    assertEquals(appControl.getUpdatesForPublished(authentication1, sheet), noUpdate);
+
+    Argument sheetUpdate = new Argument("user1", "Example1", 1, "UPDATE ADDED ");
+    appControl.updateSubscription(authentication, sheetUpdate);
+
+    //success
+    assertEquals(appControl.getUpdatesForPublished(authentication1, sheet0), update);
+
+    //reset the testing JSON
+    try {
+        utils.writeToFile(sheetSystemOrginal, path);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Test
+    void updatePublishedTest() {
+        Argument argument = new Argument("user1",  "Example1",0,  "");
+        Argument argument2 = new Argument("user2",  "Example2",0,  "");
+        Argument argument3 = new Argument("user1",  "Example2",0,  "");
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
+
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+        SheetSystem sheetSystem = sheetSystemOrginal;
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        // No access to sheet
+        assertEquals(appControl.updatePublished(argument2, authentication),
+         new Result(false, "You don't have access to this request", null));
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        // No such sheet
+        assertEquals(appControl.updatePublished(argument3, authentication),
+         new Result(false, "There is no such sheet, couldn't update", null));
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        //success
+        assertEquals(appControl.updatePublished(argument, authentication),
+         new Result(true, "Update published", null));
+         sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getAllUpdates().size(), 2);
+        assertEquals(sheetSystem.getAllUpdates().get(1).getStatus(), STATUS.PUBLISHED);
+
+        //reset the testing JSON
+        try {
+            utils.writeToFile(sheetSystemOrginal, path);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+    }
+
+    @Test
+    void updateSubscriptionTest() {
+
+        Argument argument = new Argument("user2",  "Example1",0,  "");
+        Argument argument2 = new Argument("user1",  "Example1",0,  "");
+        Argument argument3 = new Argument("user1",  "Example2",0,  "");
+        Authentication authentication = new UsernamePasswordAuthenticationToken("user2", "password");
+
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
+        SheetSystem sheetSystem = sheetSystemOrginal;
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        // No access to sheet
+        assertEquals(appControl.updateSubscription(authentication, argument),
+        new Result(false, "You don't have access to this request. You are the publisher.", null));
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        // No such sheet
+        assertEquals(appControl.updateSubscription(authentication, argument3),
+         new Result(false, "There is no such sheet, couldn't update", null));
+        assertEquals(sheetSystem.getAllUpdates().size(), 1);
+
+        //success
+        assertEquals(appControl.updateSubscription(authentication, argument2),
+         new Result(true, "Update published", null));
+        
+        sheetSystem = utils.readFromFile(path);
+        assertEquals(sheetSystem.getAllUpdates().size(), 2);
+        assertEquals(sheetSystem.getAllUpdates().get(1).getStatus(), STATUS.REQUESTED);
+
+        //reset the testing JSON
+        try {
+            utils.writeToFile(sheetSystemOrginal, path);
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
     }
 }

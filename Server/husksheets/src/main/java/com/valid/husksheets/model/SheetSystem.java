@@ -81,4 +81,12 @@ public class SheetSystem {
         return false;
     }
 
+    public List<Update> getAllUpdates() {
+        List<Update> list = new ArrayList<>();
+        for(Sheet s: sheets) {
+           list.addAll(s.getUpdates());
+        }  
+        return list;
+    }
+
 }

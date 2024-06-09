@@ -11,6 +11,8 @@ import java.util.Objects;
 public class Sheet {
     private final String name;
     private final String publisher; //the user that created the sheet
+    //add subsribers
+    //private final List<String> subscribers;
     private final List<Update> updates; //2d array of cells
 
     /**
@@ -23,6 +25,8 @@ public class Sheet {
      */
     public Sheet(String name, String publisher, List<Update> updates) {
         this.publisher = publisher;
+        //add these
+        //this.subscribers = subscribers;
         this.name = name;
         this.updates = updates;
     }
