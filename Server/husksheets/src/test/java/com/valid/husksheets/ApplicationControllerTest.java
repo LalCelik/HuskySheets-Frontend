@@ -120,21 +120,28 @@ public class ApplicationControllerTest {
 
     @Test
     void getSheetsTest() {
+        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
         //Authenticate with user1 for this test
         Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
-        Argument argument4 = new Argument("user1", "name", 0, "");
-        SheetSystem sheetSystemOrginal = utils.readFromFile(path);
-        //Succesfully creating a sheet
+        Argument argument4 = new Argument("user1", "Sheet1", 0, "");
+        //Creating a sheet as an example
         appControl.createSheet(authentication, argument4);
         SheetSystem sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 2);
 
-        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
-        Result resultSuccess = new Result(true, "Sheet has been created", null);
-        Result resultDiffPublisher = new Result(false, "You don't have access to this request", null);
-      
-        assertEquals(appControl.getSheets(new Argument("user4", "name", 0, "")), new Result(true,
-         "Outputting sheets in the system:", new ArrayList<>())); //this isn't supposed to be empty
+        List<Argument> listArgs = new ArrayList<>();
+        Argument ExArg = new Argument("user1", "Example1", null, null);
+        Argument newArg = new Argument("user1", "Sheet1", null, null);
+        listArgs.add(ExArg);
+        listArgs.add(newArg);
+
+        //User isn't in system
+        assertEquals(appControl.getSheets(new Argument("user555", "SheetName", 0, "")), new Result(false,
+        "This Publisher doesn't have any sheets in system or doesn't exist", null));
+        
+        //succesfully 
+        assertEquals(appControl.getSheets(new Argument("user1", "name", 0, "")), new Result(true,
+         "Outputting sheets in the system:", listArgs));
 
         //reset the testing JSON
         try {
@@ -142,5 +149,25 @@ public class ApplicationControllerTest {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Test
+    void getUpdatesForPublishedTest() {
+    Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
+    Argument noSheet = new Argument("user1", "Sheet1", 0, "");
+    Argument sheet = new Argument("user1", "Example1", 0, "");
+    
+    //No sheet found
+    assertEquals(appControl.getUpdatesForPublished(authentication, noSheet), new Result(false, "No sheet found", null));
+    
+    //No Updates found
+    List<Argument> list = new ArrayList<>();
+    list.add(sheet);
+    Result noUpdate = new Result(true, "Getting updates: No updates found", list);
+    assertEquals(appControl.getUpdatesForPublished(authentication, sheet), noUpdate);
+
+    Argument sheetUpdate = new Argument("user1", "Example1", 0, "UPDATE ADDED");
+  //  assertEquals(appControl.updatePublished(sheetUpdate, authentication), noUpdate);
+
     }
 }

@@ -162,14 +162,20 @@ public class ApplicationController {
         if (argument.getPublisher() == null) {
             return new Result(false, "Publisher can't be null", null);
         } else {
-            SheetDao sheetDao = new SheetDao();
+            //SheetDao sheetDao = new SheetDao();
             try {
                 List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
+                if(list.size() == 0) {
+                 return new Result(false,
+                  "This Publisher doesn't have any sheets in system or doesn't exist", null);
+
+                } else {
                 List<Argument> arguments = new ArrayList<>();
                 for (Sheet sheet : list) {
                     arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
                 }
                 return new Result(true, "Outputting sheets in the system:", arguments);
+            }
             } catch (Exception e) {
                 message = "Sheet couldn't be deleted: " + e.getMessage();
                 return new Result(false, message, null);
@@ -178,7 +184,6 @@ public class ApplicationController {
     }
 
     private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
-        SheetDao sheetDao = new SheetDao();
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
@@ -186,7 +191,6 @@ public class ApplicationController {
         }
 
         String result = "";
-
         int lastID = 0;
 
         for (Update u : sheet.getUpdates()) {
@@ -255,6 +259,9 @@ public class ApplicationController {
         } else {
             SheetDao sheetDao = new SheetDao();
             Sheet sheet = sheetDao.getSheet(argument.getPublisher(), argument.getName());
+            if(sheet == null) {
+                return new Result(true, "There is no such sheet, couldn't update", null);  
+            } else {
             int lastID = sheet.getLastUpdateId();
             lastID++;
 
@@ -265,6 +272,7 @@ public class ApplicationController {
             } else {
                 return new Result(false, "Couldn't update Publisher", null);  
             }
+        }
         }
     }
 
