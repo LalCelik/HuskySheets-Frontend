@@ -64,14 +64,14 @@ public class ApplicationControllerTest {
         //Add more tests here:
         //Trying to create a sheet for a different publisher
         assertEquals(appControl.createSheet(authentication, argumentExisting), resultDiffPublisher);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), false);
 
         //Succesfully creating a sheet
         assertEquals(appControl.createSheet(authentication, argument4), resultSuccess);
         sheetSystem = utils.readFromFile(path);
 
         assertEquals(sheetSystem.getSheets().size(), 2);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), true);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), true);
 
         //reset the testing JSON
         try {
@@ -97,11 +97,11 @@ public class ApplicationControllerTest {
       
         //Trying to delete a sheet for a different publisher
         assertEquals(appControl.deleteSheet(authentication, argumentExisting), resultDiffPublisher);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user1", new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user1", null, new ArrayList<>())), false);
 
         //Trying to delete a sheet with null publisher
         assertEquals(appControl.deleteSheet(authentication, new Argument(null, "name", 0, "")), new Result(false, "Publisher or sheetName can't be null", null));
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "null", new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "null", null, new ArrayList<>())), false);
         sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 2);
 
@@ -109,14 +109,14 @@ public class ApplicationControllerTest {
         assertEquals(appControl.deleteSheet(authentication, new Argument("user4", "DNE", 0, "")),
         new Result(false, "Couldn't be deleted", null));
         assertEquals(sheetSystem.getSheets().size(), 2);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), true);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), true);
 
         //Successfully deleting a sheet
         assertEquals(appControl.deleteSheet(authentication, argument4),
         new Result(true, "Sheet has been deleted", null));
         sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(),1);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), false);
     }
 
     @Test
