@@ -1,31 +1,16 @@
 package com.valid.husksheets;
-import com.valid.husksheets.model.User;
 import com.valid.husksheets.JSON.Argument;
-import com.valid.husksheets.model.UserSystem;
 import com.valid.husksheets.model.Sheet;
 import com.valid.husksheets.JSON.Result;
 import com.valid.husksheets.controller.ApplicationController;
 import org.springframework.security.core.Authentication;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.Collections;
 import java.io.IOException;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import com.google.gson.Gson;
 import com.valid.husksheets.model.SheetSystem;
-import com.valid.husksheets.model.Update;
-import com.valid.husksheets.model.Sheet;
 import com.valid.husksheets.model.STATUS;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.valid.husksheets.model.SheetDao;
@@ -35,26 +20,28 @@ import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class ApplicationControllerTest {
     private String path = "src/main/resources/sheetsTest.json";
-    SheetDao sheetDao = new SheetDao(path);
-    SheetService sheetService = new SheetService(path);
-    ApplicationController appControl = new ApplicationController(sheetDao, sheetService);
-    SheetSystem sheetSystem = new SheetSystem();
-    SheetSystemUtils utils = new SheetSystemUtils();
+    private SheetDao sheetDao = new SheetDao(path);
+    private SheetService sheetService = new SheetService(path);
+    private ApplicationController appControl = new ApplicationController(sheetDao, sheetService);
+    private SheetSystem sheetSystem = new SheetSystem();
+    private SheetSystemUtils utils = new SheetSystemUtils();
+
+
+    private Argument existingSheetArg = new Argument("user1", "Example1", 0, "");
 
     @Test
     void createSheetTest() {
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
-        SheetSystem sheetSystem = utils.readFromFile(path);
+        sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 1);
         assertEquals(sheetSystem.getSheets().get(0).getName(), "Example1");
 
-        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
+        //Argument existingSheetArg = new Argument("user1", "Example1", 0, "");
         Argument argument4 = new Argument("user4", "name", 0, "");
 
         Result resultSuccess = new Result(true, "Sheet has been created", null);
@@ -63,15 +50,15 @@ public class ApplicationControllerTest {
       
         //Add more tests here:
         //Trying to create a sheet for a different publisher
-        assertEquals(appControl.createSheet(authentication, argumentExisting), resultDiffPublisher);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), false);
+        assertEquals(appControl.createSheet(authentication, existingSheetArg), resultDiffPublisher);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
 
         //Succesfully creating a sheet
         assertEquals(appControl.createSheet(authentication, argument4), resultSuccess);
         sheetSystem = utils.readFromFile(path);
 
         assertEquals(sheetSystem.getSheets().size(), 2);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), true);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), true);
 
         //reset the testing JSON
         try {
@@ -88,20 +75,20 @@ public class ApplicationControllerTest {
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
         //Succesfully creating a sheet
         appControl.createSheet(authentication, argument4);
-        SheetSystem sheetSystem = utils.readFromFile(path);
+        sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 2);
 
-        Argument argumentExisting = new Argument("user1", "Example1", 0, "");
+        //Argument argumentExisting = new Argument("user1", "Example1", 0, "");
         Result resultSuccess = new Result(true, "Sheet has been created", null);
         Result resultDiffPublisher = new Result(false, "You don't have access to this request", null);
       
         //Trying to delete a sheet for a different publisher
-        assertEquals(appControl.deleteSheet(authentication, argumentExisting), resultDiffPublisher);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user1", null, new ArrayList<>())), false);
+        assertEquals(appControl.deleteSheet(authentication, existingSheetArg), resultDiffPublisher);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user1", new ArrayList<>())), false);
 
         //Trying to delete a sheet with null publisher
         assertEquals(appControl.deleteSheet(authentication, new Argument(null, "name", 0, "")), new Result(false, "Publisher or sheetName can't be null", null));
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "null", null, new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "null", new ArrayList<>())), false);
         sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 2);
 
@@ -109,14 +96,14 @@ public class ApplicationControllerTest {
         assertEquals(appControl.deleteSheet(authentication, new Argument("user4", "DNE", 0, "")),
         new Result(false, "Couldn't be deleted", null));
         assertEquals(sheetSystem.getSheets().size(), 2);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), true);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), true);
 
         //Successfully deleting a sheet
         assertEquals(appControl.deleteSheet(authentication, argument4),
         new Result(true, "Sheet has been deleted", null));
         sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(),1);
-        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", null, new ArrayList<>())), false);
+        assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
     }
 
     @Test
@@ -127,7 +114,7 @@ public class ApplicationControllerTest {
         Argument argument4 = new Argument("user1", "Sheet1", 0, "");
         //Creating a sheet as an example
         appControl.createSheet(authentication, argument4);
-        SheetSystem sheetSystem = utils.readFromFile(path);
+        sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getSheets().size(), 2);
 
         List<Argument> listArgs = new ArrayList<>();
@@ -158,12 +145,12 @@ public class ApplicationControllerTest {
 
     Authentication authentication = new UsernamePasswordAuthenticationToken("user2", "password");
     Authentication authentication1 = new UsernamePasswordAuthenticationToken("user1", "password");
-    Argument sheet0 = new Argument("user1", "Example1", 0, "");
+    //Argument sheet0 = new Argument("user1", "Example1", 0, "");
     Argument sheet1 = new Argument("user1", "Example1", 1, "");
     Argument sheet = new Argument("user1", "Example1", 1, "UPDATE ADDED ");
     
     //No sheet found
-    assertEquals(appControl.getUpdatesForPublished(authentication, sheet0),
+    assertEquals(appControl.getUpdatesForPublished(authentication, existingSheetArg),
      new Result(false, "You don't have access to this request", null));
     
     List<Argument> list = new ArrayList<>();
@@ -181,7 +168,7 @@ public class ApplicationControllerTest {
     appControl.updateSubscription(authentication, sheetUpdate);
 
     //success
-    assertEquals(appControl.getUpdatesForPublished(authentication1, sheet0), update);
+    assertEquals(appControl.getUpdatesForPublished(authentication1, existingSheetArg), update);
 
     //reset the testing JSON
     try {
@@ -193,13 +180,13 @@ public class ApplicationControllerTest {
 
     @Test
     void updatePublishedTest() {
-        Argument argument = new Argument("user1",  "Example1",0,  "");
+        //Argument argument = new Argument("user1",  "Example1",0,  "");
         Argument argument2 = new Argument("user2",  "Example2",0,  "");
         Argument argument3 = new Argument("user1",  "Example2",0,  "");
         Authentication authentication = new UsernamePasswordAuthenticationToken("user1", "password");
 
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
-        SheetSystem sheetSystem = sheetSystemOrginal;
+        sheetSystem = sheetSystemOrginal;
         assertEquals(sheetSystem.getAllUpdates().size(), 1);
 
         // No access to sheet
@@ -213,7 +200,7 @@ public class ApplicationControllerTest {
         assertEquals(sheetSystem.getAllUpdates().size(), 1);
 
         //success
-        assertEquals(appControl.updatePublished(argument, authentication),
+        assertEquals(appControl.updatePublished(existingSheetArg, authentication),
          new Result(true, "Update published", null));
          sheetSystem = utils.readFromFile(path);
         assertEquals(sheetSystem.getAllUpdates().size(), 2);
@@ -236,7 +223,7 @@ public class ApplicationControllerTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("user2", "password");
 
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
-        SheetSystem sheetSystem = sheetSystemOrginal;
+        sheetSystem = sheetSystemOrginal;
         assertEquals(sheetSystem.getAllUpdates().size(), 1);
 
         // No access to sheet

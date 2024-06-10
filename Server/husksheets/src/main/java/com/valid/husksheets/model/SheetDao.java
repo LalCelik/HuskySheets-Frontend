@@ -40,7 +40,6 @@ public class SheetDao {
      * @throws IOException for any IO errors
      */
     public boolean saveSheet(Sheet sheet) throws IOException {
-
             if(!Files.exists(Path.of(SHEETS_FILE))) {
                 Files.createFile(Path.of(SHEETS_FILE));
                 SheetSystem sheetSystem = new SheetSystem();

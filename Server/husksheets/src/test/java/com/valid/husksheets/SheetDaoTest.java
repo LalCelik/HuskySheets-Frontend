@@ -26,7 +26,7 @@ public class SheetDaoTest {
     @Test
     void getSheetTest() {
     SheetSystem sheetSystem = utils.readFromFile(path);   
-    Sheet sheet = new Sheet("Example1", "user1", null, new ArrayList<>());
+    Sheet sheet = new Sheet("Example1", "user1", new ArrayList<>());
     Sheet nullSheet = null;
 
     //sheet is found

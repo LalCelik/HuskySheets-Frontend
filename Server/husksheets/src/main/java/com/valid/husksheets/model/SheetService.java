@@ -30,20 +30,18 @@ public class SheetService {
      * @param sheetName the name of the sheet
      * @return a string indicating the result of creating a sheet
      */
-    public String createSheet(String publisher, String sheetName, List<Update> updates) {
-        String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetName, publisher, null, updates);
+    public boolean createSheet(String publisher, String sheetName, List<Update> updates) {
+        Sheet newSheet = new Sheet(sheetName, publisher, updates);
         try {
             boolean creationSuccess = sheetDao.saveSheet(newSheet);
             if(creationSuccess) {
-                message = "success";
+                return true;
             } else {
-                message = "Sheet already exists. It couldn't be saved to database";
+                return false;
             }
         } catch (Exception e) {
-            message = "Sheet couldn't be saved: " + e.getMessage();
+            return false;
         }
-        return message;
     }
 
     /**
@@ -52,18 +50,16 @@ public class SheetService {
      * @param sheetName Name of the sheet
      * @return String of the result message
      */
-    public String deleteSheet(String publisher, String sheetName) {
-        String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetName, publisher, null, new ArrayList<>());
+    public boolean deleteSheet(String publisher, String sheetName) {
+        Sheet newSheet = new Sheet(sheetName, publisher, new ArrayList<>());
         try {
             if(sheetDao.deleteSheet(newSheet)) {
-                message = "success";
+                return true;
             } else {
-                message = "Couldn't be deleted";
+                return false;
             }
         } catch (Exception e) {
-            message = "Sheet couldn't be deleted: " + e.getMessage();
+            return false;
         }
-        return message;
     }
 }
