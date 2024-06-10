@@ -27,23 +27,23 @@ import java.util.List;
 public class ApplicationController {
 
     @Autowired
-    private SheetService sheetService; // = new SheetService();
+    private SheetService sheetService  = new SheetService();
 
     @Autowired
     private UserSystem userSystem = new UserSystem();
 
-    private SheetDao sheetDao; // = new SheetDao();
+    //private SheetDao sheetDao; // = new SheetDao();
 
-    public ApplicationController() {
-        sheetService = new SheetService();
-        sheetDao = new SheetDao();
-    }
+    // public ApplicationController() {
+    //     sheetService = new SheetService();
+    //     sheetDao = new SheetDao();
+    // }
 
 
-    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
-        sheetDao = sheetDaoNew;
-        sheetService = sheetServiceNew;
-    }
+    // public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+    //     sheetDao = sheetDaoNew;
+    //     sheetService = sheetServiceNew;
+    // }
 
     /**
      * Receives username and password and tries to add new user to the UserSystem
@@ -159,7 +159,7 @@ public class ApplicationController {
         if (argument.getPublisher() == null) {
             return new Result(false, "Publisher can't be null", null);
         } else {
-            //SheetDao sheetDao = new SheetDao();
+            SheetDao sheetDao = new SheetDao();
             try {
                 List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
                 if(list.size() == 0) {
@@ -181,6 +181,7 @@ public class ApplicationController {
     }
 
     private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
+        SheetDao sheetDao = new SheetDao();
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
@@ -248,7 +249,7 @@ public class ApplicationController {
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
-
+        SheetDao sheetDao = new SheetDao();
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else if (!authentication.getName().equals(argument.getPublisher())) {
@@ -275,7 +276,7 @@ public class ApplicationController {
     @PostMapping("/updateSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updateSubscription(Authentication authentication, @RequestBody Argument argument) {
-
+        SheetDao sheetDao = new SheetDao();
         if (argument.getPublisher() == null || argument.getName() == null) {
             return new Result(false, "Publisher or sheetName can't be null", null);
         } else if (authentication.getName().equals(argument.getPublisher())) {

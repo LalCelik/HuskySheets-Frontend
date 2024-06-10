@@ -13,25 +13,25 @@ import java.util.List;
  * Will reorganize these classes ignore the mess
  */
 public class SheetDao {
-    private final String SHEETS_FILE; // = "src/main/resources/sheets.json";
-    private final SheetSystemUtils systemUtils; // = new SheetSystemUtils();
+    private final String SHEETS_FILE = "src/main/resources/sheets.json";
+    private final SheetSystemUtils systemUtils = new SheetSystemUtils();
 
-    /**
-     * Instantiate the SheetDao object
-     * @param String of a path the json
-     */
-    public SheetDao(String path) {
-         SHEETS_FILE = path;
-         systemUtils = new SheetSystemUtils();
-    }
+    // /**
+    //  * Instantiate the SheetDao object
+    //  * @param String of a path the json
+    //  */
+    // public SheetDao(String path) {
+    //      SHEETS_FILE = path;
+    //      systemUtils = new SheetSystemUtils();
+    // }
 
-    /**
-     * Instantiate the SheetDao object
-     */
-    public SheetDao() {
-        SHEETS_FILE =  "src/main/resources/sheets.json";
-        systemUtils = new SheetSystemUtils();
-    }
+    // /**
+    //  * Instantiate the SheetDao object
+    //  */
+    // public SheetDao() {
+    //     SHEETS_FILE =  "src/main/resources/sheets.json";
+    //     systemUtils = new SheetSystemUtils();
+    // }
 
     /**
      * Saves a sheet to the JSON file
