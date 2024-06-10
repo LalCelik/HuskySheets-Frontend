@@ -63,13 +63,10 @@ function HomePage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.value);
-
         //let listOfSheets: Sheet[] = [];
         let listOfSheets: ISheet[] = [];
 
         const fetchAllSheets = data.value.map((publisherData) => {
-          console.log("HERE1");
           const dataPublisher = publisherData.publisher;
           return fetch("http://localhost:8080/api/v1/getSheets", {
             method: "POST",
@@ -87,14 +84,15 @@ function HomePage() {
           })
             .then((response1) => response1.json())
             .then((data1) => {
-              console.log(data1.value);
-              listOfSheets = [
-                ...listOfSheets,
-                ...data1.value.map((sheet) => ({
-                  name: sheet.sheet,
-                  publisher: sheet.publisher,
-                })),
-              ];
+              if (data1.success) {
+                listOfSheets = [
+                  ...listOfSheets,
+                  ...data1.value.map((sheet) => ({
+                    name: sheet.sheet,
+                    publisher: sheet.publisher,
+                  })),
+                ];
+              }
             });
         });
         Promise.all(fetchAllSheets).then(() => {
@@ -194,7 +192,6 @@ function HomePage() {
               <tr key={index}>
                 <td>{sheet.name}</td>
                 <td>{sheet.publisher}</td>
-                console.log("HERE3");
                 <td>
                   <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}>
                     Open Sheet
