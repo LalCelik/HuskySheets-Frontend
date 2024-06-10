@@ -1,5 +1,6 @@
 import React from 'react';
 import NumberVal from "./NumberVal.tsx";
+import FormulaParseTS from './AllOperationLogic.tsx';
 
 /**
  * Ownership: Ira
@@ -12,39 +13,40 @@ import NumberVal from "./NumberVal.tsx";
 
 function OperatorHandling(num1, num2, oper) {
     var result = 0;
+    var handler = new FormulaParseTS();
     
     if (oper === "+") {
-        result = parseFloat(num1) + parseFloat(num2);
+        result = handler.plus(num1, num2);
     }
     else if (oper == "-") {
-        result = parseFloat(num1) - parseFloat(num2);
+        result = handler.minus(num1, num2);
     }
     else if (oper == "*") {
-        result = parseFloat(num1) * parseFloat(num2);
+        result = handler.multiply(num1, num2);
     }
     else if (oper == "/") {
-        result = parseFloat(num1) / parseFloat(num2);
+        result = handler.divide(num1, num2);
     }
     else if (oper == "<") {
-        console.log("<")
+        result = handler.lessThan(num1, num2);
     }
     else if (oper == ">") {
-        console.log(">")
+        result = handler.greaterThan(num1, num2);
     }
     else if (oper == "=") {
-        console.log("=")
+        result = handler.equal(num1, num2);
     }
     else if (oper == "<>") {
-        console.log("<>")
+        result = handler.notEqual(num1, num2);
     }
     else if (oper == "&") {
-        console.log("&")
+        result = handler.and(num1, num2);
     }
     else if (oper == "|") {
-        console.log("|")
+        result = handler.or(num1, num2);
     }
     else if (oper == ":") {
-        console.log(":")
+        console.log("COLON");
     }
     return new NumberVal(result);
 }

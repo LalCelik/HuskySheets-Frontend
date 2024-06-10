@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import NumberVal from './NumberVal.tsx';
+import FormulaParseTS from './AllOperationLogic.tsx';
+
 
 /**
  * Ownership: Ira
@@ -9,33 +11,36 @@ import NumberVal from './NumberVal.tsx';
  */
 function FunctionHandling(oper, listNum) {
     var result = 0;
+    var strResult = "";
+    var handler = new FormulaParseTS();
 
-    console.log(listNum);
     if (oper == "IF") {
-
+        console.log("IF");
     }
     else if (oper === "SUM") {
-        for (let i = 0; i < listNum.length; i++) {
-            result = parseFloat(result) + parseFloat(listNum[i]);
-        }
+        result = handler.sum(listNum);
     }
     else if (oper == "MIN") {
-
+        result = handler.min(listNum);
     }
     else if (oper == "MAX") {
-
+        result = handler.max(listNum);
     }
     else if (oper == "AVG") {
-
+        result = handler.avg(listNum);
     }
     else if (oper == "CONCAT") {
-
+        strResult = handler.concat(listNum);
     }
     else if (oper == "DEBUG") {
-
+        console.log("DEBUG");
     }
-    return new NumberVal(result);
-    
+    if (strResult.length != 0) {
+        return new NumberVal(strResult);
+    }
+    else {
+        return new NumberVal(result);
+    }
 }
 
 export default FunctionHandling;

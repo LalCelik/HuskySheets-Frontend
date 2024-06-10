@@ -219,7 +219,7 @@ export default class FormulaParseTS {
   }
 
 
-  public debug(String e) {
+  public debug(e: String) {
     return e;
   }
 
