@@ -32,7 +32,7 @@ public class SheetService {
      */
     public String createSheet(String publisher, String sheetName, List<Update> updates) {
         String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetName, publisher, updates);
+        Sheet newSheet = new Sheet(sheetName, publisher, null, updates);
         try {
             boolean creationSuccess = sheetDao.saveSheet(newSheet);
             if(creationSuccess) {
@@ -54,7 +54,7 @@ public class SheetService {
      */
     public String deleteSheet(String publisher, String sheetName) {
         String message ="Sheet hasn't been saved";
-        Sheet newSheet = new Sheet(sheetName, publisher, new ArrayList<>());
+        Sheet newSheet = new Sheet(sheetName, publisher, null, new ArrayList<>());
         try {
             if(sheetDao.deleteSheet(newSheet)) {
                 message = "success";
