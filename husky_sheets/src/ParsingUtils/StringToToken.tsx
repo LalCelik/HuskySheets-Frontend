@@ -9,28 +9,11 @@ import { useState } from 'react';
  */
 
 function StringToToken(inputString) {
-  const validVals = ['IF', 'SUM', 'MIN', 'MAX', 'AVG', 'CONCAT', 'DEBUG',
-    ':', '<','>', '<>', '&', '=', '+', ',', '*', '-',
-   '/', '|', '(', ')'];
+  const pattern = /(\(|\)|\+|,|-|\*|\/|=|>|<|<>|&|:|\||\b(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG)\b|\d+(\.\d+)?|\w+)/g;
 
-   for (let i = 0; i < inputString.length; i++) {
-    const char = inputString[i];
+  const tokens = inputString.match(pattern) || [];
 
-      if (!isNaN(parseInt(char)) || char === '.') {
-          continue; // Skip to the next character
-      }
-
-      if (!validVals.includes(char)) {
-          throw Error("Invalid Operator Found"); 
-      }
-    }
-
-    const pattern = /(\(|\)|\+|-|\*|\/|SUM|MIN|MAX|AVG|DEBUG|IF|CONCAT|\d+)/g;
-    const tokens = inputString.match(pattern) || [];
-  
-    return tokens.map((token, index) => (
-      <span key={index}>{token}</span>
-    ));
+  return tokens;
   }
 
 export default StringToToken;
