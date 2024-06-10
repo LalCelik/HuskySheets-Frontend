@@ -1,6 +1,6 @@
-import getCellsInFormula from "./GetRefs";
-import splitString from "./StringToLetterAndNum";
-import { columnNameToIndex } from "../SheetUtils/ColNameToIdx";
+import getCellsInFormula from "./GetRefs.tsx";
+import splitString from "./StringToLetterAndNum.tsx";
+import { columnNameToIndex } from "../SheetUtils/ColNameToIdx.tsx";
 
 /**
  * Ownership: Ira

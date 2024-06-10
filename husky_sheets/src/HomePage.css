@@ -66,43 +66,4 @@
     flex-direction: column;
     width: 250px;
     padding-top: 15px;
-<<<<<<< HEAD
-=======
-  }
-
-  .sheets-table {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-collapse: collapse;
-  }
-
-  .sheets-table button {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-.sheets-table th, .sheets-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-.sheets-table th {
-    text-align: center;
-  }
-
-.sheets-table td {
-    text-align: left;
-  }
-
-.sheets-table td:nth-child(1) {
-    text-align: left;
-    width: 10%;
-  }
-
-.sheets-table td:nth-child(2) {
-    text-align: center;
-    width: 80%;
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   }
