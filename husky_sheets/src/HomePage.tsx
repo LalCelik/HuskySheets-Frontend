@@ -24,7 +24,7 @@ function HomePage() {
 
   const [open, setOpen] = React.useState(false);
   const [sheetName, setSheetName] = React.useState("");
-  const [sheets, setSheets] = React.useState<Sheet[]>([]);
+  //const [sheets, setSheets] = React.useState<Sheet[]>([]);
   const [sheets, setSheets] = React.useState<ISheet[]>([]);
 
   const user = document.cookie;
@@ -65,10 +65,11 @@ function HomePage() {
       .then((data) => {
         console.log(data.value);
 
-        let listOfSheets: Sheet[] = [];
+        //let listOfSheets: Sheet[] = [];
         let listOfSheets: ISheet[] = [];
 
         const fetchAllSheets = data.value.map((publisherData) => {
+          console.log("HERE1");
           const dataPublisher = publisherData.publisher;
           return fetch("http://localhost:8080/api/v1/getSheets", {
             method: "POST",
@@ -193,6 +194,7 @@ function HomePage() {
               <tr key={index}>
                 <td>{sheet.name}</td>
                 <td>{sheet.publisher}</td>
+                console.log("HERE3");
                 <td>
                   <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}>
                     Open Sheet

@@ -19,7 +19,7 @@ import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
 import splitString from './ParsingUtils/StringToLetterAndNum'
 import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
 import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
-import {useNavigate} from "react-router-dom";
+//import {useNavigate} from "react-router-dom";
 
 
 /**
@@ -41,7 +41,7 @@ function Sheet() {
   const [searchUser, setSearchUser] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const cellNamePattern = /^[A-Z]+[0-9]+$/;
-  const user = document.cookie;
+  //const user = document.cookie;
 
 
   const user = document.cookie;
