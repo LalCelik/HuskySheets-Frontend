@@ -113,7 +113,7 @@ function Sheet() {
  */
   const handleCellBlur = (event) => {    
     const cell = event.target;
-    const newValue = cell.textContent.toUppercase();
+    const newValue = cell.textContent.toUpperCase();
     const cellIndex = cell.cellIndex; // Get the column index directly from the cell
     const rowIndex = cell.parentElement.rowIndex ; // Subtract 1 to account for header row
    
