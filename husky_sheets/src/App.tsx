@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import MyButton from "./MyButton.tsx";
+import MyButton from "./MyButton";
 // import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 

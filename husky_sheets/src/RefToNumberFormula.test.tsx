@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import RefToNumberFormula from "./ParsingUtils/RefToNumberFormula.tsx";
+import RefToNumberFormula from "./ParsingUtils/RefToNumberFormula";
 import { MemoryRouter } from "react-router-dom";
 
 /*

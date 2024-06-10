@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import test from "node:test";
-import Sheet from "./Sheet.tsx"
+import Sheet from "./Sheet"
 
 /**
 // Mock the Grid constructor

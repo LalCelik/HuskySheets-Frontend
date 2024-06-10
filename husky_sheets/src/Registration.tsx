@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Registration.css";
-import MyButton from "./MyButton.tsx";
+import MyButton from "./MyButton";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 

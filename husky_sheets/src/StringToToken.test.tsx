@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import StringToToken from "./ParsingUtils/StringToToken.tsx";
+import StringToToken from "./ParsingUtils/StringToToken";
 import { MemoryRouter } from "react-router-dom";
 
 /*

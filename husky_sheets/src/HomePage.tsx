@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
-import MyButton from "./MyButton.tsx";
+import MyButton from "./MyButton";
 import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import Sheet from "./Sheet.tsx";
+import Sheet from "./Sheet";
 import {Buffer} from "buffer";
 // import {useCookies} from 'react-cookie';
 

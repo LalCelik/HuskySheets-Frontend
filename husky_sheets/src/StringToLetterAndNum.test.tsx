@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import StringToLetterAndNum from "./ParsingUtils/StringToLetterAndNum.tsx";
+import StringToLetterAndNum from "./ParsingUtils/StringToLetterAndNum";
 import { MemoryRouter } from "react-router-dom";
 
 /*

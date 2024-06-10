@@ -13,12 +13,12 @@ import { json } from 'stream/consumers';
 import { Buffer } from 'buffer';
 
 import {Form, useNavigate} from "react-router-dom";
-import FormulaParse from './ParsingUtils/FormulaParse.tsx';
-import getCellsInFormula from './ParsingUtils/GetRefs.tsx';
-import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
+import FormulaParse from './ParsingUtils/FormulaParse';
+import getCellsInFormula from './ParsingUtils/GetRefs';
+import { columnNameToIndex } from './SheetUtils/ColNameToIdx';
 import splitString from './ParsingUtils/StringToLetterAndNum'
-import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
-import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
+import RefToNumberFormula from './ParsingUtils/RefToNumberFormula'
+import { generateColumnName } from './SheetUtils/IdxToColName';
 //import {useNavigate} from "react-router-dom";
 
 
@@ -459,8 +459,6 @@ function Sheet() {
         columns={columns}
         data={data}
         style={{
-          borderCollapse: 'collapse', 
-          border: '1px solid #ddd', 
           table: {
             border: '1px solid #ccc',
             borderCollapse: 'collapse'
