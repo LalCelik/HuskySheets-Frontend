@@ -1,10 +1,9 @@
 FROM node:lts AS development
 
-COPY ./husky_sheets/package*.json ./
+COPY ./husky_sheets/ ./frontend
+WORKDIR ./frontend
 
 RUN npm install --force
-
-COPY ./husky_sheets .
 
 EXPOSE 3000
 

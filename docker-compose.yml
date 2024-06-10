@@ -7,7 +7,7 @@ services:
       dockerfile: Server/Dockerfile
     container_name: backend
     ports:
-      - '8000:8000'
+      - '8080:8080'
   frontend:
     build:
       context: ./

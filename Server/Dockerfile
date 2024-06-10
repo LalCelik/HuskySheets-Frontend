@@ -1,9 +1,11 @@
 FROM amazoncorretto:17
 
-WORKDIR ./Server/husksheets
+COPY ./Server/husksheets ./backend
 
-COPY ./Server/husksheets .
+COPY ./Server/husksheets/build/libs/husksheets-0.0.1-SNAPSHOT.jar ./backend/app.jar
 
-EXPOSE 8000
+WORKDIR ./backend
 
-CMD [ "./gradlew", "bootRun" ]
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
