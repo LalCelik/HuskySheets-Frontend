@@ -180,17 +180,45 @@ function HomePage() {
       });
   };
 
+  const deleteCurrUser = () => {
+    fetch("http://localhost:8080/api/v1/deleteUser", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Basic " + base64encodedData,
+      },
+      body: JSON.stringify({
+        username: username,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          document.cookie = ""; 
+          navigate("/");
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log("Couldn't delete the user. Error: " + error.message);
+      });
+  };
+
 
   return (
     <div className="HomePage">
       <header className="Home-header">
         <h2>HuskSheets Homepage</h2>
+        <Button variant="contained" onClick={deleteCurrUser}>
+          Delete Current User
+        </Button>
         <Button variant="contained" color="secondary" onClick={openPopup}>
           Create a new sheet
         </Button>
       </header>
       <div className="Home-content">
-
         <table className="sheets-table">
           <thead>
             <tr>
