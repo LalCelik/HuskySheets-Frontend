@@ -1,12 +1,13 @@
 import React from "react";
 import Popup from "reactjs-popup";
 
-/*
-This function is responsible for the UI for the error popup.
-But for now, it will not appear in the code
-
-Owner: Amani
-*/
+/**
+ * This function is responsible for the UI for the error popup.
+ * 
+ * @returns the elements of the error popup
+ * 
+ * Owner: Amani
+ */
 function ErrorPopup() {
   const [open, setOpen] = React.useState(false);
 

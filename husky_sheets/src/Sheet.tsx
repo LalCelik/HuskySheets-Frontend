@@ -149,7 +149,7 @@ function Sheet() {
       
       previousValues.current[`${columnName}-${rowIndex}`] = newValue;
       // if an equation is detected
-      if (newValue[0] == "=") {
+      if (newValue[0] === "=") {
         //get tokens
         const tokens = getCellsInFormula(newValue);
         // if any of them have cells names (A1, B2)
@@ -190,7 +190,7 @@ function Sheet() {
         convertedExpression.concat(token.props.children);
       }
       // if the token was a reference to the cell that was just updated
-      if (token == cellOfNewVal) {
+      if (token === cellOfNewVal) {
         convertedExpression.concat(newVal);
       }
       // grab the cell value normally

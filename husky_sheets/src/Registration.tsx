@@ -5,11 +5,14 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 
-/*
-This function is responsible for the UI for the registration page
-
-Owner: Amani, Sunkwan
-*/
+/**
+ * Responsible for teh UI for the registration page
+ * 
+ * @returns the elements of the registration page to be
+ * displayed to the user
+ * 
+ * Owner: Amani
+ */
 function Registration() {
   const navigate = useNavigate();
 
@@ -18,6 +21,14 @@ function Registration() {
     password: "",
   });
 
+  /**
+   * Responsible for getting the input from the input field and saving
+   * the form data
+   * 
+   * @param event an action event
+   * 
+   * Owner: Sunkwan
+   */
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -28,6 +39,13 @@ function Registration() {
     }));
   };
 
+  /**
+   * Connects to the registration logic in the backend server
+   * 
+   * @param event an action event
+   * 
+   * Owner: Sunkwan
+   */
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     fetch("http://localhost:8080/api/v1/registerUser", {
