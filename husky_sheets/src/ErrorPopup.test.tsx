@@ -3,15 +3,33 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ErrorPopup from './ErrorPopup';
 
+/**
+ * Tests the UI elements in the ErrorPopup.tsx file to ensure that everything that is
+ * expected to be displayed, is displayed on the screen
+ * 
+ * Owner: Amani
+ */
 describe('ErrorPopup', () => {
+
+  /**
+  * Tests whether the ErrorPopup component properly renders
+  * 
+  * Owner: Amani
+  */
   test('renders without crashing', () => {
     render(<ErrorPopup />);
   });
 
+  /**
+   * Tests whether the popup is closed when the user clicks outside the button screen
+   * 
+   * Owner: Amani
+   */
   test('popup is initially closed', () => {
     render(<ErrorPopup />);
     expect(screen.queryByText("The information that you have entered is invalid. Please try again")).not.toBeInTheDocument();
   });
+  
 
 //   test('opens the popup when the openPopup function is called', () => {
 //     const { getByText } = render(<ErrorPopup />);

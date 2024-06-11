@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import "./App.css";
 import MyButton from "./MyButton.tsx";
-// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-/*
-This function is responsible for the UI for the login page
 
-Owner: Amani
-*/
+/**
+ * This function is responsible for the UI for the login page
+ * 
+ * @returns the elements to be displayed on the login page
+ * 
+ * Owner: Amani
+ */
+
 function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  /*
-  This is responsible for creating a cookie of a user's name and password once
-  they login to the site
-  */
+  /**
+   * This is responsible for creating a cookie of a user's name and password once
+   * theye login to the site. Navigates to the homepage of the application once 
+   * everything is set
+   * 
+   * @param event an action event
+   * 
+   * Owner: Amani
+   */
+
   function loginEvent(event) {
     event.preventDefault();
     document.cookie = username + ":" + password;

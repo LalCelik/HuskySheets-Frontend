@@ -17,6 +17,12 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
+/**
+ * This is responsible for the navigation from one page to another
+ * within the UI
+ * 
+ * Owner: Amani
+ */
 root.render(
   <React.StrictMode>
     <Router>
