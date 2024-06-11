@@ -41,7 +41,7 @@ public class UserSystem {
     /**
      * Load from the DB json to this UserSystem
      */
-    private void loadDB() {
+    public void loadDB() {
         String jsonString;
         try {
             jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
@@ -55,7 +55,7 @@ public class UserSystem {
     /**
      * Update the given Json DB from this current UserSystem
      */
-    private void updateDB() {
+    public void updateDB() {
         try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
             Gson gson = new GsonBuilder().create();
             gson.toJson(users, writer);
@@ -106,6 +106,20 @@ public class UserSystem {
         }
         this.users.add(user);
         this.updateDB();
+    }
+
+    /**
+     * Delete user to the System
+     * @param user that needs to be added
+     */
+    public void deleteUser(User user) {
+        for (User value : this.users) {
+            if (value.equals(user)) {
+                this.users.remove(user);
+                this.updateDB();
+                break;
+            }
+        }
     }
 
     public void register(String username) {

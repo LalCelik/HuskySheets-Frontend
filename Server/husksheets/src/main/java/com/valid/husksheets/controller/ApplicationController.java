@@ -74,6 +74,29 @@ public class ApplicationController {
         return new Result(true, "Successfully registered a user", null);
     }
 
+    @PostMapping("/deleteUser")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Result deleteUser(@RequestBody UserArgument userArgument) {
+        if (userArgument.getUsername() == null) {
+            String message = "Username cannot be null";
+            return new Result(false, message, null);
+        } else {
+            try {
+                // Check if user exists in database
+                User userExists = userSystem.findByUsername(userArgument.getUsername());
+                if (!(userExists == null)) {
+                    // Delete the user logic here
+                    userSystem.deleteUser(userExists);
+                    return new Result(true, "User deleted successfully", null);
+                } else {
+                    return new Result(false, "User does not exist", null);
+                }
+            } catch (Exception e) {
+                return new Result(false, "Error deleteing User: " + e.getMessage(), null);
+            }
+        }
+    }
+
     @GetMapping("/register")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(Authentication authentication) {

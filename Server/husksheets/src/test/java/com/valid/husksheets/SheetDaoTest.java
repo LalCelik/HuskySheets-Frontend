@@ -8,9 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.valid.husksheets.model.SheetDao;
 import com.valid.husksheets.model.SheetService;
 import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
+import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.util.ArrayList;
-
 
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -32,6 +36,37 @@ public class SheetDaoTest {
     //sheet is found
     assertEquals(sheetDao.getSheet("user1", "Example1").getName(), sheet.getName());
     assertEquals(sheetDao.getSheet("user2", "Example1"), null);
+    }
+
+    @Test
+    void saveSheetTest() {
+        SheetSystem sheetSystemOriginal = utils.readFromFile(path);   
+        SheetSystem sheetSystem = utils.readFromFile(path);   
+
+        try {
+
+        Sheet sheet = new Sheet("Example2", "user1", new ArrayList<>());
+        boolean saved = sheetDao.saveSheet(sheet);
+
+        // Check if the sheet was saved successfully
+        assertTrue(saved);
+        sheetSystem = utils.readFromFile(path);
+        assertTrue(sheetDao.sheetExists(sheetSystem, sheet));
+
+        // Attempt to save the same sheet again
+        boolean savedAgain = sheetDao.saveSheet(sheet);
+        assertFalse(savedAgain);
+
+    } catch (IOException e) {
+        fail("IOException occurred while saving the sheet: " + e.getMessage());
+    }
+
+        // Reset the testing JSON
+        try {
+            utils.writeToFile(sheetSystemOriginal, path);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     

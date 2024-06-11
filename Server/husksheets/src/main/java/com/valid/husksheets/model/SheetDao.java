@@ -64,7 +64,7 @@ public class SheetDao {
      * @param sheet Sheet to check
      * @return Boolean value of the result
      */
-    private boolean sheetExists(SheetSystem system, Sheet sheet) {
+    public boolean sheetExists(SheetSystem system, Sheet sheet) {
         boolean exists = false;
         for(Sheet s: system.getSheets()) {
             if(s != null) {
