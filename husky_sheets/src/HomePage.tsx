@@ -1,13 +1,9 @@
 import React, {useEffect} from "react";
 import Popup from "reactjs-popup";
 import Button from "@mui/material/Button";
-import MyButton from "./MyButton.tsx";
 import "./HomePage.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import Sheet from "./Sheet.tsx";
 import {Buffer} from "buffer";
-// import {useCookies} from 'react-cookie';
 
 interface ISheet {
   name: string;
@@ -24,7 +20,6 @@ function HomePage() {
 
   const [open, setOpen] = React.useState(false);
   const [sheetName, setSheetName] = React.useState("");
-  //const [sheets, setSheets] = React.useState<Sheet[]>([]);
   const [sheets, setSheets] = React.useState<ISheet[]>([]);
 
   const user = document.cookie;
@@ -36,6 +31,7 @@ function HomePage() {
   const base64encodedData = Buffer.from(`${username}:${password}`).toString(
     "base64"
   );
+
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/register", {
       method: "GET",
@@ -49,9 +45,12 @@ function HomePage() {
         navigate("/");
       }
     });
+
     getSheets();
+
     //do not remove this. The table will constantly update if removed
   }, []);
+
   const getSheets = () => {
     fetch("http://localhost:8080/api/v1/getPublishers", {
       method: "GET",
@@ -63,11 +62,13 @@ function HomePage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        //let listOfSheets: Sheet[] = [];
+        console.log(data.value);
+
         let listOfSheets: ISheet[] = [];
 
         const fetchAllSheets = data.value.map((publisherData) => {
           const dataPublisher = publisherData.publisher;
+
           return fetch("http://localhost:8080/api/v1/getSheets", {
             method: "POST",
             headers: {
@@ -95,6 +96,7 @@ function HomePage() {
               }
             });
         });
+
         Promise.all(fetchAllSheets).then(() => {
           setSheets(listOfSheets);
         });
@@ -103,9 +105,13 @@ function HomePage() {
         console.error("Error fetching sheets:", error);
       });
   };
+
+
   const openPopup = () => {
     setOpen(!open);
   };
+
+
   const creatingSheet = () => {
     fetch("http://localhost:8080/api/v1/createSheet", {
       method: "POST",
@@ -124,7 +130,12 @@ function HomePage() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          navigate("/home_page/sheet");
+
+          /* Maybe navigate to the new page after it's???*/
+
+          navigate(`/home_page/sheet/${sheetName}/${username}`);
+
+          //navigate("/home_page/sheet");
         } else {
           navigate("/home_page");
           console.log(data.message);
@@ -135,9 +146,11 @@ function HomePage() {
         console.log(error.message);
       });
   };
+
   const handleInputChange = (event) => {
     setSheetName(event.target.value);
   };
+
   const deletingSheet = (publisherName: string, nameOfSheet: string) => {
     fetch("http://localhost:8080/api/v1/deleteSheet", {
       method: "POST",
@@ -153,6 +166,7 @@ function HomePage() {
         payload: null,
       }),
     })
+    
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -165,8 +179,8 @@ function HomePage() {
         console.log("Couldn't delete the sheet. Error: " + error.message);
       });
   };
-  // const [cookies] = useCookies(['user']);
-  // const user = cookies.user;
+
+
   return (
     <div className="HomePage">
       <header className="Home-header">
@@ -176,10 +190,7 @@ function HomePage() {
         </Button>
       </header>
       <div className="Home-content">
-        {/* This is just an example of how to see the username and password
-        set by the cookie in App.tsx */}
-        {/* <p> Username: {user.username}</p>
-        <p> Password: {user.password}</p> */}
+
         <table className="sheets-table">
           <thead>
             <tr>
@@ -193,7 +204,8 @@ function HomePage() {
                 <td>{sheet.name}</td>
                 <td>{sheet.publisher}</td>
                 <td>
-                  <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}>
+                <Button variant="contained" color="secondary" onClick={() =>navigate(`/home_page/sheet/${sheet.name}/${sheet.publisher}`)}>
+                  {/* <Button variant="contained" color="secondary" onClick={() =>navigate("/home_page/sheet")}> */}
                     Open Sheet
                   </Button>
                 </td>
@@ -206,6 +218,7 @@ function HomePage() {
             ))}
           </tbody>
         </table>
+
         <Popup open={open} closeOnDocumentClick onClose={openPopup}>
           <div className="popup-content">
             <p>Please give your new sheet a name, then press open sheet</p>
@@ -233,4 +246,5 @@ function HomePage() {
     </div>
   );
 }
+
 export default HomePage;

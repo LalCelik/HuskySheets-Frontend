@@ -24,7 +24,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/home_page" element={<HomePage />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/home_page/sheet" element={<Sheet />} />
+        <Route path="/home_page/sheet/:sheetName/:dataPublisher" element={<Sheet />} />
       </Routes>
     </Router>
   </React.StrictMode>
