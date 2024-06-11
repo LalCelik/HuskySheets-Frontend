@@ -1,29 +1,31 @@
-// import React from "react";
-// import Popup from "reactjs-popup";
+import React from "react";
+import Popup from "reactjs-popup";
 
+/*
+This function is responsible for the UI for the error popup.
+But for now, it will not appear in the code
 
-// /*
-// This function is responsible for the UI for the error popup.
-// But for now, it will not appear in the code
+Owner: Amani
+*/
+function ErrorPopup() {
+  const [open, setOpen] = React.useState(false);
 
-// Owner: Amani
-// */
-// function ErrorPopup() {
+  const openPopup = () => {
+    setOpen(!open);
+  };
 
-//   const [open, setOpen] = React.useState(false);
+  return (
+    <div>
+      <button onClick={openPopup}>Open Popup</button>
+      <Popup open={open} closeOnDocumentClick onClose={openPopup}>
+        <div className="popup-content">
+          <p>
+            The information that you have entered is invalid. Please try again
+          </p>
+        </div>
+      </Popup>
+    </div>
+  );
+}
 
-//   const openPopup = () => {
-//     setOpen(!open);
-//   };
-
-//   return (
-
-//     <Popup open={open} closeOnDocumentClick onClose={openPopup}>
-//           <div className="popup-content">
-//             <p>The information that you have entered is invalid. Please try again</p>
-//           </div>
-//         </Popup>
-
-//   );
-
-// }
+export default ErrorPopup;
