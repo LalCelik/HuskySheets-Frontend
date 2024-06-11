@@ -2,24 +2,16 @@ import './App.css';
 import { Grid } from 'gridjs-react';
 import { h } from 'gridjs';
 import React, { useState, useEffect, useRef } from "react";
-import { createHook } from 'async_hooks';
-import { Selection, SelectionSettings, cellEdit, cellSave, cellSelected, dataRowIndex, row, rowSelected } from '@syncfusion/ej2-react-grids';
-import { RowSelection } from "gridjs/plugins/selection";
-import { useConfig } from "gridjs";
-import { PluginPosition } from "gridjs";
-import { log } from 'console';
-import axios from 'axios';
-import { json } from 'stream/consumers';
 import { Buffer } from 'buffer';
 
 import {Form, useNavigate} from "react-router-dom";
 import FormulaParse from './ParsingUtils/FormulaParse.tsx';
 import getCellsInFormula from './ParsingUtils/GetRefs.tsx';
 import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
-import splitString from './ParsingUtils/StringToLetterAndNum'
+// import splitString from './ParsingUtils/StringToLetterAndNum'
 import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
 import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
-//import {useNavigate} from "react-router-dom";
+import {useParams} from "react-router-dom";
 
 
 /**
@@ -41,11 +33,12 @@ function Sheet() {
   const [searchUser, setSearchUser] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const cellNamePattern = /^[A-Z]+[0-9]+$/;
-  //const user = document.cookie;
+  const {sheetName} = useParams();
+  const {dataPublisher} = useParams();
 
 
   const user = document.cookie;
-  if (user == "") {
+  if (user === "") {
     navigate("/");
   }
   const username = user.split(":")[0];
@@ -79,6 +72,34 @@ function Sheet() {
           }
         })
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/v1/getSheets", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + base64encodedData
+      },
+      body: JSON.stringify({
+        publisher: username,
+        sheet: sheetName,
+        id: null,
+        payload: null
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setUpdates(data.value);
+        setMessage(data.value);
+      })
+      
+      .catch(error => {
+        console.error("Error fetching sheet:", error);
+      });
+
+  }, [sheetName, base64encodedData, username]);
  
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -335,14 +356,17 @@ function Sheet() {
         'Authorization': 'Basic ' + base64encodedData
       },
       body: JSON.stringify({
-        publisher: "user3",
-        sheet: "Example Sheet",
+        // publisher: "user3",
+        // sheet: "Example Sheet",
+        publisher: username,
+        sheet: sheetName,
         id: 0,
         payload: stringEmpListUpdates,
       })
     })
     .then(response => {
       if (!response.ok) {
+        console.log(response);
         throw new Error('Network response was not ok');
       }
       return response.json(); // Parse response body as JSON
@@ -486,7 +510,16 @@ function Sheet() {
           method: 'POST',
           headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
           url: 'http://localhost:8080/api/v1/getUpdatesForSubscription',
-          body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": null}',
+
+          // body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": "examplePayload"}',
+
+          body: JSON.stringify({
+            publisher: dataPublisher,
+            sheet: sheetName,
+            id: -1,
+            payload: "examplePayload"
+          }),
+
           then: data => {
             // console.log(data.value[0].payload.split("\n"))
             let resultList = data.value[0].payload.split("\n")
