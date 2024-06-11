@@ -122,7 +122,7 @@ function Sheet() {
     const oldValue = previousValues.current[`${columnName}-${rowIndex}`];
    
     if (oldValue !== newValue) {
-      const updateToAdd = `${columnName}${rowIndex - 1} ${newValue}`
+      const updateToAdd = `\$${columnName}${rowIndex - 1} ${newValue}\n`
       empListUpdates.push(updateToAdd);
       setUpdates(empListUpdates);
       
@@ -297,8 +297,7 @@ function Sheet() {
     for (let idx=0; idx < listUpdates.length; idx++) {
       const splitStr = listUpdates[idx].split(" ");
       const match = regex.exec(splitStr[0]);
-
-      if (listUpdates[idx][splitStr[1]] === "=") {
+      if (splitStr[1][0] === "=") {
         cellsWithFormulas.push(idx);
       }
       if (match) {
@@ -323,18 +322,23 @@ function Sheet() {
   }
 
   const saveSheetUpdates = () => {
+    var stringEmpListUpdates = "";
+    for (let i = 0; i < empListUpdates.length; i++) {
+      stringEmpListUpdates = stringEmpListUpdates + empListUpdates[i];
+    }
+    console.log(stringEmpListUpdates);
     fetch("http://localhost:8080/api/v1/updatePublished", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ${base64encodedData}'
+        'Authorization': 'Basic ' + base64encodedData
       },
       body: JSON.stringify({
         publisher: "user3",
         sheet: "Example Sheet",
         id: 0,
-        payload: "test", // Change this
+        payload: stringEmpListUpdates,
       })
     })
     .then(response => {
@@ -482,7 +486,7 @@ function Sheet() {
           method: 'POST',
           headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
           url: 'http://localhost:8080/api/v1/getUpdatesForSubscription',
-          body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": "examplePayload"}',
+          body: '{"publisher": "user3","sheet": "Example Sheet","id": -1,"payload": null}',
           then: data => {
             // console.log(data.value[0].payload.split("\n"))
             let resultList = data.value[0].payload.split("\n")
