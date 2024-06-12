@@ -60,7 +60,7 @@ function ConvertToAST(tokens) {
             // new Operation(operator=*, left = new Operation(+, 1, 2), right=3)
             // looking at operations outside of a set of parentheses
             if (parenthesesCount === 0) {
-                console.log("OUTSIDE PARENS");
+                // console.log("OUTSIDE PARENS");
                 if (['+', '-'].includes(token) && lowestPrecedence >= 0) {
                     lowestPrecedence = 1;
                     lowestPrecedenceIndex = i;
@@ -109,7 +109,7 @@ function ConvertToAST(tokens) {
         // if no function present, continue dividing into left/right normally
         if (funcPresent.length !== 0 && lowestPrecedenceIndex === -1) {
             let args = tokens.slice(funcPresent[0], funcPresent[1]+1);
-            console.log(args);
+            // console.log(args);
             let evalArgs = []
             for (let i = 2; i < args.length; i++) {
                 if (!isNaN(parseFloat(args[i]))) {
