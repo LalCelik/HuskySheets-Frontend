@@ -189,18 +189,18 @@ public class ApplicationController {
         } else {
             //SheetDao sheetDao = new SheetDao();
             try {
-                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
-                if(list.size() == 0) {
-                 return new Result(false,
-                  "This Publisher doesn't have any sheets in system or doesn't exist", null);
 
-                } else {
+                if (userSystem.findByUsername(argument.getPublisher()) == null) {
+                    return new Result(false,
+                            "Publisher not found", null);
+                }
+
+                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
                 List<Argument> arguments = new ArrayList<>();
                 for (Sheet sheet : list) {
                     arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
                 }
                 return new Result(true, "Outputting sheets in the system:", arguments);
-            }
             } catch (Exception e) {
                 message = "Sheet couldn't be deleted: " + e.getMessage();
                 return new Result(false, message, null);
