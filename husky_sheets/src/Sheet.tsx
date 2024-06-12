@@ -22,7 +22,7 @@ import {useParams} from "react-router-dom";
 function Sheet() {
   const [message, setMessage] = useState("");
   const gridContainerRef = useRef(null);
-  const previousValues = useRef({}); 
+  const previousValues = useRef({});
   const [empListUpdates, setUpdates] = useState([]);
   const navigate = useNavigate();
   const [cellsToUpdate, setCellsToUpdate] = useState(new Map([]));
@@ -57,6 +57,34 @@ function Sheet() {
   }
     */
 
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/api/v1/getSheets", {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Basic ' + base64encodedData
+  //     },
+  //     body: JSON.stringify({
+  //       publisher: username,
+  //       sheet: sheetName,
+  //       id: null,
+  //       payload: null
+  //     })
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       setUpdates(data.value);
+  //       setMessage(data.value);
+  //     })
+  //
+  //     .catch(error => {
+  //       console.error("Error fetching sheet:", error);
+  //     });
+  //
+  // }, [sheetName, base64encodedData, username]);
+
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/register", {
       method: 'GET',
@@ -66,116 +94,83 @@ function Sheet() {
         'Authorization': 'Basic ' + base64encodedData
       }
     })
-        .then(response => {
-          if (!response.ok) {
-            navigate("/");
-          }
-        })
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/v1/getSheets", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + base64encodedData
-      },
-      body: JSON.stringify({
-        publisher: username,
-        sheet: sheetName,
-        id: null,
-        payload: null
-      })
+    .then(response => {
+      if (!response.ok) {
+        navigate("/");
+      }
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setUpdates(data.value);
-        setMessage(data.value);
-      })
-      
-      .catch(error => {
-        console.error("Error fetching sheet:", error);
-      });
 
-  }, [sheetName, base64encodedData, username]);
- 
-  useEffect(() => {
     const observer = new MutationObserver(() => {
       const cells = document.querySelectorAll('[contenteditable="true"]');
       cells.forEach(cell => {
-        //cell.removeEventListener('focus', handleCellFocus);
+        cell.removeEventListener('focus', handleCellFocus);
         cell.removeEventListener('blur', handleCellBlur);
         cell.removeEventListener('input', handleCellInput);
- 
-        //cell.addEventListener('focus', handleCellFocus);
+
+        cell.addEventListener('focus', handleCellFocus);
         cell.addEventListener('blur', handleCellBlur);
         cell.addEventListener('input', handleCellInput);
       });
     });
- 
+
     if (gridContainerRef.current) {
       observer.observe(gridContainerRef.current, {
         childList: true,
         subtree: true,
       });
     }
- 
+
     return () => {
       observer.disconnect();
     };
   }, []);
- 
-  /**
-  const handleCellFocus = (event) => {  
-    console.log('Cell is being focused:', event.target.textContent);  
-  };
- */
-  const handleCellBlur = (event) => {    
+
+  const handleCellFocus = (event) => {
     const cell = event.target;
-    const newValue = cell.textContent.toUpperCase();
+    const cellIndex = cell.cellIndex;
+    const columnName = generateColumnName(cellIndex);
+    const rowIndex = cell.parentElement.rowIndex - 1;
+
+    const gridInstance = gridContainerRef.current;
+    var tds = gridInstance.querySelectorAll("td[data-column-id='" + columnName.toLowerCase() + "']");
+    tds[rowIndex].innerHTML = data[rowIndex][cellIndex];
+  };
+
+  const handleCellBlur = (event) => {
+    const cell = event.target;
+    // const newValue = cell.textContent.toUpperCase();
+    const newValue = cell.textContent;
     const cellIndex = cell.cellIndex; // Get the column index directly from the cell
     const rowIndex = cell.parentElement.rowIndex ; // Subtract 1 to account for header row
-   
+
     const columnName = generateColumnName(cellIndex); // Generate column name based on column index
-   
-    const oldValue = previousValues.current[`${columnName}-${rowIndex}`];
-   
+
+    let oldValue = previousValues.current[`${columnName}-${rowIndex}`];
+    if (!oldValue) {
+      oldValue = data[rowIndex - 1][cellIndex];
+    }
     if (oldValue !== newValue) {
       const updateToAdd = `\$${columnName}${rowIndex - 1} ${newValue}\n`
       empListUpdates.push(updateToAdd);
       setUpdates(empListUpdates);
-      
+
       previousValues.current[`${columnName}-${rowIndex}`] = newValue;
-      // if an equation is detected
-      if (newValue[0] === "=") {
-        //get tokens
-        const tokens = getCellsInFormula(newValue);
-        // if any of them have cells names (A1, B2)
-        tokens.forEach((token) => {
-          if (cellNamePattern.test(token)) {
-            // add the cells to map
-            // ex: "$C1 =(A1 - B1)" => {A1: {C1: =(A1 - B1)}, B1: {C1: =(A1 - B1)}}
-            setCellsToUpdate(prevData => ({
-              ...prevData,
-              [token]: {
-                ...prevData[token],
-                [`${columnName}${rowIndex - 1}`]: newValue
-              }
-            }))
-          }});
-        };
-    } else {
-      console.log(`Cell editing finished at row ${rowIndex}, column ${columnName}. Value: ${newValue}`);
+      data[rowIndex - 1][cellIndex] = newValue;
     }
-    // if the cell currently being edited affects another cell with a formula
-    if (Object.keys(cellsToUpdate).includes(`${columnName}${rowIndex - 1}`)) {
-      for (let key in cellsToUpdate[`${columnName}${rowIndex - 1}`]) {
-        const colIdx = columnNameToIndex(key[0]);
-        const rowIdx = key[1]
-        updateFormulaCell(newValue, `${columnName}${rowIndex - 1}`, key, colIdx, rowIdx);
-      }
+    // // if the cell currently being edited affects another cell with a formula
+    // if (Object.keys(cellsToUpdate).includes(`${columnName}${rowIndex - 1}`)) {
+    //   for (let key in cellsToUpdate[`${columnName}${rowIndex - 1}`]) {
+    //     const colIdx = columnNameToIndex(key[0]);
+    //     const rowIdx = key[1];
+    //     updateFormulaCell(newValue, `${columnName}${rowIndex - 1}`, key, colIdx, rowIdx);
+    //   }
+    // }
+
+    // if an equation is detected
+    if (newValue[0] === "=") {
+      const gridInstance = gridContainerRef.current;
+      var tds = gridInstance.querySelectorAll("td[data-column-id='" + columnName.toLowerCase() + "']");
+      tds[rowIndex - 1].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, newValue)).value;
     }
   };
 
@@ -207,7 +202,7 @@ function Sheet() {
 
    
   const handleCellInput = (event) => {
-    console.log('Cell value is changing:', event.target.textContent);
+    // console.log('Cell value is changing:', event.target.textContent);
   };
  
   /**
@@ -260,12 +255,17 @@ function Sheet() {
       resizable: true
     }))
   ];
-  
+
   const data = Array.from({ length: 100 }, (_, rowIndex) => {
     const row = Array.from({ length: 100 - 1 }, () => '')
-    return [rowIndex + 0, ...row];
+    return [rowIndex, ...row];
   });
-  
+
+  const displayData = Array.from({ length: 100 }, (_, rowIndex) => {
+    const row = Array.from({ length: 100 - 1 }, () => '')
+    return [rowIndex, ...row];
+  });
+
   /**
   const columnNameToIndex = (columnName) => {
     let index = 0;
@@ -314,7 +314,7 @@ function Sheet() {
   function reverseParse(listUpdates) {
     var cellsWithFormulas = []
     const regex = /([A-Z]+)(\d+)/;
-     
+
     for (let idx=0; idx < listUpdates.length; idx++) {
       const splitStr = listUpdates[idx].split(" ");
       const match = regex.exec(splitStr[0]);
@@ -325,7 +325,9 @@ function Sheet() {
         const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
         const colIdx = columnNameToIndex(cellCoords.letter);
         const rowIdx = cellCoords.number;
-        data[rowIdx][colIdx] = splitStr[1];
+        splitStr[0] = "";
+        data[rowIdx][colIdx] = splitStr.join("");
+        displayData[rowIdx][colIdx] = splitStr.join("");
       }
       else {
         console.log("INVALID");
@@ -337,9 +339,11 @@ function Sheet() {
       const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
       const colIdx = columnNameToIndex(cellCoords.letter);
       const rowIdx = cellCoords.number;
-      data[rowIdx][colIdx] = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, splitStr[1])).value;
+      splitStr[0] = "";
+      // console.log(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join("")));
+      displayData[rowIdx][colIdx] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join(""))).value;
     }
-    return data;
+    return displayData;
   }
 
   const saveSheetUpdates = () => {
@@ -519,9 +523,7 @@ function Sheet() {
             id: -1,
             payload: "examplePayload"
           }),
-
           then: data => {
-            // console.log(data.value[0].payload.split("\n"))
             let resultList = data.value[0].payload.split("\n")
             resultList.pop() // Removes empty string at the end
             return reverseParse(resultList);

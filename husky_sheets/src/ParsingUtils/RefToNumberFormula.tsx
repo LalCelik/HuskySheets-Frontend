@@ -23,7 +23,11 @@ function RefToNumberFormula(cellNamePattern, dels, data, refInputString) {
         var str = splitString(tokens[i]);
         var rowIdx = columnNameToIndex(str?.letter);
         var colIdx = str?.numeric;
-        newString = newString.concat(data[colIdx][rowIdx].toString())
+        if (data[colIdx][rowIdx].toString() != "") {
+            newString = newString.concat(data[colIdx][rowIdx].toString())
+        } else {
+            newString = newString.concat('0');
+        }
       }
     }
     return newString;
