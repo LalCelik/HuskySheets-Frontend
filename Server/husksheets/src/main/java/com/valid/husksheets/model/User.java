@@ -26,12 +26,12 @@ public class User {
         this.publisher = true;
     }
 
-    public User(String username, String password, List<String> sheets, boolean publihser) {
-        this.username = username;
-        this.password = password;
-        this.sheets = sheets;
-        this.publisher = publihser;
-    }
+    // public User(String username, String password, List<String> sheets, boolean publisher) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.sheets = sheets;
+    //     this.publisher = publisher;
+    // }
 
     /**
      * Are two Users the same?

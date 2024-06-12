@@ -10,19 +10,19 @@ public class UserSystemTests {
 
     @Test
     void registerTest() {
-        // UserSystem userSystem = new UserSystem();
-        // userSystem.loadDB(); // Load initial users
+        UserSystem userSystem = new UserSystem();
+        userSystem.loadDB(); // Load initial users
         
-        // // Register a new user
-        // String username = "testUser";
-        // userSystem.register(username);
+        // Register a new user
+        String username = userSystem.getUsers().get(0).getUsername();
+        userSystem.register(username);
 
-        // // Registered successfully
-        // User registeredUser = userSystem.findByUsername(username);
-        // assertNotNull(registeredUser);
-        // assertTrue(registeredUser.getPublisher());
+        // Registered successfully
+        User registeredUser = userSystem.findByUsername(username);
+        assertNotNull(registeredUser);
+        assertTrue(registeredUser.getPublisher());
         
-        // // Reset the user system
-        // userSystem.updateDB();
+        // Reset the user system
+        userSystem.updateDB();
     }
 }

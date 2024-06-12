@@ -83,6 +83,7 @@ public class ApplicationControllerTest {
 
         // Add user to delete
         UserArgument userToDelete = new UserArgument("userToDelete", "password");
+        UserArgument nullUser = new UserArgument(null, "password");
         appControl.register(userToDelete);
 
         // Delete the user
@@ -98,6 +99,11 @@ public class ApplicationControllerTest {
         // User wasn't found
         Result failResult = new Result(false, "User does not exist", null);
         assertEquals(failResult, tryDeleteUser);
+
+        //User name can't be null
+        Result tryDeleteNullUser = appControl.deleteUser(nullUser);
+        Result nullResult = new Result(false, "Username cannot be null", null);
+        assertEquals(nullResult, tryDeleteNullUser);
 
         // Reset system
         userSystem.updateDB();
@@ -115,8 +121,13 @@ public class ApplicationControllerTest {
         Result resultSuccess = new Result(true, "Sheet has been created", null);
         Result resultDiffPublisher = new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         Authentication authentication = new UsernamePasswordAuthenticationToken("user4", "password");
+
+        //User name can't be null
+        Argument nullSheet = new Argument(null, "name", 0, "");
+        Result tryCreateNullSheet = appControl.createSheet(authentication, nullSheet);
+        Result nullResult = new Result(false, "Publisher or sheetName can't be null", null);
+        assertEquals(nullResult, tryCreateNullSheet);
       
-        //Add more tests here:
         //Trying to create a sheet for a different publisher
         assertEquals(appControl.createSheet(authentication, existingSheetArg), resultDiffPublisher);
         assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
@@ -317,7 +328,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    void getUpdatesForSubscriptionTest() {// Original state of the sheet system
+    void getUpdatesForSubscriptionTest() {
         SheetSystem sheetSystemOriginal = utils.readFromFile(path);
         
         Authentication authenticationUser1 = new UsernamePasswordAuthenticationToken("user1", "password");
