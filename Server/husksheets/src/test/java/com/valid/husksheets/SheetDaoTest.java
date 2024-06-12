@@ -6,7 +6,6 @@ import com.valid.husksheets.model.SheetSystem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.valid.husksheets.model.SheetDao;
 import com.valid.husksheets.model.SheetService;
@@ -21,6 +20,9 @@ import java.util.ArrayList;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+    /**
+     * Tests for SheetDao functions
+     */
 @SpringBootTest
 public class SheetDaoTest {
     private String path = "src/main/resources/sheetsTest.json";
@@ -30,6 +32,9 @@ public class SheetDaoTest {
     SheetSystem sheetSystem = new SheetSystem();
     SheetSystemUtils utils = new SheetSystemUtils();
 
+    /**
+     * Tests for getSheet function
+     */
     @Test
     void getSheetTest() {
     Sheet sheet = new Sheet("Example1", "user1", new ArrayList<>());
@@ -39,6 +44,9 @@ public class SheetDaoTest {
     assertEquals(sheetDao.getSheet("user2", "Example1"), null);
     }
 
+    /**
+     * Tests for saveSheet function
+     */
     @Test
     void saveSheetTest() {
         SheetSystem sheetSystemOriginal = utils.readFromFile(path);   

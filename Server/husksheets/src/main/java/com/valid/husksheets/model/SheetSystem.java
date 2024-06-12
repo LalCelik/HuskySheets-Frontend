@@ -67,6 +67,11 @@ public class SheetSystem {
         sheets.remove(sheet);
     }
 
+    /**
+     * Adds an update to the sheetSystem
+     * @param sheet Sheet that we want to update
+     * @param update Update we want to add
+     */
     public boolean updateSystem(Sheet sheet, Update update) {
         for(Sheet s: sheets) {
             if(s != null) {
@@ -81,6 +86,9 @@ public class SheetSystem {
         return false;
     }
 
+    /**
+     * Gets a list of all of the updates in system
+     */
     public List<Update> getAllUpdates() {
         List<Update> list = new ArrayList<>();
         for(Sheet s: sheets) {

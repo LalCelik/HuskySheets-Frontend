@@ -27,18 +27,17 @@ import java.util.List;
 public class ApplicationController {
 
     @Autowired
-    private SheetService sheetService; // = new SheetService();
+    private SheetService sheetService;
 
     @Autowired
     private UserSystem userSystem = new UserSystem();
 
-    private SheetDao sheetDao; // = new SheetDao();
+    private SheetDao sheetDao;
 
     public ApplicationController() {
         sheetService = new SheetService();
         sheetDao = new SheetDao();
     }
-
 
     public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
         sheetDao = sheetDaoNew;
@@ -74,6 +73,12 @@ public class ApplicationController {
         return new Result(true, "Successfully registered a user", null);
     }
 
+    /**
+     * Receives username and password and tries to delte user from the UserSystem
+     * Owner: Lal
+     * @param userArgument which holds username and password
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/deleteUser")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result deleteUser(@RequestBody UserArgument userArgument) {
@@ -268,6 +273,14 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Receives an argument with the publisher name and payload
+     * Adds a PUBLISHED update to the sheet with the given name and publisher 
+     * The payload is the content of the update and the update is made by publisher
+     * Owner: Lal
+     * @param userArgument which holds publisher name and payload
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
@@ -295,6 +308,14 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Receives an argument with the publisher name and payload
+     * Adds a REQUESTED update to the sheet with the given name and publisher 
+     * The payload is the content of the update and the update is made by a subscriber
+     * Owner: Lal
+     * @param userArgument which holds publisher name and payload
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/updateSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updateSubscription(Authentication authentication, @RequestBody Argument argument) {

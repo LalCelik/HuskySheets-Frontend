@@ -10,11 +10,10 @@ import java.util.List;
 /**
  * Data functionality for sheets
  * Owner: Lal
- * Will reorganize these classes ignore the mess
  */
 public class SheetDao {
-    private final String SHEETS_FILE; // = "src/main/resources/sheets.json";
-    private final SheetSystemUtils systemUtils; // = new SheetSystemUtils();
+    private final String SHEETS_FILE;
+    private final SheetSystemUtils systemUtils;
 
     /**
      * Instantiate the SheetDao object

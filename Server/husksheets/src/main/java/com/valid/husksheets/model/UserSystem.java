@@ -126,6 +126,9 @@ public class UserSystem {
         }
     }
 
+    /**
+     * Register a user to the system
+     */
     public void register(String username) {
         for (User u : this.users) {
             if (u.getUsername().equals(username)) {

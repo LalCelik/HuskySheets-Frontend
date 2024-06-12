@@ -10,7 +10,6 @@ import com.valid.husksheets.JSON.UserArgument;
 
 import com.valid.husksheets.model.SheetSystem;
 import com.valid.husksheets.model.UserSystem;
-import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.STATUS;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +24,9 @@ import java.util.List;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+    /**
+     * Tests for the ApplicationController
+     */
 @SpringBootTest
 public class ApplicationControllerTest {
     private String path = "src/main/resources/sheetsTest.json";
@@ -36,6 +38,9 @@ public class ApplicationControllerTest {
     private Argument existingSheetArg = new Argument("user1", "Example1", 0, "");
 
 
+    /**
+     * Tests for registerUser function
+     */
     @Test
     void registerUserTest() {
         //Read current user system
@@ -75,6 +80,9 @@ public class ApplicationControllerTest {
          userSystem.updateDB();
     }
 
+    /**
+     * Tests for deleteUser function
+     */
     @Test
     void deleteUserTest() {
         // Initialize user system
@@ -109,6 +117,9 @@ public class ApplicationControllerTest {
         userSystem.updateDB();
     }
 
+    /**
+     * Tests for createSheet function
+     */
     @Test
     void createSheetTest() {
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
@@ -147,6 +158,9 @@ public class ApplicationControllerTest {
         }
     }
 
+    /**
+     * Tests for deleteSheet function
+     */
     @Test
     void deleteSheetTest() {
         Authentication authentication = new UsernamePasswordAuthenticationToken("user4", "password");
@@ -182,6 +196,9 @@ public class ApplicationControllerTest {
         assertEquals(sheetSystem.containsSheet(new Sheet("name", "user4", new ArrayList<>())), false);
     }
 
+    /**
+     * Tests for getSheets function
+     */
     @Test
     void getSheetsTest() {
         SheetSystem sheetSystemOrginal = utils.readFromFile(path);
@@ -215,6 +232,9 @@ public class ApplicationControllerTest {
         }
     }
 
+    /**
+     * Tests for getUpdatesForPublished function
+     */
     @Test
     void getUpdatesForPublishedTest() {
     SheetSystem sheetSystemOrginal = utils.readFromFile(path);
@@ -254,6 +274,9 @@ public class ApplicationControllerTest {
         }
     }
 
+    /**
+     * Tests for updatePublished function
+     */
     @Test
     void updatePublishedTest() {
         Argument argument2 = new Argument("user2",  "Example2",0,  "");
@@ -289,6 +312,9 @@ public class ApplicationControllerTest {
             }
     }
 
+    /**
+     * Tests for updateSubscription function
+     */
     @Test
     void updateSubscriptionTest() {
 
@@ -327,6 +353,9 @@ public class ApplicationControllerTest {
             }
     }
 
+    /**
+     * Tests for getUpdatesForSubscription function
+     */
     @Test
     void getUpdatesForSubscriptionTest() {
         SheetSystem sheetSystemOriginal = utils.readFromFile(path);
