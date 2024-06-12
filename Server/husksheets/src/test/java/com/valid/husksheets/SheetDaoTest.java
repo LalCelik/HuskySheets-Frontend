@@ -4,6 +4,9 @@ import com.valid.husksheets.controller.ApplicationController;
 import org.junit.jupiter.api.Test;
 import com.valid.husksheets.model.SheetSystem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.valid.husksheets.model.SheetDao;
 import com.valid.husksheets.model.SheetService;
@@ -29,9 +32,7 @@ public class SheetDaoTest {
 
     @Test
     void getSheetTest() {
-    SheetSystem sheetSystem = utils.readFromFile(path);   
     Sheet sheet = new Sheet("Example1", "user1", new ArrayList<>());
-    Sheet nullSheet = null;
 
     //sheet is found
     assertEquals(sheetDao.getSheet("user1", "Example1").getName(), sheet.getName());
@@ -57,6 +58,13 @@ public class SheetDaoTest {
         boolean savedAgain = sheetDao.saveSheet(sheet);
         assertFalse(savedAgain);
 
+        //No file for given sheet path
+        String newPath = "src/main/resources/sheetsNewTest.json";
+        SheetDao sheetDaoPath = new SheetDao(newPath);
+        sheetDaoPath.saveSheet(sheet);
+        assertTrue(Files.exists(Path.of(newPath)));
+        Files.delete(Path.of(newPath));
+
     } catch (IOException e) {
         fail("IOException occurred while saving the sheet: " + e.getMessage());
     }
@@ -68,6 +76,4 @@ public class SheetDaoTest {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-    
 }

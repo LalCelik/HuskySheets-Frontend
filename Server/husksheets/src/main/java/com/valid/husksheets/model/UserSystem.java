@@ -38,6 +38,10 @@ public class UserSystem {
         this.users = users;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
     /**
      * Load from the DB json to this UserSystem
      */
