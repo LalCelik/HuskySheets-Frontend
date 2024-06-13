@@ -18,3 +18,8 @@
 ## Database
 - User data stored locally in /Server/husksheets/src/main/java/com/valid/husksheets/db/system.json
 - Sheet data stored locally in /Server/husksheets/src/main/resources/sheets.json
+
+## Other
+- You can run this python script to open a sheet as well (when the frontend and backend servers are running):
+  - `python3 openSheet.py --url="http://localhost:3000" --name="user1" --password="user1" --publisher="user3" --sheet="Example Sheet"`
+  - Might have to install selenium: `pip install selenium`
