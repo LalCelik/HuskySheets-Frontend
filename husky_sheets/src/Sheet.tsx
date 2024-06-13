@@ -12,6 +12,7 @@ import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
 import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
 import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
 import {useParams} from "react-router-dom";
+import NumberVal from "./ParsingUtils/NumberVal.tsx";
 
 
 /**
@@ -157,16 +158,7 @@ function Sheet() {
       previousValues.current[`${columnName}-${rowIndex}`] = newValue;
       data[rowIndex - 1][cellIndex] = newValue;
 
-      for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < data[i].length; j++) {
-          if (String(data[i][j]).includes(`${columnName}${rowIndex - 1}`)) {
-            const gridInstance = gridContainerRef.current;
-            const cN = generateColumnName(j);
-            var td = gridInstance.querySelectorAll("td[data-column-id='" + cN.toLowerCase() + "']");
-            td[i].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j])).value;
-          }
-        }
-      }
+      updateFormulaCell(columnName, rowIndex);
     }
     // // if the cell currently being edited affects another cell with a formula
     // if (Object.keys(cellsToUpdate).includes(`${columnName}${rowIndex - 1}`)) {
@@ -181,9 +173,33 @@ function Sheet() {
     if (newValue[0] === "=") {
       const gridInstance = gridContainerRef.current;
       var tds = gridInstance.querySelectorAll("td[data-column-id='" + columnName.toLowerCase() + "']");
-      tds[rowIndex - 1].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, newValue)).value;
+      var refList = [`${rowIndex - 1}-${cellIndex}`];
+      try {
+        tds[rowIndex - 1].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, newValue, refList)).value;
+      } catch (err) {
+        tds[rowIndex - 1].innerHTML = "ERROR";
+      }
     }
   };
+
+  function updateFormulaCell(columnName, rowIndex) {
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        if (String(data[i][j]).includes(`${columnName}${rowIndex - 1}`)) {
+          const gridInstance = gridContainerRef.current;
+          const cN = generateColumnName(j);
+          var td = gridInstance.querySelectorAll("td[data-column-id='" + cN.toLowerCase() + "']");
+          var refList = [`${i}-{j}`];
+          try {
+            td[i].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j], refList)).value;
+            updateFormulaCell(cN, i + 1);
+          } catch (err) {
+            td[i].innerHTML = "ERROR";
+          }
+        }
+      }
+    }
+  }
 
 
   // function updateFormulaCell(newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
@@ -344,7 +360,12 @@ function Sheet() {
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < data[i].length; j++) {
         if (data[i][j][0] === "=") {
-          displayData[i][j] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j])).value;
+          var refList = [`${i}-${j}`];
+          try {
+            displayData[i][j] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j], refList)).value;
+          } catch (err) {
+            displayData[i][j] = "ERROR";
+          }
         }
       }
     }
