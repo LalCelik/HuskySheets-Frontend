@@ -156,6 +156,17 @@ function Sheet() {
 
       previousValues.current[`${columnName}-${rowIndex}`] = newValue;
       data[rowIndex - 1][cellIndex] = newValue;
+
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+          if (String(data[i][j]).includes(`${columnName}${rowIndex - 1}`)) {
+            const gridInstance = gridContainerRef.current;
+            const cN = generateColumnName(j);
+            var td = gridInstance.querySelectorAll("td[data-column-id='" + cN.toLowerCase() + "']");
+            td[i].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j])).value;
+          }
+        }
+      }
     }
     // // if the cell currently being edited affects another cell with a formula
     // if (Object.keys(cellsToUpdate).includes(`${columnName}${rowIndex - 1}`)) {
@@ -175,30 +186,30 @@ function Sheet() {
   };
 
 
-  function updateFormulaCell(newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
-    const tokens = getCellsInFormula(cellsToUpdate[cellOfNewVal][formulaCellName]);
-    var convertedExpression = ""
-    // loop through expression
-    tokens.forEach((token) => {
-      // if token isn't a refeence to a cell, append it normally
-      if (!cellNamePattern.test(token)) {
-        convertedExpression.concat(token.props.children);
-      }
-      // if the token was a reference to the cell that was just updated
-      if (token === cellOfNewVal) {
-        convertedExpression.concat(newVal);
-      }
-      // grab the cell value normally
-      else {
-        const colIdx = columnNameToIndex(token[0])
-        const rowIdx = token[1]
-        convertedExpression.concat(data[colIdx][rowIdx].toString());
-      }
-    })
-
-    // calculate the result of this expression and update the table
-    data[formulaCellCol][formulaCellRow] = FormulaParse(convertedExpression);
-  }
+  // function updateFormulaCell(newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
+  //   const tokens = getCellsInFormula(cellsToUpdate[cellOfNewVal][formulaCellName]);
+  //   var convertedExpression = ""
+  //   // loop through expression
+  //   tokens.forEach((token) => {
+  //     // if token isn't a refeence to a cell, append it normally
+  //     if (!cellNamePattern.test(token)) {
+  //       convertedExpression.concat(token.props.children);
+  //     }
+  //     // if the token was a reference to the cell that was just updated
+  //     if (token === cellOfNewVal) {
+  //       convertedExpression.concat(newVal);
+  //     }
+  //     // grab the cell value normally
+  //     else {
+  //       const colIdx = columnNameToIndex(token[0])
+  //       const rowIdx = token[1]
+  //       convertedExpression.concat(data[colIdx][rowIdx].toString());
+  //     }
+  //   })
+  //
+  //   // calculate the result of this expression and update the table
+  //   data[formulaCellCol][formulaCellRow] = FormulaParse(convertedExpression);
+  // }
 
    
   const handleCellInput = (event) => {
@@ -318,9 +329,6 @@ function Sheet() {
     for (let idx=0; idx < listUpdates.length; idx++) {
       const splitStr = listUpdates[idx].split(" ");
       const match = regex.exec(splitStr[0]);
-      if (splitStr[1][0] === "=") {
-        cellsWithFormulas.push(idx);
-      }
       if (match) {
         const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
         const colIdx = columnNameToIndex(cellCoords.letter);
@@ -333,15 +341,12 @@ function Sheet() {
         console.log("INVALID");
       }
     }
-    for (let idx = 0; idx < cellsWithFormulas.length; idx++) {
-      const splitStr = listUpdates[cellsWithFormulas[idx]].split(" ");
-      const match = regex.exec(splitStr[0]);
-      const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
-      const colIdx = columnNameToIndex(cellCoords.letter);
-      const rowIdx = cellCoords.number;
-      splitStr[0] = "";
-      // console.log(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join("")));
-      displayData[rowIdx][colIdx] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join(""))).value;
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        if (data[i][j][0] === "=") {
+          displayData[i][j] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j])).value;
+        }
+      }
     }
     return displayData;
   }
@@ -360,8 +365,6 @@ function Sheet() {
         'Authorization': 'Basic ' + base64encodedData
       },
       body: JSON.stringify({
-        // publisher: "user3",
-        // sheet: "Example Sheet",
         publisher: username,
         sheet: sheetName,
         id: 0,

@@ -1,6 +1,7 @@
 import getCellsInFormula from "./GetRefs.tsx";
 import splitString from "./StringToLetterAndNum.tsx";
 import { columnNameToIndex } from "../SheetUtils/ColNameToIdx.tsx";
+import FormulaParse from './FormulaParse.tsx';
 
 /**
  * Ownership: Ira
@@ -24,7 +25,11 @@ function RefToNumberFormula(cellNamePattern, dels, data, refInputString) {
         var rowIdx = columnNameToIndex(str?.letter);
         var colIdx = str?.numeric;
         if (data[colIdx][rowIdx].toString() != "") {
-            newString = newString.concat(data[colIdx][rowIdx].toString())
+            if (data[colIdx][rowIdx].toString()[0] === "=") {
+                newString = newString.concat(FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[colIdx][rowIdx].toString())).value);
+            } else {
+                newString = newString.concat(data[colIdx][rowIdx].toString());
+            }
         } else {
             newString = newString.concat('0');
         }
