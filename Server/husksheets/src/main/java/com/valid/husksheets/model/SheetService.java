@@ -10,17 +10,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SheetService {
-    private String path;
-    private SheetDao sheetDao;;
+    private final SheetDao sheetDao;
 
+    /**
+     * Initializes a new sheet system with given path
+     * @param newPath Path of the Sheet file
+     */
     public SheetService(String newPath) {
-        path = newPath;
         sheetDao = new SheetDao(newPath);
     }
 
+    /**
+     * Initializes a new sheet system with default sheets file
+     */
     public SheetService() {
-        path = "/src/main/resources/sheets.json";
-        sheetDao  = new SheetDao();
+        sheetDao  = new SheetDao("/src/main/resources/sheets.json");
     }
 
     /**
@@ -28,17 +32,13 @@ public class SheetService {
      * Owner: Lal
      * @param publisher the publisher of the sheet
      * @param sheetName the name of the sheet
+     * @param updates the updates of the sheet
      * @return a string indicating the result of creating a sheet
      */
     public boolean createSheet(String publisher, String sheetName, List<Update> updates) {
         Sheet newSheet = new Sheet(sheetName, publisher, updates);
         try {
-            boolean creationSuccess = sheetDao.saveSheet(newSheet);
-            if(creationSuccess) {
-                return true;
-            } else {
-                return false;
-            }
+            return sheetDao.saveSheet(newSheet);
         } catch (Exception e) {
             return false;
         }
@@ -48,16 +48,12 @@ public class SheetService {
      * Delete the given sheet
      * @param publisher Publisher of the sheet
      * @param sheetName Name of the sheet
-     * @return String of the result message
+     * @return boolean of whether it succeeded
      */
     public boolean deleteSheet(String publisher, String sheetName) {
         Sheet newSheet = new Sheet(sheetName, publisher, new ArrayList<>());
         try {
-            if(sheetDao.deleteSheet(newSheet)) {
-                return true;
-            } else {
-                return false;
-            }
+            return sheetDao.deleteSheet(newSheet);
         } catch (Exception e) {
             return false;
         }

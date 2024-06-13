@@ -17,7 +17,6 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
      * Read the given file path and converts it to a SheetSystem
      * @param filePath String of path to read
      * @return SheetSystem from the data we got from the file
-     * @throws IOException for any IO errors
      */
     @Override
     public SheetSystem readFromFile(String filePath) {

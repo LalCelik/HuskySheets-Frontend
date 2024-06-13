@@ -1,14 +1,20 @@
 package com.valid.husksheets.model;
 
-    /**
-     * An Update made to a sheet
-     * Owner: Sunkwan and Lal
-     */
+/**
+ * An Update made to a sheet
+ * Owner: Sunkwan and Lal
+ */
 public class Update {
-    private STATUS status;
-    private int id;
+    private final STATUS status;
+    private final int id;
     private String update;
 
+    /**
+     * Update for a sheet
+     * @param status Status of the update depending on the user
+     * @param id id of the update
+     * @param update value of the update
+     */
     public Update(STATUS status, int id, String update) {
         this.status = status;
         this.id = id;
@@ -40,21 +46,8 @@ public class Update {
     }
 
     /**
-     * Sets current id of an Update to the given id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * Sets current status of an Update to the given status
-     */
-    public void setStatus(STATUS status) {
-        this.status = status;
-    }
-
-    /**
-     * Sets content id of an Update to the given content
+     * Sets content of an Update to the given content
+     * @param update value to change
      */
     public void setUpdate(String update) {
         this.update = update;

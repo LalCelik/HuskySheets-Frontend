@@ -38,6 +38,10 @@ public class UserSystem {
         this.users = users;
     }
 
+    /**
+     * Get all the users in the UserSystem
+     * @return List of Users
+     */
     public List<User> getUsers() {
         return users;
     }
@@ -128,6 +132,7 @@ public class UserSystem {
 
     /**
      * Register a user to the system
+     * @param username username to register
      */
     public void register(String username) {
         for (User u : this.users) {

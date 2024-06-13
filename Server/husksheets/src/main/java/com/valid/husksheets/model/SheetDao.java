@@ -17,7 +17,7 @@ public class SheetDao {
 
     /**
      * Instantiate the SheetDao object
-     * @param String of a path the json
+     * @param path path the json
      */
     public SheetDao(String path) {
          SHEETS_FILE = path;
@@ -102,9 +102,8 @@ public class SheetDao {
      * Get all sheets from the given publisher
      * @param publisher Publisher that we want to search
      * @return List of sheets of the given publisher
-     * @throws IOException for any IO errors
      */
-    public List<Sheet> getSheets(String publisher) throws IOException {
+    public List<Sheet> getSheets(String publisher) {
         SheetSystem sheetSystem = systemUtils.readFromFile(SHEETS_FILE);
         return publisherSheets(sheetSystem, publisher);
     }
@@ -155,8 +154,7 @@ public class SheetDao {
      */
     public boolean updateFile(Sheet sheet, Update newUpdate) {
         SheetSystemUtils sheetSystemUtils = new SheetSystemUtils();
-        SheetSystem sheetSys = new SheetSystem();
-        sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
+        SheetSystem sheetSys = sheetSystemUtils.readFromFile(SHEETS_FILE);
         if(sheetSys == null) {
             return false;
         }
