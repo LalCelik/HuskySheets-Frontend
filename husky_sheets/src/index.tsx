@@ -10,12 +10,14 @@ import Sheet from "./Sheet.tsx"
 
 
 const rootElement = document.getElementById('root');
+console.log("Root ele" + rootElement);
 
 if (!rootElement) {
   throw new Error('Failed to find the root element');
 }
 
 const root = ReactDOM.createRoot(rootElement);
+console.log("root" + root);
 
 /**
  * This is responsible for the navigation from one page to another
