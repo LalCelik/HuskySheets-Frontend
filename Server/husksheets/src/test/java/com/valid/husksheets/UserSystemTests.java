@@ -10,7 +10,7 @@ public class UserSystemTests {
 
     @Test
     void registerTest() {
-        UserSystem userSystem = new UserSystem();
+        UserSystem userSystem = new UserSystem("src/main/java/com/valid/husksheets/db/systemTest.json");
         userSystem.loadDB(); // Load initial users
         
         // Register a new user

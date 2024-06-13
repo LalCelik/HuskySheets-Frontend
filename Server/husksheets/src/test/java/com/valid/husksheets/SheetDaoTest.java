@@ -1,14 +1,12 @@
 package com.valid.husksheets;
-import com.valid.husksheets.model.Sheet;
+import com.valid.husksheets.model.*;
 import com.valid.husksheets.controller.ApplicationController;
 import org.junit.jupiter.api.Test;
-import com.valid.husksheets.model.SheetSystem;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.valid.husksheets.model.SheetDao;
-import com.valid.husksheets.model.SheetService;
 import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,7 +26,8 @@ public class SheetDaoTest {
     private String path = "src/main/resources/sheetsTest.json";
     SheetDao sheetDao = new SheetDao(path);
     SheetService sheetService = new SheetService(path);
-    ApplicationController appControl = new ApplicationController(sheetDao, sheetService);
+    UserSystem userSystemTest = new UserSystem("src/main/java/com/valid/husksheets/db/systemTest.json");
+    ApplicationController appControl = new ApplicationController(sheetDao, sheetService, userSystemTest);
     SheetSystem sheetSystem = new SheetSystem();
     SheetSystemUtils utils = new SheetSystemUtils();
 
@@ -41,7 +40,7 @@ public class SheetDaoTest {
 
     //sheet is found
     assertEquals(sheetDao.getSheet("user1", "Example1").getName(), sheet.getName());
-    assertEquals(sheetDao.getSheet("user2", "Example1"), null);
+    assertNull(sheetDao.getSheet("user2", "Example1"));
     }
 
     /**

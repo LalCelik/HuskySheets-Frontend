@@ -3,6 +3,7 @@ package com.valid.husksheets;
 import com.valid.husksheets.JSON.Argument;
 import com.valid.husksheets.model.User;
 import com.valid.husksheets.model.UserSystem;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +29,7 @@ public class UserSystemTest {
         users.add(user1);
         users.add(user2);
         users.add(user3);
-        userSystem = new UserSystem(users);
+        userSystem = new UserSystem(users, "src/main/java/com/valid/husksheets/db/systemTestEmpty.json");
     }
     @Test
     void findByUsernameTest() {
@@ -62,4 +63,10 @@ public class UserSystemTest {
                 .isEqualTo(arguments);
     }
 
+    @AfterEach
+    void clean() {
+        userSystem.deleteUser(user1);
+        userSystem.deleteUser(user2);
+        userSystem.deleteUser(user3);
+    }
 }

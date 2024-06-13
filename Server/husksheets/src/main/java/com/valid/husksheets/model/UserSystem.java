@@ -22,11 +22,22 @@ import java.util.List;
 @Service
 public class UserSystem {
     private List<User> users = new ArrayList<>();
+    private String path;
 
     /**
      * Instantiates an UserSystem object by loading the database from local persistent storage.
      */
     public UserSystem() {
+        this.path = "src/main/java/com/valid/husksheets/db/system.json";
+        this.loadDB();
+    }
+
+    /**
+     * Instantiates an UserSystem object by loading the database from local persistent storage.
+     * @param path String of the wanted path
+     */
+    public UserSystem(String path) {
+        this.path = path;
         this.loadDB();
     }
 
@@ -34,7 +45,8 @@ public class UserSystem {
      * Instantiates an UserSystem with given List of Users
      * @param users List of Users that we want to input
      */
-    public UserSystem(List<User> users) {
+    public UserSystem(List<User> users, String path) {
+        this.path = path;
         this.users = users;
     }
 
@@ -52,7 +64,7 @@ public class UserSystem {
     public void loadDB() {
         String jsonString;
         try {
-            jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
+            jsonString = Files.readString(Path.of(this.path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +76,7 @@ public class UserSystem {
      * Update the given Json DB from this current UserSystem
      */
     public void updateDB() {
-        try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
+        try (Writer writer = new FileWriter(this.path)) {
             Gson gson = new GsonBuilder().create();
             gson.toJson(users, writer);
         } catch (IOException e) {

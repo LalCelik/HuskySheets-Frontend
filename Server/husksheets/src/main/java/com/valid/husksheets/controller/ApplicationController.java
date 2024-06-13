@@ -44,9 +44,10 @@ public class ApplicationController {
      * @param sheetDaoNew SheetDao to configure
      * @param sheetServiceNew SheetService to configure
      */
-    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew, UserSystem userSystemNew) {
         sheetDao = sheetDaoNew;
         sheetService = sheetServiceNew;
+        this.userSystem = userSystemNew;
     }
 
     /**
