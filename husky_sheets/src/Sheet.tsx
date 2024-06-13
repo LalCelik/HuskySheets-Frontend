@@ -12,6 +12,7 @@ import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
 import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
 import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
 import {useParams} from "react-router-dom";
+import NumberVal from "./ParsingUtils/NumberVal.tsx";
 
 
 /**
@@ -185,6 +186,8 @@ function Sheet() {
 
       previousValues.current[`${columnName}-${rowIndex}`] = newValue;
       data[rowIndex - 1][cellIndex] = newValue;
+
+      updateFormulaCell(columnName, rowIndex);
     }
     // // if the cell currently being edited affects another cell with a formula
     // if (Object.keys(cellsToUpdate).includes(`${columnName}${rowIndex - 1}`)) {
@@ -199,35 +202,59 @@ function Sheet() {
     if (newValue[0] === "=") {
       const gridInstance = gridContainerRef.current;
       var tds = gridInstance.querySelectorAll("td[data-column-id='" + columnName.toLowerCase() + "']");
-      tds[rowIndex - 1].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, newValue)).value;
+      var refList = [`${rowIndex - 1}-${cellIndex}`];
+      try {
+        tds[rowIndex - 1].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, newValue, refList)).value;
+      } catch (err) {
+        tds[rowIndex - 1].innerHTML = "ERROR";
+      }
     }
   };
 
-
-  function updateFormulaCell(newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
-    const tokens = getCellsInFormula(cellsToUpdate[cellOfNewVal][formulaCellName]);
-    var convertedExpression = ""
-    // loop through expression
-    tokens.forEach((token) => {
-      // if token isn't a refeence to a cell, append it normally
-      if (!cellNamePattern.test(token)) {
-        convertedExpression.concat(token.props.children);
+  function updateFormulaCell(columnName, rowIndex) {
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        if (String(data[i][j]).includes(`${columnName}${rowIndex - 1}`)) {
+          const gridInstance = gridContainerRef.current;
+          const cN = generateColumnName(j);
+          var td = gridInstance.querySelectorAll("td[data-column-id='" + cN.toLowerCase() + "']");
+          var refList = [`${i}-{j}`];
+          try {
+            td[i].innerHTML = FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j], refList)).value;
+            updateFormulaCell(cN, i + 1);
+          } catch (err) {
+            td[i].innerHTML = "ERROR";
+          }
+        }
       }
-      // if the token was a reference to the cell that was just updated
-      if (token === cellOfNewVal) {
-        convertedExpression.concat(newVal);
-      }
-      // grab the cell value normally
-      else {
-        const colIdx = columnNameToIndex(token[0])
-        const rowIdx = token[1]
-        convertedExpression.concat(data[colIdx][rowIdx].toString());
-      }
-    })
-
-    // calculate the result of this expression and update the table
-    data[formulaCellCol][formulaCellRow] = FormulaParse(convertedExpression);
+    }
   }
+
+
+  // function updateFormulaCell(newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
+  //   const tokens = getCellsInFormula(cellsToUpdate[cellOfNewVal][formulaCellName]);
+  //   var convertedExpression = ""
+  //   // loop through expression
+  //   tokens.forEach((token) => {
+  //     // if token isn't a refeence to a cell, append it normally
+  //     if (!cellNamePattern.test(token)) {
+  //       convertedExpression.concat(token.props.children);
+  //     }
+  //     // if the token was a reference to the cell that was just updated
+  //     if (token === cellOfNewVal) {
+  //       convertedExpression.concat(newVal);
+  //     }
+  //     // grab the cell value normally
+  //     else {
+  //       const colIdx = columnNameToIndex(token[0])
+  //       const rowIdx = token[1]
+  //       convertedExpression.concat(data[colIdx][rowIdx].toString());
+  //     }
+  //   })
+  //
+  //   // calculate the result of this expression and update the table
+  //   data[formulaCellCol][formulaCellRow] = FormulaParse(convertedExpression);
+  // }
 
    
   const handleCellInput = (event) => {
@@ -336,9 +363,6 @@ function Sheet() {
     for (let idx=0; idx < listUpdates.length; idx++) {
       const splitStr = listUpdates[idx].split(" ");
       const match = regex.exec(splitStr[0]);
-      if (splitStr[1][0] === "=") {
-        cellsWithFormulas.push(idx);
-      }
       if (match) {
         const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
         const colIdx = columnNameToIndex(cellCoords.letter);
@@ -351,20 +375,17 @@ function Sheet() {
         console.log("INVALID");
       }
     }
-    for (let idx = 0; idx < cellsWithFormulas.length; idx++) {
-      const splitStr = listUpdates[cellsWithFormulas[idx]].split(" ");
-      const match = regex.exec(splitStr[0]);
-      const cellCoords = {letter: match[1], number: parseInt(match[2], 10)};
-      const colIdx = columnNameToIndex(cellCoords.letter);
-      const rowIdx = cellCoords.number;
-      splitStr[0] = "";
-      if ( splitStr.join("").includes("COPY")) {
-
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        if (data[i][j][0] === "=") {
+          var refList = [`${i}-${j}`];
+          try {
+            displayData[i][j] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, data[i][j], refList)).value;
+          } catch (err) {
+            displayData[i][j] = "ERROR";
+          }
+        }
       }
-      else {
-        displayData[rowIdx][colIdx] = '' + FormulaParse(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join(""))).value;
-      }
-      // console.log(RefToNumberFormula(cellNamePattern, dels, data, splitStr.join("")));
     }
 
     for (let rowIdx = 0; rowIdx < displayData.length; rowIdx++) {

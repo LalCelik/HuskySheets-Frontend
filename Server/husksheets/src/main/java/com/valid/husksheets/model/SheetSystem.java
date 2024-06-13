@@ -48,6 +48,11 @@ public class SheetSystem {
         sheets.add(sheet);
     }
 
+    /**
+     * Checks if given sheet is in the Sheet system
+     * @param sheet Sheet to search
+     * @return boolean value of whether the sheet exists
+     */
     public boolean containsSheet(Sheet sheet) {
         boolean equal = false;
         for(Sheet s: sheets) {
@@ -67,6 +72,12 @@ public class SheetSystem {
         sheets.remove(sheet);
     }
 
+    /**
+     * Adds an update to the sheetSystem
+     * @param sheet Sheet that we want to update
+     * @param update Update we want to add
+     * @return boolean for success or failure
+     */
     public boolean updateSystem(Sheet sheet, Update update) {
         for(Sheet s: sheets) {
             if(s != null) {
@@ -81,6 +92,10 @@ public class SheetSystem {
         return false;
     }
 
+    /**
+     * Gets a list of all of the updates in system
+     * @return List of Updates
+     */
     public List<Update> getAllUpdates() {
         List<Update> list = new ArrayList<>();
         for(Sheet s: sheets) {

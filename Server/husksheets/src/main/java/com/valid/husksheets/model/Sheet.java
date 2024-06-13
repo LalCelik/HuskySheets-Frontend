@@ -15,11 +15,9 @@ public class Sheet {
 
     /**
      * Instantiate new Sheet object with given inputs
-     * @param id integer id of the cell
      * @param name name of the cell
      * @param publisher String representation of the publisher
-     * @param height height of the cell in int
-     * @param width width of the cell in int
+     * @param updates updates of the Sheet
      */
     public Sheet(String name, String publisher, List<Update> updates) {
         this.publisher = publisher;
@@ -27,6 +25,10 @@ public class Sheet {
         this.updates = updates;
     }
 
+    /**
+     * Getter for the updates
+     * @return List of Updates
+     */
     public List<Update> getUpdates() {
         return updates;
     }
@@ -37,10 +39,6 @@ public class Sheet {
      */
     public String getName() {
         return name;
-    }
-
-    public List<Update> getUpdate() {
-        return updates;
     }
 
     /**
@@ -84,6 +82,7 @@ public class Sheet {
 
      /**
      * Adds an update to this sheet
+     * @param update Update to add to the sheet
      */
     public void addUpdate(Update update) {
         updates.add(update);
@@ -92,6 +91,7 @@ public class Sheet {
      /**
      * Checks if this sheet is equal to given sheet
      * Based on the sheets name and publisher
+     * @param other Sheet to check equality
      * @return true is it is equal
      */
     public boolean sheetEquals(Sheet other) {

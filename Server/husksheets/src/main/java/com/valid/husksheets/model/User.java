@@ -26,12 +26,12 @@ public class User {
         this.publisher = true;
     }
 
-    public User(String username, String password, List<String> sheets, boolean publihser) {
-        this.username = username;
-        this.password = password;
-        this.sheets = sheets;
-        this.publisher = publihser;
-    }
+    // public User(String username, String password, List<String> sheets, boolean publisher) {
+    //     this.username = username;
+    //     this.password = password;
+    //     this.sheets = sheets;
+    //     this.publisher = publisher;
+    // }
 
     /**
      * Are two Users the same?
@@ -58,14 +58,6 @@ public class User {
         return hash;
     }
 
-//    /**
-//     * Returns the User's id
-//     * @return id of this User
-//     */
-//    public int getId() {
-//        return this.id;
-//    }
-
     /**
      * Returns the User's username
      * @return User's username
@@ -90,11 +82,17 @@ public class User {
         return this.sheets;
     }
 
-
+    /**
+     * Returns if the User is the publisher
+     * @return true if user is publisher
+     */
     public boolean getPublisher() {
         return this.publisher;
     }
 
+    /**
+     * Sets this user as publisher
+     */
     public void setPublisher() {
         this.publisher = true;
     }

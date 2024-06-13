@@ -8,13 +8,10 @@ package com.valid.husksheets.model;
 public class Cell {
     private String input;
 
-    //constructor
-
     /**
      * Instantiate an empty Cell
      */
     public Cell () {
-        //should i make this empty?
         this.input = null; //all inputs start as empty
     }
 

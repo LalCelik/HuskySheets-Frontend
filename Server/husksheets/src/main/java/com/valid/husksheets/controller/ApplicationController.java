@@ -1,7 +1,5 @@
 package com.valid.husksheets.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.valid.husksheets.JSON.UserArgument;
 import com.valid.husksheets.model.*;
 
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,22 +24,30 @@ import java.util.List;
 public class ApplicationController {
 
     @Autowired
-    private SheetService sheetService; // = new SheetService();
+    private SheetService sheetService;
 
     @Autowired
     private UserSystem userSystem = new UserSystem();
 
-    private SheetDao sheetDao; // = new SheetDao();
+    private final SheetDao sheetDao;
 
+    /**
+     * Instantiates Application controller with new Sheet systems
+     */
     public ApplicationController() {
         sheetService = new SheetService();
         sheetDao = new SheetDao();
     }
 
-
-    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew) {
+    /**
+     * Instantiates Application controller with given Sheet systems
+     * @param sheetDaoNew SheetDao to configure
+     * @param sheetServiceNew SheetService to configure
+     */
+    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew, UserSystem userSystemNew) {
         sheetDao = sheetDaoNew;
         sheetService = sheetServiceNew;
+        this.userSystem = userSystemNew;
     }
 
     /**
@@ -74,6 +79,12 @@ public class ApplicationController {
         return new Result(true, "Successfully registered a user", null);
     }
 
+    /**
+     * Receives username and password and tries to delte user from the UserSystem
+     * Owner: Lal
+     * @param userArgument which holds username and password
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/deleteUser")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result deleteUser(@RequestBody UserArgument userArgument) {
@@ -97,6 +108,11 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Checks whether authentication works. Also, triggers the User to be a publisher
+     * @param authentication Authentication of the logged-in user
+     * @return Result object which could succeed or fail
+     */
     @GetMapping("/register")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result register(Authentication authentication) {
@@ -123,6 +139,7 @@ public class ApplicationController {
     /**
      * Create a sheet based on the given argument
      * Owner: Lal
+     * @param authentication Authentication of the logged-in user
      * @param argument object that has the name of the publisher and the sheet
      * @return Result of the process
      */
@@ -151,6 +168,7 @@ public class ApplicationController {
     /**
      * Deletes the given Sheet based on the argument
      * Owner: Lal
+     * @param authentication Authentication of the logged-in user
      * @param argument object that has the name of the publisher and the sheet
      * @return Result of the process
      */
@@ -184,18 +202,18 @@ public class ApplicationController {
         } else {
             //SheetDao sheetDao = new SheetDao();
             try {
-                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
-                if(list.size() == 0) {
-                 return new Result(false,
-                  "This Publisher doesn't have any sheets in system or doesn't exist", null);
 
-                } else {
+                if (userSystem.findByUsername(argument.getPublisher()) == null) {
+                    return new Result(false,
+                            "Publisher not found", null);
+                }
+
+                List<Sheet> list = sheetDao.getSheets(argument.getPublisher());
                 List<Argument> arguments = new ArrayList<>();
                 for (Sheet sheet : list) {
                     arguments.add(new Argument(sheet.getPublisher(), sheet.getName(), null, null));
                 }
                 return new Result(true, "Outputting sheets in the system:", arguments);
-            }
             } catch (Exception e) {
                 message = "Sheet couldn't be deleted: " + e.getMessage();
                 return new Result(false, message, null);
@@ -203,14 +221,14 @@ public class ApplicationController {
         }
     }
 
-    private Result filterGetSheet(String publisher, String name, STATUS state, int above) throws IOException {
+    private Result filterGetSheet(String publisher, String name, STATUS state, int above) {
         Sheet sheet = sheetDao.getSheet(publisher, name);
 
         if (sheet == null) {
             return new Result(false, "No sheet found", null);
         }
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int lastID = 0;
 
         for (Update u : sheet.getUpdates()) {
@@ -219,23 +237,30 @@ public class ApplicationController {
                     lastID = u.getId();
                 }
                 if (u.getId() > above) {
-                    result = result + u.getUpdate();
+                    result.append(u.getUpdate());
                 }
             }
         }
 
-        if (result == "") {
+        if (result.toString().isEmpty()) {
             List<Argument> noUpdate = new ArrayList<>();
             noUpdate.add(new Argument(publisher, name, above, ""));
             return new Result(true, "Getting updates: No updates found", noUpdate);
         }
 
         List<Argument> arguments = new ArrayList<>();
-        arguments.add(new Argument(publisher, name, lastID, result));
+        arguments.add(new Argument(publisher, name, lastID, result.toString()));
 
         return new Result(true, "Getting updates", arguments);
     }
 
+    /**
+     * Get all the Requested updates of the given sheet by the user starting from the update id provided.
+     * Owner: Sunkwan
+     * @param authentication Authentication of logged-in user
+     * @param argument which holds publisher name and id
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/getUpdatesForPublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForPublished(Authentication authentication, @RequestBody Argument argument) {
@@ -253,6 +278,12 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Get all the Published updates of the given sheet by the user starting from the update id provided.
+     * Owner: Sunkwan
+     * @param argument which holds publisher name and id
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/getUpdatesForSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result getUpdatesForSubscription(@RequestBody Argument argument) {
@@ -268,6 +299,15 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Receives an argument with the publisher name and payload
+     * Adds a PUBLISHED update to the sheet with the given name and publisher 
+     * The payload is the content of the update and the update is made by publisher
+     * Owner: Lal
+     * @param argument which holds publisher name and payload
+     * @param authentication Authentication of the logged-in user
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/updatePublished")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updatePublished(@RequestBody Argument argument, Authentication authentication) {
@@ -295,6 +335,15 @@ public class ApplicationController {
         }
     }
 
+    /**
+     * Receives an argument with the publisher name and payload
+     * Adds a REQUESTED update to the sheet with the given name and publisher 
+     * The payload is the content of the update and the update are made by a subscriber
+     * Owner: Lal
+     * @param argument which holds publisher name and payload
+     * @param authentication Authentication of the logged-in user
+     * @return Result object which could succeed or fail
+     */
     @PostMapping("/updateSubscription")
     @CrossOrigin(origins = "http://localhost:3000")
     public Result updateSubscription(Authentication authentication, @RequestBody Argument argument) {
