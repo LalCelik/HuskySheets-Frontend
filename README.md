@@ -1,7 +1,7 @@
 # CS4530-Code
 ## Makefile:
 - `make`: runs test then docker
-- `make test `: runs tests
+- `make test`: runs tests
 - `make build-frontend`: builds and runs frontend
 - `make build-backend`: builds and runs backend
 - `make docker`: runs the project in docker and runs the tests
