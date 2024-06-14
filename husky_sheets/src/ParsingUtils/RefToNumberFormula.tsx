@@ -15,7 +15,9 @@ import FormulaParse from './FormulaParse.tsx';
 
 function RefToNumberFormula(cellNamePattern, dels, data, refInputString, refList) {
     var newString = "";
+    console.log(dels);
     const tokens = getCellsInFormula(refInputString.toUpperCase());
+
     for (let i = 0; i < tokens.length; i++) {
       if (dels.includes(tokens[i]) || (!isNaN(parseFloat(tokens[i])))) {
         newString = newString.concat(tokens[i]);
@@ -25,6 +27,7 @@ function RefToNumberFormula(cellNamePattern, dels, data, refInputString, refList
         var colIdx = columnNameToIndex(str?.letter);
         var rowIdx = str?.numeric;
         if (data[rowIdx][colIdx].toString() != "") {
+          console.log(rowIdx);
             if (refList.includes(`${rowIdx}-${colIdx}`)) {
                 return "ERROR";
             }
@@ -38,6 +41,8 @@ function RefToNumberFormula(cellNamePattern, dels, data, refInputString, refList
         }
       }
     }
+    
+    console.log("NEW STRING", newString);
     return newString;
   }
 

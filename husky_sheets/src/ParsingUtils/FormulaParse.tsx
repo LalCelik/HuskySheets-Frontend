@@ -4,8 +4,6 @@ import StringToToken from "./StringToToken.tsx";
 import OperatorHandling from "./OperatorHandling.tsx"
 import FunctionHandling from "./FunctionHandling.tsx";
 import ConvertToAST from "./ConvertToAST.tsx";
-import NumberVal from "./NumberVal.tsx";
-import FormulaParseTS from "./AllOperationLogic.tsx";
 
 
 /**
@@ -15,13 +13,15 @@ import FormulaParseTS from "./AllOperationLogic.tsx";
  * @returns number in the form of a "NumberVal" data structure 
  */
 function FormulaParse(cellToParse) {
-  if (cellToParse.includes("ERROR")) {
-      throw new Error("Infinite Recursion");
-  }
   const tokens = StringToToken(cellToParse);
   const ast = ConvertToAST(tokens);
 
+  if (cellToParse.includes("ERROR")) {
+    throw new Error("Infinite Recursion");
+  }
+
   function calculate(ast) {
+    console.log(ast);
       if (ast.type === 'Number') {
           return ast;
       }
@@ -40,6 +40,7 @@ function FormulaParse(cellToParse) {
       if (ast.type === 'Function') {
         const { name, args } = ast;
 
+      
         return FunctionHandling(name, args);
       }
 

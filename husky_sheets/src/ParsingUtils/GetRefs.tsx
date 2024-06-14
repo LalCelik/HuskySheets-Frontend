@@ -7,7 +7,7 @@
  */
 
 function getCellsInFormula(expression) {
-    const pattern =  "(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG|:|<|>|<>|&|=|\\+|,|\\*|-|\\/|\\||\\(|\\)|[A-Z]+\\d+|\\d+)";
+    const pattern =  "(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG|COPY|:|<|>|<>|&|=|\\+|,|\\*|-|\\/|\\||\\(|\\)|[A-Z]+\\d+|\\d+)";
 
     const regex = new RegExp(pattern, 'g');
 
