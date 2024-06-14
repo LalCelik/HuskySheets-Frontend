@@ -26,7 +26,7 @@ console.log("root" + root);
  * Owner: Amani
  */
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
@@ -35,7 +35,7 @@ root.render(
         <Route path="/home_page/sheet/:sheetName/:dataPublisher" element={<Sheet />} />
       </Routes>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 reportWebVitals();

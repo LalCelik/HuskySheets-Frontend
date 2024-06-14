@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Argument received through REST api calls
  * Owner: Lal
  * @param publisher name of the publisher
- * @param sheet name of the sheet
+ * @param name name of the sheet
  * @param id relevant id
  * @param payload relevant data of the call
  */
@@ -35,10 +35,18 @@ public record Argument(
         return name;
     }
 
+    /**
+     * Getter method for the id
+     * @return id of the update
+     */
     public int getId() {
         return id.intValue();
     }
 
+    /**
+     * Getter method for the payload
+     * @return String representation of payload
+     */
     public String getPayload() {
         return payload;
     }

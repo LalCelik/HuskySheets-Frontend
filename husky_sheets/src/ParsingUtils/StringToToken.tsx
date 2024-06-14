@@ -9,7 +9,7 @@ import { useState } from 'react';
  */
 
 function StringToToken(inputString) {
-  const pattern = /(\(|\)|\+|,|-|\*|\/|=|>|<|<>|&|:|\||\b(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG)\b|\d+(\.\d+)?|\w+)/g;
+  const pattern = /(\(|\)|\+|,|-|\*|\/|=|>|<|<>|&|:|\||\b(IF|SUM|MIN|MAX|AVG|CONCAT|DEBUG|COPY)\b|\d+(\.\d+)?|\w+)/g;
 
   const tokens = inputString.match(pattern) || [];
 

@@ -16,7 +16,12 @@ function FormulaParse(cellToParse) {
   const tokens = StringToToken(cellToParse);
   const ast = ConvertToAST(tokens);
 
+  if (cellToParse.includes("ERROR")) {
+    throw new Error("Infinite Recursion");
+  }
+
   function calculate(ast) {
+    console.log(ast);
       if (ast.type === 'Number') {
           return ast;
       }
@@ -35,6 +40,7 @@ function FormulaParse(cellToParse) {
       if (ast.type === 'Function') {
         const { name, args } = ast;
 
+      
         return FunctionHandling(name, args);
       }
 

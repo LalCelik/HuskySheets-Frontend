@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NumberVal from './NumberVal.tsx';
 import FormulaParseTS from './AllOperationLogic.tsx';
-
+import FormulaParse from './FormulaParse.tsx';
 
 /**
  * Ownership: Ira
@@ -33,7 +33,12 @@ function FunctionHandling(oper, listNum) {
         strResult = handler.concat(listNum);
     }
     else if (oper == "DEBUG") {
-        console.log("DEBUG");
+        console.log(listNum);
+        return FormulaParse(listNum);
+    }
+    else if (oper == "COPY") {
+        console.log(listNum);
+        return new NumberVal(listNum[0]);
     }
     if (strResult.length != 0) {
         return new NumberVal(strResult);

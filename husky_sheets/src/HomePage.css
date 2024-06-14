@@ -1,29 +1,27 @@
 .HomePage {
-    background-color: rgb(237, 155, 227);
-    text-align: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+  background-color: rgb(237, 155, 227);
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  .Home-header {
-    background-color: rgb(209, 93, 209);
-    padding: 30px;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-  }
+.Home-header {
+  background-color: rgb(209, 93, 209);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+}
 
-  .Home-header h2 {
-     position: absolute;
-     left: 50%;
-     transform: translateX(-50%);
-     margin: 0;
-  }
+.Home-header h2 {
+  margin: 0;
+  flex-grow: 1; 
+  text-align: center; 
+}
 
-  .Home-header button {
-     margin-left: 1200px;
-  }
+.Home-header button {
+  margin-left: 20px; 
+}
 
   .Home-content {
     flex-grow: 1;

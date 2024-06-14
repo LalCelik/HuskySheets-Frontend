@@ -17,7 +17,6 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
      * Read the given file path and converts it to a SheetSystem
      * @param filePath String of path to read
      * @return SheetSystem from the data we got from the file
-     * @throws IOException for any IO errors
      */
     @Override
     public SheetSystem readFromFile(String filePath) {
@@ -41,6 +40,13 @@ public class SheetSystemUtils implements FileUtils<SheetSystem> {
         Files.writeString(Path.of(filePath), jsonOutput);
     }
 
+    /**
+     * Saves an update to the SheetSystem and into a Json file
+     * @param sheet sheet the update is made to
+     * @param update update added
+     * @param filePath String of path to write
+     * @throws IOException for any IO errors
+     */
     public void writeUpdateToFile(Sheet sheet, Update update, String filePath) throws IOException {
         String jsonString = Files.readString(Path.of(filePath));
         SheetSystem sheetSystem = new Gson().fromJson(jsonString, SheetSystem.class);

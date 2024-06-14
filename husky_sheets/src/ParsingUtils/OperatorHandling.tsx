@@ -46,7 +46,7 @@ function OperatorHandling(num1, num2, oper) {
         result = handler.or(num1, num2);
     }
     else if (oper == ":") {
-        console.log("COLON");
+        console.log(num1, num2)
     }
     return new NumberVal(result);
 }

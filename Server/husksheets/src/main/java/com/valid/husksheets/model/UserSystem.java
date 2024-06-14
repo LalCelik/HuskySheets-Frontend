@@ -22,11 +22,22 @@ import java.util.List;
 @Service
 public class UserSystem {
     private List<User> users = new ArrayList<>();
+    private String path;
 
     /**
      * Instantiates an UserSystem object by loading the database from local persistent storage.
      */
     public UserSystem() {
+        this.path = "src/main/java/com/valid/husksheets/db/system.json";
+        this.loadDB();
+    }
+
+    /**
+     * Instantiates an UserSystem object by loading the database from local persistent storage.
+     * @param path String of the wanted path
+     */
+    public UserSystem(String path) {
+        this.path = path;
         this.loadDB();
     }
 
@@ -34,17 +45,26 @@ public class UserSystem {
      * Instantiates an UserSystem with given List of Users
      * @param users List of Users that we want to input
      */
-    public UserSystem(List<User> users) {
+    public UserSystem(List<User> users, String path) {
+        this.path = path;
         this.users = users;
+    }
+
+    /**
+     * Get all the users in the UserSystem
+     * @return List of Users
+     */
+    public List<User> getUsers() {
+        return users;
     }
 
     /**
      * Load from the DB json to this UserSystem
      */
-    private void loadDB() {
+    public void loadDB() {
         String jsonString;
         try {
-            jsonString = Files.readString(Path.of("src/main/java/com/valid/husksheets/db/system.json"));
+            jsonString = Files.readString(Path.of(this.path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -55,8 +75,8 @@ public class UserSystem {
     /**
      * Update the given Json DB from this current UserSystem
      */
-    private void updateDB() {
-        try (Writer writer = new FileWriter("src/main/java/com/valid/husksheets/db/system.json")) {
+    public void updateDB() {
+        try (Writer writer = new FileWriter(this.path)) {
             Gson gson = new GsonBuilder().create();
             gson.toJson(users, writer);
         } catch (IOException e) {
@@ -108,6 +128,24 @@ public class UserSystem {
         this.updateDB();
     }
 
+    /**
+     * Delete user to the System
+     * @param user that needs to be added
+     */
+    public void deleteUser(User user) {
+        for (User value : this.users) {
+            if (value.equals(user)) {
+                this.users.remove(user);
+                this.updateDB();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Register a user to the system
+     * @param username username to register
+     */
     public void register(String username) {
         for (User u : this.users) {
             if (u.getUsername().equals(username)) {
