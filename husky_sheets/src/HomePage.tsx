@@ -34,6 +34,7 @@ function HomePage() {
   const base64encodedData = Buffer.from(`${username}:${password}`).toString(
     "base64"
   );
+  // const base64encodedData = user
 
   /**
    * This connects the HomePage UI to the backend server
@@ -42,12 +43,12 @@ function HomePage() {
    */
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/register", {
+    fetch("https://husksheets.fly.dev/api/v1/register", {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Basic " + base64encodedData,
+        Authorization: "Basic " + base64encodedData
       },
     }).then((response) => {
       if (!response.ok) {
@@ -71,7 +72,7 @@ function HomePage() {
    */
 
   const getSheets = () => {
-    fetch("http://localhost:8080/api/v1/getPublishers", {
+    fetch("https://husksheets.fly.dev/api/v1/getPublishers", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -97,7 +98,7 @@ function HomePage() {
            * Owner: Amani
            */
 
-          return fetch("http://localhost:8080/api/v1/getSheets", {
+          return fetch("https://husksheets.fly.dev/api/v1/getSheets", {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -145,7 +146,7 @@ function HomePage() {
    * Owner: Amani
    */
   const creatingSheet = () => {
-    fetch("http://localhost:8080/api/v1/createSheet", {
+    fetch("https://husksheets.fly.dev/api/v1/createSheet", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -200,7 +201,7 @@ function HomePage() {
    */
 
   const deletingSheet = (publisherName: string, nameOfSheet: string) => {
-    fetch("http://localhost:8080/api/v1/deleteSheet", {
+    fetch("https://husksheets.fly.dev/api/v1/deleteSheet", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -228,7 +229,7 @@ function HomePage() {
   };
 
   const deleteCurrUser = () => {
-    fetch("http://localhost:8080/api/v1/deleteUser", {
+    fetch("https://husksheets.fly.dev/api/v1/deleteUser", {
       method: "POST",
       headers: {
         Accept: "application/json",
