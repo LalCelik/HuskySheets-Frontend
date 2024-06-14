@@ -209,7 +209,6 @@ export default class FormulaParseTS {
     return average;
   }
 
-
   public concat(stringList: string[]) {
     var final = ""
     for (let i = 0; i < stringList.length; i++) {
@@ -218,8 +217,11 @@ export default class FormulaParseTS {
     return final;
   }
 
-
   public debug(e: String) {
+    return e;
+  }
+
+  public copy(e: String) {
     return e;
   }
 
