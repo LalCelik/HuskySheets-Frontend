@@ -56,7 +56,7 @@
     "typescript": "^4.9.5"
   },
 
-  "jest": {
+  "jest-doesn't work": {
     "setupFiles": ["<rootDir>/jest.setup.js"]
   }
 
