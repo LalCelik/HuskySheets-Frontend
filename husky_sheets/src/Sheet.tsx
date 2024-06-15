@@ -43,7 +43,7 @@ function Sheet() {
 
   const [combineData, setCombinedData] = useState(false);
 
-  const user = document.cookie;
+  const user = decodeURIComponent(document.cookie);
   if (user === "") {
     navigate("/");
   }
