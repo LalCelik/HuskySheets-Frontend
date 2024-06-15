@@ -29,7 +29,10 @@ function App() {
 
   function loginEvent(event) {
     event.preventDefault();
-    document.cookie = username + ":" + password;
+    console.log(password);
+    const login = username + ':' + password
+    document.cookie = encodeURIComponent(login)
+    console.log(document.cookie)
     navigate("/home_page");
   }
 

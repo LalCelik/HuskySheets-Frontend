@@ -25,7 +25,7 @@ function HomePage() {
   const [sheetName, setSheetName] = React.useState("");
   const [sheets, setSheets] = React.useState<ISheet[]>([]);
 
-  const user = document.cookie;
+  const user = decodeURIComponent(document.cookie);
   if (user === "") {
     navigate("/");
   }
