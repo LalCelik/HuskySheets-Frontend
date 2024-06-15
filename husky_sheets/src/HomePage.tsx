@@ -25,7 +25,7 @@ function HomePage() {
   const [sheetName, setSheetName] = React.useState("");
   const [sheets, setSheets] = React.useState<ISheet[]>([]);
 
-  const user = document.cookie;
+  const user = decodeURIComponent(document.cookie);
   if (user === "") {
     navigate("/");
   }
@@ -34,6 +34,7 @@ function HomePage() {
   const base64encodedData = Buffer.from(`${username}:${password}`).toString(
     "base64"
   );
+  // const base64encodedData = user
 
   /**
    * This connects the HomePage UI to the backend server
@@ -47,7 +48,7 @@ function HomePage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Basic " + base64encodedData,
+        Authorization: "Basic " + base64encodedData
       },
     }).then((response) => {
       if (!response.ok) {
@@ -257,7 +258,7 @@ function HomePage() {
   return (
     <div className="HomePage">
       <header className="Home-header">
-        <Button variant="contained" onClick={deleteCurrUser}>
+        <Button variant="contained" color="secondary" onClick={deleteCurrUser}>
           Delete Current User
         </Button>
         <h2>HuskSheets Homepage</h2>
