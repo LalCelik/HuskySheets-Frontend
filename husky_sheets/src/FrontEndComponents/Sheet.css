@@ -32,7 +32,6 @@
   .Sheet-link {
     color: #61dafb;
   }
-<<<<<<< HEAD
 
   .dialog {
     position: fixed;
@@ -53,8 +52,6 @@
   .dialog button {
     margin-top: 10px;
   }
-=======
->>>>>>> bcea8081d2601a7c22294dc894ab014f89d59a02
   
   @keyframes Sheet-logo-spin {
     from {

@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import OperatorHandling from "./ParsingUtils/OperatorHandling.tsx";
+import OperatorHandling from "../ParsingUtils/OperatorHandling.tsx";
 import { MemoryRouter } from "react-router-dom";
-import GetRefs from "./ParsingUtils/GetRefs.tsx";
+import GetRefs from "../ParsingUtils/GetRefs.tsx";
 /*
 Tests StringToToken and ensures string formulas are properly parsed into valid elements
 */

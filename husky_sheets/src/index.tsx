@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals.tsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import App from './App.tsx';
-import HomePage from './HomePage.tsx';
-import Registration from './Registration.tsx';
-import Sheet from "./Sheet.tsx"
+import App from './FrontEndComponents/App.tsx';
+import HomePage from './FrontEndComponents/HomePage.tsx';
+import Registration from './FrontEndComponents/Registration.tsx';
+import Sheet from "./FrontEndComponents/Sheet.tsx"
 
 
 const rootElement = document.getElementById('root');

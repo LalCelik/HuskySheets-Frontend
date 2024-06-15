@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ConvertToAST from "./ParsingUtils/ConvertToAST.tsx";
-import StringToToken from "./ParsingUtils/StringToToken.tsx";
-import Operation from "./ParsingUtils/OperVal.tsx"
-import NumberVal from "./ParsingUtils/NumberVal.tsx"
+import ConvertToAST from "../ParsingUtils/ConvertToAST.tsx";
+import StringToToken from "../ParsingUtils/StringToToken.tsx";
+import Operation from "../ParsingUtils/OperVal.tsx"
+import NumberVal from "../ParsingUtils/NumberVal.tsx"
 import { MemoryRouter } from "react-router-dom";
-import OperVal from "./ParsingUtils/OperVal.tsx";
+import OperVal from "../ParsingUtils/OperVal.tsx";
 import exp from "constants";
 
 /*

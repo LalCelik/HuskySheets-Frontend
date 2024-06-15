@@ -33,11 +33,9 @@ function FunctionHandling(oper, listNum) {
         strResult = handler.concat(listNum);
     }
     else if (oper == "DEBUG") {
-        console.log(listNum);
         return FormulaParse(listNum);
     }
     else if (oper == "COPY") {
-        console.log(listNum);
         return new NumberVal(listNum[0]);
     }
     if (strResult.length != 0) {

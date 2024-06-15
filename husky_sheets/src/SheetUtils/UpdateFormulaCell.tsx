@@ -1,5 +1,16 @@
-import getCellsInFormula from './ParsingUtils/GetRefs.tsx';
+import getCellsInFormula from '../ParsingUtils/GetRefs.tsx';
 
+/**
+ * Ownership: Ira
+ * Produces a string with numbers that refer to the cell references
+ * @param cellNamePattern pattern to use for tokenizing
+ * @param data 2D array representing cells
+ * @param newVal string to convert
+ * @param cellOfNewVal cell being edited
+ * @param formulaCellName column name
+ * @param formulaCellCol column idx
+ * @param formulaCellRow row idx
+ */
 
 function updateFormulaCell(cellNamePattern, data, newVal, cellOfNewVal, formulaCellName, formulaCellCol, formulaCellRow) {
     const tokens = getCellsInFormula(cellsToUpdate[cellOfNewVal][formulaCellName]);

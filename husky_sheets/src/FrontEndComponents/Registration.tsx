@@ -48,7 +48,7 @@ function Registration() {
    */
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    fetch("http://localhost:8080/api/v1/registerUser", {
+    fetch("https://husksheets.fly.dev/api/v1/registerUser", {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -30,25 +30,16 @@ function ConvertToAST(tokens) {
         let funcPresent = [];
         let parens = [];
 
-    
-        //console.log("LOWEST", lowestPrecedence);
         for (let i = 0; i < tokens.length; i++) {
             const token = tokens[i];
-
-            console.log("----HERE----", token);
-
-            // keep track of where function handlers are located in the token sequence
             if (['IF', 'SUM', 'MIN', 'MAX', 'AVG', 'CONCAT', 'DEBUG', 'COPY'].includes(token) && (i === 0)) {
-                //console.log("RECOGNIZE FUNCTION");
                 funcPresent.push(i); 
             }
 
-            // keep track of the parentheses 
             if (token === '(') {
                 parenthesesCount++;
                 parens.push(i);
             } else if (token === ')') {
-                // keep track of where the end of a function is, if any present
                 if (funcPresent.length === 1) {
                     funcPresent.push(i - 1); 
                 }
@@ -57,12 +48,7 @@ function ConvertToAST(tokens) {
             }
 
 
-
-            // = (1+2)*3
-            // new Operation(operator=*, left = new Operation(+, 1, 2), right=3)
-            // looking at operations outside of a set of parentheses
             if (parenthesesCount === 0) {
-                // console.log("OUTSIDE PARENS");
                 if (['+', '-'].includes(token) && lowestPrecedence >= 0) {
                     lowestPrecedence = 1;
                     lowestPrecedenceIndex = i;
@@ -83,23 +69,11 @@ function ConvertToAST(tokens) {
             
         }
 
-        console.log("LP", lowestPrecedence);
-        console.log("LPI", lowestPrecedenceIndex);
-        console.log("PARENS", parens.length);
-        console.log("FUNC", funcPresent);
-        //console.log(funcPresent);
-        // = 1 + 2
-        // lpi = 2
-        // lp = 1        
-        // error handling for missing parentheses
         if ((parenthesesCount === 1) || (parenthesesCount === -1)) {
             throw Error("Invalid expression - missing opening or closing parentheses");
         }
 
-        
-        // if nothing outsidde the parentheses
-        // were detected in expression so lines 55-65 is skipped
-        // ex: =(1+2) is now parsed as =1+2
+      
         if (lowestPrecedence === 0 
             && parenthesesCount === 0 
             && parens.length !== 0
@@ -108,14 +82,11 @@ function ConvertToAST(tokens) {
 
             
         }
-        // grab numeric value
         else if (lowestPrecedenceIndex === -1 && parens.length === 0) {
             return new NumberVal(parseFloat(tokens[0]));
         }
   
-        
-        // =(1+2) + SUM(1,2)
-        // if no function present, continue dividing into left/right normally
+   
         if (funcPresent.length !== 0 && lowestPrecedenceIndex === -1) {
             console.log(tokens.slice(funcPresent[0], funcPresent[1]+1))
             let args = tokens.slice(funcPresent[0], funcPresent[1]+1);
@@ -140,15 +111,11 @@ function ConvertToAST(tokens) {
             console.log("ARGS", evalArgs);
             return new Function(args[0], evalArgs)
         }
-       
-        console.log("TOKENS*****", tokens);
-        console.log("TOKENS*****", tokens[lowestPrecedenceIndex]);
+
         let operator = new OperVal(tokens[lowestPrecedenceIndex]);
         let leftTokens = tokens.slice(0, lowestPrecedenceIndex);
         let rightTokens = tokens.slice(lowestPrecedenceIndex + 1);   
 
-
-        // build the tree by recursively calling on the left and right branches
         return new Operation(
             operator,
             parseExpression(leftTokens),
