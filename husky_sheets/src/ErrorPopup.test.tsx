@@ -29,29 +29,31 @@ describe('ErrorPopup', () => {
     render(<ErrorPopup />);
     expect(screen.queryByText("The information that you have entered is invalid. Please try again")).not.toBeInTheDocument();
   });
-  
 
-//   test('opens the popup when the openPopup function is called', () => {
-//     const { getByText } = render(<ErrorPopup />);
+  /**
+   * Tests if the popup with its data is displayed correctly (and closed) with
+   * the user's actions
+   * 
+   * Owner: Amani
+   */
+  test("toggles the popup when the button is clicked", () => {
+    const { getByText, queryByText } = render(<ErrorPopup />);
     
-//     // Find the popup toggle button or element that will be used to open the popup
-//     // Since the current implementation does not provide an external trigger, 
-//     // we'll simulate the function call directly through the internal state
-//     const toggleButton = screen.getByText("The information that you have entered is invalid. Please try again");
-//     fireEvent.click(toggleButton);
-
-//     expect(screen.getByText("The information that you have entered is invalid. Please try again")).toBeInTheDocument();
-//   });
-
-//   test('closes the popup when the closeOnDocumentClick is triggered', () => {
-//     const { queryByText } = render(<ErrorPopup />);
+    // Check that the popup is initially not visible
+    expect(screen.queryByText("The information that you have entered is invalid. Please try again")).not.toBeInTheDocument();
     
-//     // Find the popup toggle button or element that will be used to open the popup
-//     const toggleButton = screen.getByText("The information that you have entered is invalid. Please try again");
-//     fireEvent.click(toggleButton); // Open the popup
+    // Find the button and click it
+    const button = screen.getByText("Open Popup");
+    fireEvent.click(button);
+    
+    // Check that the popup is now visible
+    expect(screen.getByText("The information that you have entered is invalid. Please try again")).toBeInTheDocument();
+    
+    // Click the button again to close the popup
+    fireEvent.click(button);
+    
+    // Check that the popup is no longer visible
+    expect(screen.queryByText("The information that you have entered is invalid. Please try again")).not.toBeInTheDocument();
 
-//     fireEvent.click(document); // Simulate clicking outside the popup to close it
-
-//     expect(screen.queryByText("The information that you have entered is invalid. Please try again")).not.toBeInTheDocument();
-//   });
+  });
 });

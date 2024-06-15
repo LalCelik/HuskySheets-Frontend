@@ -258,7 +258,7 @@ function HomePage() {
   return (
     <div className="HomePage">
       <header className="Home-header">
-        <Button variant="contained" onClick={deleteCurrUser}>
+        <Button variant="contained" color="secondary" onClick={deleteCurrUser}>
           Delete Current User
         </Button>
         <h2>HuskSheets Homepage</h2>
