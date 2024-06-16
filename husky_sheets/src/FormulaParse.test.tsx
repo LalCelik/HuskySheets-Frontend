@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import OperatorHandling from "../ParsingUtils/OperatorHandling.tsx";
+import OperatorHandling from "./ParsingUtils/OperatorHandling.tsx";
 import { MemoryRouter } from "react-router-dom";
-import FormulaParse from "../ParsingUtils/FormulaParse.tsx";
+import FormulaParse from "./ParsingUtils/FormulaParse";
 /*
 Tests StringToToken and ensures string formulas are properly parsed into valid elements
 */
@@ -154,14 +154,14 @@ describe.only('GetRef', () => {
             test('compound operation with parentheses - binary (ex3)', () => {
                 const inputString = '=(5*2)/(1+2)';
                 const ans = FormulaParse(inputString);
-                const expectedAns = 3.33;
+                const expectedAns = 3.3333333333333335;
                 expect(expectedAns).toEqual(ans.value);
               });
         
               test('compound operation with parentheses - binary (ex4)', () => {
                 const inputString = '=(1+2)/((8-7)*(9*0.5))';
                 const ans = FormulaParse(inputString);
-                const expectedAns = 0.66;
+                const expectedAns = 0.6666666666666666;
                 expect(expectedAns).toEqual(ans.value);
               });
         
@@ -211,21 +211,21 @@ describe.only('GetRef', () => {
                 test('compound operation with parentheses and functions (ex2)', () => {
                     const inputString = '=(MIN(5,4) - MAX(1,2))/(8*7)';
                     const ans = FormulaParse(inputString);
-                    const expectedAns = 0.0357;
+                    const expectedAns = 0.03571428571428571;
                     expect(expectedAns).toEqual(ans.value);
                   });
             
                 test('compound operation with parentheses and functions (ex3)', () => {
                     const inputString = '=(5*2)/(CONCAT(1,2))';
                     const ans = FormulaParse(inputString);
-                    const expectedAns = 0.83;
+                    const expectedAns = 0.8333333333333334;
                     expect(expectedAns).toEqual(ans.value);
                   });
             
                   test('compound operation with parentheses and functions (ex4)', () => {
                     const inputString = '=(AVG(5,10)/(1+2*3))';
                     const ans = FormulaParse(inputString);
-                    const expectedAns = 0.833;
+                    const expectedAns = 0.8333333333333334;
                     expect(expectedAns).toEqual(ans.value);
                   });
             

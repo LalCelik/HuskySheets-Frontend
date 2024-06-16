@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import OperatorHandling from "../ParsingUtils/OperatorHandling.tsx";
+import OperatorHandling from "./ParsingUtils/OperatorHandling.tsx";
 import { MemoryRouter } from "react-router-dom";
-import FunctionHandling from "../ParsingUtils/FunctionHandling.tsx";
-import NumberVal from "../ParsingUtils/NumberVal.tsx";
+import FunctionHandling from "./ParsingUtils/FunctionHandling.tsx";
+import NumberVal from "./ParsingUtils/NumberVal.tsx";
 /*
 Tests StringToToken and ensures string formulas are properly parsed into valid elements
 */
@@ -34,7 +34,7 @@ describe.only('FunctionHandling', () => {
         expect(expectedAns).toEqual(ans);
     });
 
-    test('max with invalid input', () => {
+    test('max with invalid input2', () => {
         const ans = FunctionHandling('MAX', [1, 'q', 3]);
         const expectedAns = new NumberVal(3);
         expect(expectedAns).toEqual(ans);

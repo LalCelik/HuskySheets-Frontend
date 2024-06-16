@@ -136,7 +136,7 @@ describe("App component", () => {
     fireEvent.click(loginButton);
 
     // Check the cookie value
-    expect(document.cookie).toBe("testuser:password123");
+    expect(document.cookie).toBe("testuser%3Apassword123");
     // Check that navigate was called with the correct argument
     expect(mockedNavigate).toHaveBeenCalledWith("/home_page");
   });
