@@ -24,9 +24,6 @@ import java.util.List;
 public class ApplicationController {
 
     @Autowired
-    private SheetService sheetService;
-
-    @Autowired
     private UserSystem userSystem = new UserSystem();
 
     private final SheetDao sheetDao;
@@ -35,7 +32,6 @@ public class ApplicationController {
      * Instantiates Application controller with new Sheet systems
      */
     public ApplicationController() {
-        sheetService = new SheetService();
         sheetDao = new SheetDao();
     }
 
@@ -44,9 +40,8 @@ public class ApplicationController {
      * @param sheetDaoNew SheetDao to configure
      * @param sheetServiceNew SheetService to configure
      */
-    public ApplicationController(SheetDao sheetDaoNew, SheetService sheetServiceNew, UserSystem userSystemNew) {
+    public ApplicationController(SheetDao sheetDaoNew, UserSystem userSystemNew) {
         sheetDao = sheetDaoNew;
-        sheetService = sheetServiceNew;
         this.userSystem = userSystemNew;
     }
 
@@ -156,11 +151,17 @@ public class ApplicationController {
             Update update = new Update(STATUS.PUBLISHED, 0, argument.getPayload());
             updates.add(update);
 
-            if (sheetService.createSheet(argument.getPublisher(), argument.getName(), updates)) {
-                return new Result(true, "Sheet has been created", null);
+            Sheet newSheet = new Sheet(argument.getName(), argument.getPublisher(), updates);
+            try {
+            if (sheetDao.saveSheet(newSheet)) {
+                return new Result(true, "Sheet has been created.", null);
             } else {
-                return new Result(false, "Sheet couldn't be created", null);
+                return new Result(false, "Sheet couldn't be created. Sheet already exists.", null);
             }
+        } catch(Exception e) {
+            return new Result(true, "Error writing to file" + e.getMessage(), null); 
+        }
+
         }
     }
 
@@ -180,11 +181,17 @@ public class ApplicationController {
         } else if (!authentication.getName().equals(argument.getPublisher())) {
             return new Result(false, "You don't have access to this request", null);
         } else {
-            if (sheetService.deleteSheet(argument.getPublisher(), argument.getName())) {
+            Sheet newSheet = new Sheet(argument.getName(), argument.getPublisher(), new ArrayList<>());
+            //add try catch
+            try {
+            if (sheetDao.deleteSheet(newSheet)) {
                 return new Result(true, "Sheet has been deleted", null);
             } else {
                 return new Result(false, "Sheet couldn't be deleted", null);
             }
+        } catch (Exception e) {
+            return new Result(false, "Error writing to file: " + e.getMessage(), null);
+        }
         }
     }
 

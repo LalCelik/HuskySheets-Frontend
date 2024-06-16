@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.valid.husksheets.model.SheetDao;
-import com.valid.husksheets.model.SheetService;
 import com.valid.husksheets.model.FileUtils.SheetSystemUtils;
 
 import java.util.ArrayList;
@@ -32,9 +31,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ApplicationControllerTest {
     private String path = "src/main/resources/sheetsTest.json";
     private SheetDao sheetDao = new SheetDao(path);
-    private SheetService sheetService = new SheetService(path);
     private UserSystem userSystemTest = new UserSystem("src/main/java/com/valid/husksheets/db/systemTest.json");
-    private ApplicationController appControl = new ApplicationController(sheetDao, sheetService, userSystemTest);
+    private ApplicationController appControl = new ApplicationController(sheetDao, userSystemTest);
     private SheetSystem sheetSystem = new SheetSystem();
     private SheetSystemUtils utils = new SheetSystemUtils();
     private Argument existingSheetArg = new Argument("user1", "Example1", 0, "$A1 TEST\n");
@@ -134,7 +132,7 @@ public class ApplicationControllerTest {
 
         Argument argument4 = new Argument("user4", "name", 0, "");
 
-        Result resultSuccess = new Result(true, "Sheet has been created", null);
+        Result resultSuccess = new Result(true, "Sheet has been created.", null);
         Result resultDiffPublisher = new Result(false, "Illegal request: Can't create sheet for different publisher", null);
         Authentication authentication = new UsernamePasswordAuthenticationToken("user4", "password");
 
