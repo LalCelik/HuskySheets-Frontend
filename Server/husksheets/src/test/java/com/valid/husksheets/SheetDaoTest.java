@@ -25,9 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SheetDaoTest {
     private String path = "src/main/resources/sheetsTest.json";
     SheetDao sheetDao = new SheetDao(path);
-    SheetService sheetService = new SheetService(path);
     UserSystem userSystemTest = new UserSystem("src/main/java/com/valid/husksheets/db/systemTest.json");
-    ApplicationController appControl = new ApplicationController(sheetDao, sheetService, userSystemTest);
+    ApplicationController appControl = new ApplicationController(sheetDao, userSystemTest);
     SheetSystem sheetSystem = new SheetSystem();
     SheetSystemUtils utils = new SheetSystemUtils();
 
