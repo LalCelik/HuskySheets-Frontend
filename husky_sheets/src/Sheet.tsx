@@ -5,14 +5,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Buffer } from 'buffer';
 
 import {Form, useNavigate} from "react-router-dom";
-import FormulaParse from '../ParsingUtils/FormulaParse.tsx';
-import getCellsInFormula from '../ParsingUtils/GetRefs.tsx';
-import { columnNameToIndex } from '../SheetUtils/ColNameToIdx.tsx';
-import RefToNumberFormula from '../ParsingUtils/RefToNumberFormula.tsx'
-import { generateColumnName } from '../SheetUtils/IdxToColName.tsx';
+import FormulaParse from './ParsingUtils/FormulaParse.tsx';
+import getCellsInFormula from './ParsingUtils/GetRefs.tsx';
+import { columnNameToIndex } from './SheetUtils/ColNameToIdx.tsx';
+import RefToNumberFormula from './ParsingUtils/RefToNumberFormula.tsx'
+import { generateColumnName } from './SheetUtils/IdxToColName.tsx';
 import {useParams} from "react-router-dom";
-import { recentUpdate, setRecentUpdate } from '../recentUpdates.tsx'; 
-import splitString from '../ParsingUtils/StringToLetterAndNum.tsx';
+import { recentUpdate, setRecentUpdate } from './recentUpdates.tsx'; 
+import splitString from './ParsingUtils/StringToLetterAndNum.tsx';
 
 
 /**

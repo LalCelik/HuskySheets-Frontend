@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ConvertToAST from "../ParsingUtils/ConvertToAST.tsx";
-import StringToToken from "../ParsingUtils/StringToToken.tsx";
-import Operation from "../ParsingUtils/OperVal.tsx"
-import NumberVal from "../ParsingUtils/NumberVal.tsx"
+import ConvertToAST from "./ParsingUtils/ConvertToAST.tsx";
+import StringToToken from "./ParsingUtils/StringToToken.tsx";
+import Operation from "./ParsingUtils/OperVal.tsx"
+import NumberVal from "./ParsingUtils/NumberVal.tsx"
 import { MemoryRouter } from "react-router-dom";
-import OperVal from "../ParsingUtils/OperVal.tsx";
+import OperVal from "./ParsingUtils/OperVal.tsx";
 import exp from "constants";
 
 /*
@@ -125,7 +125,7 @@ describe.only('Convert to AST', () => {
         expect(expectedAns).toEqual(ast);
       });
   
-      test('simple operation with no parentheses - minus', () => {
+      test('simple operation with no parentheses - minus2', () => {
           const inputString = '=(5-2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -136,7 +136,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-      test('simple operation with no parentheses - multiply', () => {
+      test('simple operation with no parentheses - multiply2', () => {
           const inputString = '=(5*2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -147,7 +147,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-        test('simple operation with no parentheses - divide', () => {
+        test('simple operation with no parentheses - divide2', () => {
           const inputString = '=(5/2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -158,7 +158,7 @@ describe.only('Convert to AST', () => {
         });
   
   
-        test('simple operation with no parentheses - less than', () => {
+        test('simple operation with no parentheses - less than2', () => {
           const inputString = '=(1<2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -169,7 +169,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-        test('simple operation with no parentheses - more than', () => {
+        test('simple operation with no parentheses - more than2', () => {
           const inputString = '=(1>2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -180,7 +180,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-        test('simple operation with no parentheses - equal', () => {
+        test('simple operation with no parentheses - equal2', () => {
           const inputString = '=(1=2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -192,7 +192,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-        test('simple operation with no parentheses - and', () => {
+        test('simple operation with no parentheses - and2', () => {
           const inputString = '=(1&2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
@@ -203,7 +203,7 @@ describe.only('Convert to AST', () => {
           expect(expectedAns).toEqual(ast);
         });
   
-        test('simple operation with no parentheses - or', () => {
+        test('simple operation with no parentheses - or2', () => {
           const inputString = '=(1|2)';
           const tokens = StringToToken(inputString)
           const ast = ConvertToAST(tokens);
