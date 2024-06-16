@@ -24,7 +24,7 @@ public class SheetService {
      * Initializes a new sheet system with default sheets file
      */
     public SheetService() {
-        sheetDao  = new SheetDao("/src/main/resources/sheets.json");
+        sheetDao  = new SheetDao("src/main/resources/sheets.json");
     }
 
     /**

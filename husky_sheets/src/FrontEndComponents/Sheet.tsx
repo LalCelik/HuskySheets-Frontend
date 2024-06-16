@@ -39,7 +39,7 @@ function Sheet() {
   const [publishedData, setPublishedData] = useState(false);
   const [localRecentUpdate, setLocalRecentUpdate] = useState(recentUpdate);
 
-  const [url, setUrl] = useState('https://husksheets.fly.dev/api/v1/getUpdatesForSubscription'); // Define state variable for URL
+  const [url, setUrl] = useState('http://localhost:8080/api/v1/getUpdatesForSubscription'); // Define state variable for URL
 
   const [combineData, setCombinedData] = useState(false);
 
@@ -52,7 +52,7 @@ function Sheet() {
   const base64encodedData = Buffer.from(`${username}:${password}`).toString('base64');
 
   useEffect(() => {
-    fetch("https://husksheets.fly.dev/api/v1/register", {
+    fetch("http://localhost:8080/api/v1/register", {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -297,7 +297,7 @@ function Sheet() {
     });
     const regex = /([A-Z]+)(\d+)/;
     if (username == dataPublisher) {
-      fetch('https://husksheets.fly.dev/api/v1/getUpdatesForPublished', {
+      fetch('http://localhost:8080/api/v1/getUpdatesForPublished', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -347,7 +347,7 @@ function Sheet() {
   }
     
   const saveSheetUpdates = () => {
-    var updateUrl = 'https://husksheets.fly.dev/api/v1/updateSubscription'
+    var updateUrl = 'http://localhost:8080/api/v1/updateSubscription'
     var stringEmpListUpdates = "";
     console.log(displayData);
     for (let i = 0; i < empListUpdates.length; i++) {
@@ -355,7 +355,7 @@ function Sheet() {
     }
     if (username === dataPublisher) {
       console.log("HERE");
-      updateUrl = 'https://husksheets.fly.dev/api/v1/updatePublished'
+      updateUrl = 'http://localhost:8080/api/v1/updatePublished'
     }
     console.log(updateUrl)
   
@@ -420,7 +420,7 @@ function Sheet() {
         server={{
           method: 'POST',
           headers: {'Accept': 'application/json','Content-Type': 'application/json','Authorization': 'Basic ' + base64encodedData},
-          url:'https://husksheets.fly.dev/api/v1/getUpdatesForSubscription' ,
+          url:'http://localhost:8080/api/v1/getUpdatesForSubscription' ,
           body: JSON.stringify({
             publisher: dataPublisher,
             sheet: sheetName,
