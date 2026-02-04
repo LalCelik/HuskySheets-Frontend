@@ -1,3 +1,13 @@
+# HuskySheets
+
+HuskySheets is a spreadsheet application with a React frontend and Java Spring Boot backend. It allows users to create, edit, and manage spreadsheets with real-time updates.
+
+## Tech Stack
+
+- Frontend: React, TypeScript, CSS
+- Backend: Java, Spring Boot, Gradle
+- Infrastructure: Docker, Docker Compose
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
