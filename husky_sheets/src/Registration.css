@@ -1,63 +1,130 @@
 .Registration {
-    background-color: rgb(237, 155, 227);
-    text-align: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-  }
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #114B5F 0%, #028090 100%);
+}
 
-  .Register-header {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .Register-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
-    margin-top: 10px;
-  }
+.Registration-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
-  .input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+.registration-card {
+  width: 100%;
+  max-width: 420px;
+  min-height: 480px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    gap: 10px;
-  }
+.registration-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-  .button-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
-    margin-top: -75px;
-  }
-  
-  .name-field,
-  .password-field {
-    padding: 15px;
-    font-size: 16px;
-    margin-right: 10px;
-  }
+.registration-header h1 {
+  margin: 0.5rem 0 0.25rem 0;
+  color: #114B5F;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
 
-  .submit-button {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
-    margin-top: -60px;
-  }
+.registration-header p {
+  margin: 0;
+  color: #456990;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  background: #F45B69;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.registration-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 500;
+  color: #114B5F;
+  font-size: 0.9rem;
+}
+
+.field .p-inputtext {
+  width: 100%;
+  border-color: #456990;
+  border-radius: 8px;
+}
+
+.field .p-inputtext:focus {
+  border-color: #028090;
+  box-shadow: 0 0 0 2px rgba(2, 128, 144, 0.25);
+}
+
+.field .p-password {
+  width: 100%;
+  display: block;
+}
+
+.field .p-password .p-inputtext {
+  width: 100%;
+  border-color: #456990;
+  border-radius: 8px;
+}
+
+.register-btn {
+  margin-top: 1rem;
+  width: 100%;
+  background: #028090;
+  border-color: #028090;
+  border-radius: 8px;
+}
+
+.register-btn:hover {
+  background: #114B5F;
+  border-color: #114B5F;
+}
+
+.login-link-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+}
+
+.login-link-section span {
+  color: #456990;
+  font-size: 0.9rem;
+}
+
+.login-link-section .p-button-link {
+  padding: 0;
+  color: #028090;
+}
+
+.login-link-section .p-button-link:hover {
+  color: #114B5F;
+}

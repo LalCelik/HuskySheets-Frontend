@@ -1,96 +1,166 @@
 .HomePage {
-  background-color: rgb(237, 155, 227);
-  text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f0f4f5;
 }
 
 .Home-header {
-  background-color: rgb(209, 93, 209);
-  padding: 30px;
+  background: #114B5F;
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.Home-header h2 {
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+}
+
+.header-title h2 {
   margin: 0;
-  flex-grow: 1; 
-  text-align: center; 
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-.Home-header button {
-  margin-left: 20px; 
+.header-title i {
+  color: #028090;
 }
 
-  .Home-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 80px;
-  }
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    gap: 10px;
-  }
+.header-actions .p-button {
+  background: #028090;
+  border-color: #028090;
+}
 
-  .popup-content {
-    background-color: rgb(255, 237, 255);
-    width: 500px;
-    height: 200px;
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+.header-actions .p-button:hover {
+  background: #026d7a;
+  border-color: #026d7a;
+}
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    align-items: center;
-  }
+.header-actions .p-button-danger {
+  background: #F45B69;
+  border-color: #F45B69;
+}
 
-  .popup-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-  }
+.header-actions .p-button-danger:hover {
+  background: #d94a57;
+  border-color: #d94a57;
+}
 
-  .input-field {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    padding-top: 15px;
-  }
+.Home-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
 
-  .sheets-table button {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
+.table-container {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(17, 75, 95, 0.15);
+  padding: 1.5rem;
+}
 
-.sheets-table th, .sheets-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
+.sheets-table .p-datatable-header {
+  background: transparent;
+  border: none;
+}
 
-.sheets-table th {
-    text-align: center;
-  }
+.sheets-table .p-datatable-thead > tr > th {
+  background: #f0f4f5;
+  color: #114B5F;
+  font-weight: 600;
+  padding: 1rem;
+}
 
-.sheets-table td {
-    text-align: left;
-  }
+.sheets-table .p-datatable-thead > tr > th:last-child,
+.sheets-table .p-datatable-thead > tr > th:last-child .p-column-header-content {
+  text-align: center;
+  justify-content: center;
+}
 
-.sheets-table td:nth-child(1) {
-    text-align: left;
-    width: 10%;
-  }
+.sheets-table .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  color: #114B5F;
+}
 
-.sheets-table td:nth-child(2) {
-    text-align: center;
-    width: 80%;
-  }
+.sheets-table .p-datatable-tbody > tr:hover {
+  background: rgba(2, 128, 144, 0.08);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.action-buttons .p-button {
+  padding: 0.5rem 1rem;
+  background: #028090;
+  border-color: #028090;
+}
+
+.action-buttons .p-button:hover {
+  background: #026d7a;
+  border-color: #026d7a;
+}
+
+.action-buttons .p-button-danger {
+  background: #F45B69;
+  border-color: #F45B69;
+}
+
+.action-buttons .p-button-danger:hover {
+  background: #d94a57;
+  border-color: #d94a57;
+}
+
+.create-sheet-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 300px;
+}
+
+.dialog-content .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dialog-content .field label {
+  font-weight: 500;
+  color: #114B5F;
+}
+
+.dialog-content .field .p-inputtext {
+  width: 100%;
+  border-color: #456990;
+}
+
+.create-btn {
+  width: 100%;
+  background: #028090;
+  border-color: #028090;
+}
+
+.create-btn:hover {
+  background: #114B5F;
+  border-color: #114B5F;
+}

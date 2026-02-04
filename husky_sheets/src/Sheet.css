@@ -1,64 +1,118 @@
-
-.Sheet {
-  background-color: rgb(237, 155, 227);
-  text-align: center;
+.SheetPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  }
-  
-  .Sheet-logo {
-    height: 40vmin;
-    pointer-events: none;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .Sheet-logo {
-      animation: Sheet-logo-spin infinite 20s linear;
-    }
-  }
-  
-  .Sheet-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .Sheet-link {
-    color: #61dafb;
-  }
+  background: #f0f4f5;
+}
 
-  .dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border: 1px solid #ccc; /* Border style */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dialog-content {
-    text-align: center;
-  }
-  
-  .dialog button {
-    margin-top: 10px;
-  }
-  
-  @keyframes Sheet-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
+.Sheet-header {
+  background: #114B5F;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: white;
+}
+
+.header-title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.header-title i {
+  color: #028090;
+}
+
+.owner-badge {
+  background: #028090;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-actions .p-button {
+  background: #028090;
+  border-color: #028090;
+}
+
+.header-actions .p-button:hover {
+  background: #026d7a;
+  border-color: #026d7a;
+}
+
+.header-actions .p-button-danger {
+  background: #F45B69;
+  border-color: #F45B69;
+}
+
+.header-actions .p-button-danger:hover {
+  background: #d94a57;
+  border-color: #d94a57;
+}
+
+.Sheet-content {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.grid-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(17, 75, 95, 0.15);
+  overflow: auto;
+}
+
+.grid-container table {
+  width: 100%;
+}
+
+.grid-container th {
+  background: #f0f4f5 !important;
+  color: #114B5F !important;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.grid-container td {
+  min-width: 80px;
+  height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  color: #114B5F;
+}
+
+.grid-container td[contenteditable="true"] {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.grid-container td[contenteditable="true"]:focus {
+  outline: 2px solid #028090;
+  background: rgba(2, 128, 144, 0.1);
+  text-align: center;
+}
+
+.grid-container td div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
